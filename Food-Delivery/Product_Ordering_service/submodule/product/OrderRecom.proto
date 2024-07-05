@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for recommendation status
+enum RecommendationStatus {
+    PENDING = 0;    // Tavsiya holati: kutayotgan
+    ACCEPTED = 1;   // Tavsiya holati: qabul qilingan
+    REJECTED = 2;   // Tavsiya holati: rad etilgan
+}
+
+// OrderRecommendation message to represent an order recommendation
+message OrderRecommendation {
+    string recommendation_id = 1; // Tavsiya noyob ID'si
+    string order_id = 2;          // Buyurtma ID'si
+    string courier_id = 3;        // Kuryer ID'si
+    string recommended_at = 4;    // Tavsiya qilingan vaqt
+    RecommendationStatus status = 5; // Tavsiya holati
+}
+
+// Request message for creating a new order recommendation
+message CreateOrderRecommendationRequest {
+    string order_id = 1;          // Buyurtma ID'si
+    string courier_id = 2;        // Kuryer ID'si
+    string recommended_at = 3;    // Tavsiya qilingan vaqt
+    RecommendationStatus status = 4; // Tavsiya holati
+}
+
+// Response message for order recommendation operations
+message OrderRecommendationResponse {
+    bool success = 1;             // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;           // Javob xabari
+    OrderRecommendation order_recommendation = 3; // Tavsiya ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting an order recommendation by ID
+message OrderRecommendationRequest {
+    string recommendation_id = 1; // Tavsiya noyob ID'si
+}
+
+// Request message for updating an order recommendation
+message UpdateOrderRecommendationRequest {
+    string recommendation_id = 1; // Tavsiya noyob ID'si
+    string order_id = 2;          // Buyurtma ID'si
+    string courier_id = 3;        // Kuryer ID'si
+    string recommended_at = 4;    // Tavsiya qilingan vaqt
+    RecommendationStatus status = 5; // Tavsiya holati
+}
+
+// Response message for listing all order recommendations
+message OrderRecommendationListResponse {
+    repeated OrderRecommendation order_recommendations = 1; // Tavsiyalar ro'yxati
+}
+
+// Service to manage order recommendations
+service OrderRecommendationService {
+    // Buyurtma tavsiyasi yaratish
+    rpc CreateOrderRecommendation (CreateOrderRecommendationRequest) returns (OrderRecommendationResponse);
+    
+    // Buyurtma tavsiyasi ma'lumotlarini olish
+    rpc GetOrderRecommendation (OrderRecommendationRequest) returns (OrderRecommendationResponse);
+    
+    // Buyurtma tavsiyasini yangilash
+    rpc UpdateOrderRecommendation (UpdateOrderRecommendationRequest) returns (OrderRecommendationResponse);
+    
+    // Buyurtma tavsiyasini o'chirish
+    rpc DeleteOrderRecommendation (OrderRecommendationRequest) returns (OrderRecommendationResponse);
+    
+    // Barcha buyurtma tavsiyalari ro'yxatini olish
+    rpc ListOrderRecommendations (Empty) returns (OrderRecommendationListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

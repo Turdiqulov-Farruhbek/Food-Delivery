@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+
+// User message to represent a user
+message User {
+    string user_id = 1;     // Foydalanuvchi ID'si
+    string email = 2;       // Foydalanuvchi email manzili
+    string role = 3;        // Foydalanuvchi roli ('user' or 'admin' or 'courier')
+    string created_at = 4;  // Foydalanuvchi yaratilgan vaqti
+}
+
+// Courier message to represent a courier
+message Courier {
+    string courier_id = 1;  // Kuryer ID'si
+    string email = 2;       // Kuryer email manzili
+    string created_at = 3;  // Kuryer yaratilgan vaqti
+}
+
+// Request message for user registration
+message UserRegisterRequest {
+    string email = 1;       // Foydalanuvchi email manzili
+    string password = 2;    // Foydalanuvchi paroli
+}
+
+// Response message for user registration
+message UserRegisterResponse {
+    bool success = 1;       // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;     // Javob xabari
+    User user = 3;          // Foydalanuvchi ma'lumotlari
+}
+
+// Request message for user login
+message UserLoginRequest {
+    string email = 1;       // Foydalanuvchi email manzili
+    string password = 2;    // Foydalanuvchi paroli
+}
+
+// Response message for user login
+message UserLoginResponse {
+    bool success = 1;       // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;     // Javob xabari
+    string token = 3;       // JWT token or session ID
+    User user = 4;          // Foydalanuvchi ma'lumotlari
+}
+
+// Request message for courier registration
+message CourierRegisterRequest {
+    string email = 1;       // Kuryer email manzili
+    string password = 2;    // Kuryer paroli
+}
+
+// Response message for courier registration
+message CourierRegisterResponse {
+    bool success = 1;       // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;     // Javob xabari
+    Courier courier = 3;    // Kuryer ma'lumotlari
+}
+
+// Request message for courier login
+message CourierLoginRequest {
+    string email = 1;       // Kuryer email manzili
+    string password = 2;    // Kuryer paroli
+}
+
+// Response message for courier login
+message CourierLoginResponse {
+    bool success = 1;       // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;     // Javob xabari
+    string token = 3;       // JWT token or session ID
+    Courier courier = 4;    // Kuryer ma'lumotlari
+}
+
+// Service to manage user and courier authentication
+service AuthService {
+    // Foydalanuvchi uchun autentifikatsiyani amalga oshirish
+    rpc UserLogin(UserLoginRequest) returns (UserLoginResponse);
+
+    // Foydalanuvchi uchun ro'yxatdan o'tish
+    rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse);
+
+    // Kuryer uchun autentifikatsiyani amalga oshirish
+    rpc CourierLogin(CourierLoginRequest) returns (CourierLoginResponse);
+
+    // Kuryer uchun ro'yxatdan o'tish
+    rpc CourierRegister(CourierRegisterRequest) returns (CourierRegisterResponse);
+}

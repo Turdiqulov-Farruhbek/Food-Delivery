@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// CartItem message to represent an item in a cart
+message CartItem {
+    string cart_item_id = 1; // Savat mahsuloti noyob ID'si
+    string cart_id = 2;      // Savat ID'si
+    string product_id = 3;   // Mahsulot ID'si
+    int32 quantity = 4;      // Mahsulot miqdori
+    string options = 5;      // Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+}
+
+// Request message for creating a new cart item
+message CreateCartItemRequest {
+    string cart_id = 1;      // Savat ID'si
+    string product_id = 2;   // Mahsulot ID'si
+    int32 quantity = 3;      // Mahsulot miqdori
+    string options = 4;      // Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+}
+
+// Request message for reading or deleting a cart item by ID
+message CartItemRequest {
+    string cart_item_id = 1; // Savat mahsuloti noyob ID'si
+}
+
+// Request message for updating a cart item
+message UpdateCartItemRequest {
+    string cart_item_id = 1; // Savat mahsuloti noyob ID'si
+    string cart_id = 2;      // Savat ID'si
+    string product_id = 3;   // Mahsulot ID'si
+    int32 quantity = 4;      // Mahsulot miqdori
+    string options = 5;      // Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+}
+
+// Response message for cart item operations
+message CartItemResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    CartItem cart_item = 3;  // Savat mahsuloti ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Response message for listing all cart items
+message CartItemListResponse {
+    repeated CartItem cart_items = 1; // Savat mahsulotlari ro'yxati
+}
+
+// Request message for listing cart items
+message CartRequest {
+    string cart_id = 1;      // Savat ID'si
+}
+
+// Service to manage cart items
+service CartItemService {
+    // Savat mahsulotini yaratish
+    rpc CreateCartItem (CreateCartItemRequest) returns (CartItemResponse);
+    
+    // Savat mahsuloti ma'lumotlarini olish
+    rpc GetCartItem (CartItemRequest) returns (CartItemResponse);
+    
+    // Savat mahsulotini yangilash
+    rpc UpdateCartItem (UpdateCartItemRequest) returns (CartItemResponse);
+    
+    // Savat mahsulotini o'chirish
+    rpc DeleteCartItem (CartItemRequest) returns (CartItemResponse);
+    
+    // Savat mahsulotlari ro'yxatini olish
+    rpc ListCartItems (CartRequest) returns (CartItemListResponse);
+}

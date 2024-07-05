@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for card status
+enum CardStatus {
+    PENDING = 0;
+    COMPLETED = 1;
+    CANCELED = 2;
+}
+
+// Order message to represent an order
+message Order {
+    string order_id = 1;     // Buyurtma noyob ID'si
+    string user_id = 2;      // Buyurtma bergan foydalanuvchi ID'si
+    string created_at = 3;   // Buyurtma yaratilgan vaqti
+    CardStatus status = 4;   // Buyurtma holati
+    float total_price = 5;   // Buyurtma umumiy summasi
+}
+
+// Request message for creating a new order
+message CreateOrderRequest {
+    string user_id = 1;       // Buyurtma bergan foydalanuvchi ID'si
+    CardStatus status = 2;    // Buyurtma holati
+    float total_price = 3;    // Buyurtma umumiy summasi
+}
+
+// Request message for reading or deleting an order by ID
+message OrderRequest {
+    string order_id = 1;     // Buyurtma noyob ID'si
+}
+
+// Request message for updating an order
+message UpdateOrderRequest {
+    string order_id = 1;     // Buyurtma noyob ID'si
+    CardStatus status = 2;   // Buyurtma holati
+    float total_price = 3;   // Buyurtma umumiy summasi
+}
+
+// Response message for order operations
+message OrderResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    Order order = 3;         // Buyurtma ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Response message for listing all orders
+message OrderListResponse {
+    repeated Order orders = 1; // Buyurtmalar ro'yxati
+}
+
+// Service to manage orders
+service OrderService {
+    // Buyurtma yaratish
+    rpc CreateOrder (CreateOrderRequest) returns (OrderResponse);
+    
+    // Buyurtma ma'lumotlarini olish
+    rpc GetOrder (OrderRequest) returns (OrderResponse);
+    
+    // Buyurtmani yangilash
+    rpc UpdateOrder (UpdateOrderRequest) returns (OrderResponse);
+    
+    // Buyurtmani o'chirish
+    rpc DeleteOrder (OrderRequest) returns (OrderResponse);
+    
+    // Buyurtmalar ro'yxatini olish
+    rpc ListOrders (OrderListRequest) returns (OrderListResponse);
+}
+
+// Request message for listing all orders (with optional filters)
+message OrderListRequest {
+    string user_id = 1;      // Foydalanuvchi ID'si bo'yicha buyurtmalarni filtrlash (ixtiyoriy)
+    CardStatus status = 2;   // Buyurtma holati bo'yicha buyurtmalarni filtrlash (ixtiyoriy)
+}

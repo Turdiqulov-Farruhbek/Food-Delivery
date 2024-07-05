@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Product message to represent a product
+message Product {
+    string product_id = 1;   // Mahsulotning noyob ID'si
+    string name = 2;         // Mahsulot nomi
+    string description = 3;  // Mahsulot tavsifi
+    float price = 4;         // Mahsulot narxi
+    string image_url = 5;    // Mahsulotning rasmini saqlovchi URL
+}
+
+// Request message for creating a new product
+message CreateProductRequest {
+    string name = 1;         // Mahsulot nomi
+    string description = 2;  // Mahsulot tavsifi
+    float price = 3;         // Mahsulot narxi
+    string image_url = 4;    // Mahsulotning rasmini saqlovchi URL
+}
+
+// Response message for product operations
+message ProductResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    Product product = 3;     // Mahsulot ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting a product by ID
+message ProductRequest {
+    string product_id = 1;   // Mahsulotning noyob ID'si
+}
+
+// Request message for updating a product
+message UpdateProductRequest {
+    string product_id = 1;   // Mahsulotning noyob ID'si
+    string name = 2;         // Mahsulot nomi
+    string description = 3;  // Mahsulot tavsifi
+    float price = 4;         // Mahsulot narxi
+    string image_url = 5;    // Mahsulotning rasmini saqlovchi URL
+}
+
+// Response message for listing all products
+message ProductListResponse {
+    repeated Product products = 1;  // Mahsulotlar ro'yxati
+}
+
+// Service to manage products
+service ProductService {
+    // Mahsulot yaratish
+    rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+    
+    // Mahsulot ma'lumotlarini olish
+    rpc GetProduct (ProductRequest) returns (ProductResponse);
+    
+    // Mahsulotni yangilash
+    rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+    
+    // Mahsulotni o'chirish
+    rpc DeleteProduct (ProductRequest) returns (ProductResponse);
+    
+    // Mahsulotlar ro'yxatini olish
+    rpc ListProducts (Empty) returns (ProductListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

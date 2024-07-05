@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for courier notification types
+enum CourierNotificationType {
+    NEW_RECOMMENDATION = 0; // Yangi tavsiya bildirishnomasi
+    ORDER_ASSIGNMENT = 1;   // Buyurtma topshiriq bildirishnomasi
+    STATUS_UPDATE = 2;      // Holatni yangilash bildirishnomasi
+}
+
+// CourierNotification message to represent a courier notification
+message CourierNotification {
+    string notification_id = 1; // Bildirishnoma ID'si
+    string courier_id = 2;      // Bildirishnomani oladigan kuryer ID'si
+    string order_id = 3;        // Bildirishnomaga bog'langan buyurtma ID'si
+    CourierNotificationType type = 4; // Bildirishnoma turi
+    string message = 5;         // Bildirishnoma matni
+    string created_at = 6;      // Bildirishnoma yaratilgan vaqt
+    bool is_read = 7;           // Kuryer bildirishnomani o'qiganligini bildiradi
+}
+
+// Request message for creating a new courier notification
+message CreateCourierNotificationRequest {
+    string courier_id = 1;      // Bildirishnomani oladigan kuryer ID'si
+    string order_id = 2;        // Bildirishnomaga bog'langan buyurtma ID'si
+    CourierNotificationType type = 3; // Bildirishnoma turi
+    string message = 4;         // Bildirishnoma matni
+}
+
+// Response message for courier notification operations
+message CourierNotificationResponse {
+    bool success = 1;           // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;         // Javob xabari
+    CourierNotification notification = 3; // Kuryer bildirishnomasi ma'lumotlari (Create operatsiyasi uchun)
+}
+
+// Request message for reading or deleting a courier notification by ID
+message CourierNotificationRequest {
+    string notification_id = 1; // Bildirishnoma ID'si
+}
+
+// Response message for listing all courier notifications
+message CourierNotificationListResponse {
+    repeated CourierNotification notifications = 1; // Kuryer bildirishnomalari ro'yxati
+}
+
+// Service to manage courier notifications
+service CourierNotificationService {
+    // Kuryer bildirishnomasini yaratish
+    rpc CreateCourierNotification (CreateCourierNotificationRequest) returns (CourierNotificationResponse);
+
+    // Kuryer bildirishnomasini olish
+    rpc GetCourierNotification (CourierNotificationRequest) returns (CourierNotificationResponse);
+
+    // Kuryer bildirishnomasini o'chirish
+    rpc DeleteCourierNotification (CourierNotificationRequest) returns (CourierNotificationResponse);
+
+    // Barcha kuryer bildirishnomalarini olish
+    rpc ListCourierNotifications (Empty) returns (CourierNotificationListResponse);
+
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

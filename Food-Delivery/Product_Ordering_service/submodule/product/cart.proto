@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Cart message to represent a user's shopping cart
+message Cart {
+    string cart_id = 1;      // Savatning noyob ID'si
+    string user_id = 2;      // Savatga ega foydalanuvchi ID'si
+    string created_at = 3;   // Savat yaratilgan vaqti
+}
+
+// Request message for creating a new cart
+message CreateCartRequest {
+    string user_id = 1;      // Savatga ega foydalanuvchi ID'si
+}
+
+// Response message for cart operations
+message CartResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    Cart cart = 3;           // Savat ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting a cart by ID
+message CartRequest {
+    string cart_id = 1;      // Savatning noyob ID'si
+}
+
+// Request message for updating a cart
+message UpdateCartRequest {
+    string cart_id = 1;      // Savatning noyob ID'si
+    string user_id = 2;      // Savatga ega foydalanuvchi ID'si
+}
+
+// Response message for listing all carts
+message CartListResponse {
+    repeated Cart carts = 1; // Savatlar ro'yxati
+}
+
+// Service to manage carts
+service CartService {
+    // Savat yaratish
+    rpc CreateCart (CreateCartRequest) returns (CartResponse);
+    
+    // Savat ma'lumotlarini olish
+    rpc GetCart (CartRequest) returns (CartResponse);
+    
+    // Savatni yangilash
+    rpc UpdateCart (UpdateCartRequest) returns (CartResponse);
+    
+    // Savatni o'chirish
+    rpc DeleteCart (CartRequest) returns (CartResponse);
+    
+    // Savatlar ro'yxatini olish
+    rpc ListCarts (Empty) returns (CartListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

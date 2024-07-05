@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for admin alert types
+enum AdminAlertType {
+    NEW_ORDER = 0;          // Yangi buyurtma ogohlantirishi
+    STATUS_CHANGE = 1;      // Holat o'zgarishi ogohlantirishi
+    COURIER_ACTIVITY = 2;   // Kuryer faoliyati ogohlantirishi
+}
+
+// AdminAlert message to represent an admin alert
+message AdminAlert {
+    string alert_id = 1;     // Ogohlantirish ID'si
+    string admin_id = 2;     // Ogohlantirishni oladigan admin ID'si
+    AdminAlertType type = 3; // Ogohlantirish turi
+    string message = 4;      // Ogohlantirish matni
+    string created_at = 5;   // Ogohlantirish yaratilgan vaqt
+    bool is_read = 6;        // Admin ogohlantirishni o'qiganligini bildiradi
+}
+
+// Request message for creating a new admin alert
+message CreateAdminAlertRequest {
+    string admin_id = 1;     // Ogohlantirishni oladigan admin ID'si
+    AdminAlertType type = 2; // Ogohlantirish turi
+    string message = 3;      // Ogohlantirish matni
+}
+
+// Response message for admin alert operations
+message AdminAlertResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    AdminAlert alert = 3;    // Admin ogohlantirishi ma'lumotlari (Create operatsiyasi uchun)
+}
+
+// Request message for reading or deleting an admin alert by ID
+message AdminAlertRequest {
+    string alert_id = 1;     // Ogohlantirish ID'si
+}
+
+// Response message for listing all admin alerts
+message AdminAlertListResponse {
+    repeated AdminAlert alerts = 1; // Admin ogohlantirishlari ro'yxati
+}
+
+// Service to manage admin alerts
+service AdminAlertService {
+    // Admin ogohlantirishini yaratish
+    rpc CreateAdminAlert (CreateAdminAlertRequest) returns (AdminAlertResponse);
+
+    // Admin ogohlantirishini olish
+    rpc GetAdminAlert (AdminAlertRequest) returns (AdminAlertResponse);
+
+    // Admin ogohlantirishini o'chirish
+    rpc DeleteAdminAlert (AdminAlertRequest) returns (AdminAlertResponse);
+
+    // Barcha admin ogohlantirishlarini olish
+    rpc ListAdminAlerts (Empty) returns (AdminAlertListResponse);
+}

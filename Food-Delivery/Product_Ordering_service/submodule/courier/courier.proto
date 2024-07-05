@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for courier status
+enum CourierStatus {
+    AVAILABLE = 0;     // Kuryer holati: mavjud
+    UNAVAILABLE = 1;   // Kuryer holati: mavjud emas
+    ON_DELIVERY = 2;   // Kuryer holati: yetkazish jarayonida
+}
+
+// Courier message to represent a courier
+message Courier {
+    string courier_id = 1;      // Kuryerning noyob ID'si
+    string name = 2;            // Kuryerning ismi
+    string phone_number = 3;    // Kuryerning telefon raqami
+    string email = 4;           // Kuryerning elektron pochtasi
+    CourierStatus status = 5;   // Kuryerning holati
+}
+
+// Request message for creating a new courier
+message CreateCourierRequest {
+    string name = 1;            // Kuryerning ismi
+    string phone_number = 2;    // Kuryerning telefon raqami
+    string email = 3;           // Kuryerning elektron pochtasi
+    CourierStatus status = 4;   // Kuryerning holati
+}
+
+// Response message for courier operations
+message CourierResponse {
+    bool success = 1;           // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;         // Javob xabari
+    Courier courier = 3;        // Kuryer ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting a courier by ID
+message CourierRequest {
+    string courier_id = 1;      // Kuryerning noyob ID'si
+}
+
+// Request message for updating a courier
+message UpdateCourierRequest {
+    string courier_id = 1;      // Kuryerning noyob ID'si
+    string name = 2;            // Kuryerning ismi
+    string phone_number = 3;    // Kuryerning telefon raqami
+    string email = 4;           // Kuryerning elektron pochtasi
+    CourierStatus status = 5;   // Kuryerning holati
+}
+
+// Response message for listing all couriers
+message CourierListResponse {
+    repeated Courier couriers = 1; // Kuryerlar ro'yxati
+}
+
+// Service to manage couriers
+service CourierService {
+    // Kuryer yaratish
+    rpc CreateCourier (CreateCourierRequest) returns (CourierResponse);
+    
+    // Kuryer ma'lumotlarini olish
+    rpc GetCourier (CourierRequest) returns (CourierResponse);
+    
+    // Kuryerni yangilash
+    rpc UpdateCourier (UpdateCourierRequest) returns (CourierResponse);
+    
+    // Kuryerni o'chirish
+    rpc DeleteCourier (CourierRequest) returns (CourierResponse);
+    
+    // Barcha kuryerlar ro'yxatini olish
+    rpc ListCouriers (Empty) returns (CourierListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

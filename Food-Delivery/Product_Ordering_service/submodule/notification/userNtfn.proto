@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for notification types
+enum NotificationType {
+    ORDER_CONFIRMATION = 0; // Buyurtmani tasdiqlash bildirishnomasi
+    STATUS_UPDATE = 1;      // Holatni yangilash bildirishnomasi
+}
+
+// UserNotification message to represent a user notification
+message UserNotification {
+    string notification_id = 1; // Bildirishnoma ID'si
+    string user_id = 2;         // Bildirishnomani oladigan foydalanuvchi ID'si
+    string order_id = 3;        // Bildirishnomaga bog'langan buyurtma ID'si
+    NotificationType type = 4;  // Bildirishnoma turi
+    string message = 5;         // Bildirishnoma matni
+    string created_at = 6;      // Bildirishnoma yaratilgan vaqt
+    bool is_read = 7;           // Foydalanuvchi bildirishnomani o'qiganligini bildiradi
+}
+
+// Request message for creating a new user notification
+message CreateUserNotificationRequest {
+    string user_id = 1;         // Bildirishnomani oladigan foydalanuvchi ID'si
+    string order_id = 2;        // Bildirishnomaga bog'langan buyurtma ID'si
+    NotificationType type = 3;  // Bildirishnoma turi
+    string message = 4;         // Bildirishnoma matni
+}
+
+// Response message for user notification operations
+message UserNotificationResponse {
+    bool success = 1;           // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;         // Javob xabari
+    UserNotification notification = 3; // Foydalanuvchi bildirishnomasi ma'lumotlari (Create operatsiyasi uchun)
+}
+
+// Request message for reading or deleting a user notification by ID
+message UserNotificationRequest {
+    string notification_id = 1; // Bildirishnoma ID'si
+}
+
+// Response message for listing all user notifications
+message UserNotificationListResponse {
+    repeated UserNotification notifications = 1; // Foydalanuvchi bildirishnomalari ro'yxati
+}
+
+// Service to manage user notifications
+service UserNotificationService {
+    // Foydalanuvchi bildirishnomasini yaratish
+    rpc CreateUserNotification (CreateUserNotificationRequest) returns (UserNotificationResponse);
+
+    // Foydalanuvchi bildirishnomasini olish
+    rpc GetUserNotification (UserNotificationRequest) returns (UserNotificationResponse);
+
+    // Foydalanuvchi bildirishnomasini o'chirish
+    rpc DeleteUserNotification (UserNotificationRequest) returns (UserNotificationResponse);
+
+    // Barcha foydalanuvchi bildirishnomalarini olish
+    rpc ListUserNotifications (Empty) returns (UserNotificationListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

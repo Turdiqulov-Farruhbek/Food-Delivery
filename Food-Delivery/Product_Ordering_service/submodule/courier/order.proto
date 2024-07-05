@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for payment status
+enum PaymentStatus {
+    PENDING = 0;  // To'lov holati: kutilyapti
+    PAID = 1;     // To'lov holati: to'langan
+}
+
+// Order message to represent an order
+message Order {
+    string order_id = 1;         // Buyurtmaning noyob ID'si
+    string customer_id = 2;      // Mijozning ID'si
+    string order_details = 3;    // Buyurtma tafsilotlari
+    string delivery_address = 4; // Yetkazib berish manzili
+    PaymentStatus payment_status = 5; // To'lov holati
+    string order_date = 6;       // Buyurtma sanasi
+}
+
+// Request message for creating a new order
+message CreateOrderRequest {
+    string customer_id = 1;      // Mijozning ID'si
+    string order_details = 2;    // Buyurtma tafsilotlari
+    string delivery_address = 3; // Yetkazib berish manzili
+    PaymentStatus payment_status = 4; // To'lov holati
+}
+
+// Response message for order operations
+message OrderResponse {
+    bool success = 1;        // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;      // Javob xabari
+    Order order = 3;         // Buyurtma ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting an order by ID
+message OrderRequest {
+    string order_id = 1;     // Buyurtmaning noyob ID'si
+}
+
+// Request message for updating an order
+message UpdateOrderRequest {
+    string order_id = 1;         // Buyurtmaning noyob ID'si
+    string customer_id = 2;      // Mijozning ID'si
+    string order_details = 3;    // Buyurtma tafsilotlari
+    string delivery_address = 4; // Yetkazib berish manzili
+    PaymentStatus payment_status = 5; // To'lov holati
+}
+
+// Response message for listing all orders
+message OrderListResponse {
+    repeated Order orders = 1; // Buyurtmalar ro'yxati
+}
+
+// Service to manage orders
+service OrderService {
+    // Buyurtma yaratish
+    rpc CreateOrder (CreateOrderRequest) returns (OrderResponse);
+
+    // Buyurtma ma'lumotlarini olish
+    rpc GetOrder (OrderRequest) returns (OrderResponse);
+
+    // Buyurtmani yangilash
+    rpc UpdateOrder (UpdateOrderRequest) returns (OrderResponse);
+
+    // Buyurtmani o'chirish
+    rpc DeleteOrder (OrderRequest) returns (OrderResponse);
+
+    // Barcha buyurtmalar ro'yxatini olish
+    rpc ListOrders (Empty) returns (OrderListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

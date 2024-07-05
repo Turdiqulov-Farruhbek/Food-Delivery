@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package ecommerce;
+
+// Enum for courier order status
+enum CourierOrderStatus {
+    ASSIGNED = 0;          // Yetkazib berish holati: tayinlangan
+    PICKED_UP = 1;         // Yetkazib berish holati: olib ketilgan
+    EN_ROUTE = 2;          // Yetkazib berish holati: yetkazilmoqda
+    DELIVERED = 3;         // Yetkazib berish holati: yetkazilgan
+    PAYMENT_COLLECTED = 4; // Yetkazib berish holati: to'lov yig'ilgan
+}
+
+// CourierOrder message to represent the relationship between couriers and orders
+message CourierOrder {
+    string courier_order_id = 1; // Kuryer-buyurtma munosabatining noyob ID'si
+    string courier_id = 2;       // Kuryer ID'si
+    string order_id = 3;         // Buyurtma ID'si
+    CourierOrderStatus status = 4; // Yetkazib berish holati
+    string assigned_time = 5;    // Tayinlangan vaqt
+    string last_updated = 6;     // Oxirgi yangilangan vaqt
+}
+
+// Request message for creating a new courier order
+message CreateCourierOrderRequest {
+    string courier_id = 1;       // Kuryer ID'si
+    string order_id = 2;         // Buyurtma ID'si
+    CourierOrderStatus status = 3; // Yetkazib berish holati
+}
+
+// Response message for courier order operations
+message CourierOrderResponse {
+    bool success = 1;               // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;             // Javob xabari
+    CourierOrder courier_order = 3; // Kuryer-buyurtma munosabatlari ma'lumotlari (Create va Get operatsiyalari uchun)
+}
+
+// Request message for reading or deleting a courier order by ID
+message CourierOrderRequest {
+    string courier_order_id = 1; // Kuryer-buyurtma munosabatining noyob ID'si
+}
+
+// Request message for updating a courier order
+message UpdateCourierOrderRequest {
+    string courier_order_id = 1; // Kuryer-buyurtma munosabatining noyob ID'si
+    string courier_id = 2;       // Kuryer ID'si
+    string order_id = 3;         // Buyurtma ID'si
+    CourierOrderStatus status = 4; // Yetkazib berish holati
+    string assigned_time = 5;    // Tayinlangan vaqt
+    string last_updated = 6;     // Oxirgi yangilangan vaqt
+}
+
+// Response message for listing all courier orders
+message CourierOrderListResponse {
+    repeated CourierOrder courier_orders = 1; // Kuryer-buyurtma munosabatlari ro'yxati
+}
+
+// Service to manage courier orders
+service CourierOrderService {
+    // Kuryer-buyurtma munosabatini yaratish
+    rpc CreateCourierOrder (CreateCourierOrderRequest) returns (CourierOrderResponse);
+
+    // Kuryer-buyurtma munosabati ma'lumotlarini olish
+    rpc GetCourierOrder (CourierOrderRequest) returns (CourierOrderResponse);
+
+    // Kuryer-buyurtma munosabatini yangilash
+    rpc UpdateCourierOrder (UpdateCourierOrderRequest) returns (CourierOrderResponse);
+
+    // Kuryer-buyurtma munosabatini o'chirish
+    rpc DeleteCourierOrder (CourierOrderRequest) returns (CourierOrderResponse);
+
+    // Barcha kuryer-buyurtma munosabatlari ro'yxatini olish
+    rpc ListCourierOrders (Empty) returns (CourierOrderListResponse);
+}
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}
