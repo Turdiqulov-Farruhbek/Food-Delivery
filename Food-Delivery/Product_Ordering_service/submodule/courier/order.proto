@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "/genproto";
 
+import "courier_Order.proto";
 package ecommerce;
 
 // Enum for payment status
@@ -72,5 +73,3 @@ service OrderService {
     rpc ListOrders (Empty) returns (OrderListResponse);
 }
 
-// Empty message to use for RPCs that don't require any input
-message Empty {}

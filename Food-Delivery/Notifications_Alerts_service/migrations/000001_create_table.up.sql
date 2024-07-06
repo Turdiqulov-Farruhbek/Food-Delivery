@@ -11,8 +11,10 @@ CREATE TABLE UserNotifications (
     order_id UUID, -- Bildirishnomaga bog'langan buyurtma
     type Order_type NOT NULL, -- Bildirishnoma turi (masalan, 'buyurtmani_tasdiqlash", "holatni_yangilash')
     message TEXT NOT NULL, -- Bildirishnoma matni
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Bildirishnoma yaratilgan vaqt
-    is_read BOOLEAN DEFAULT FALSE -- Foydalanuvchi bildirishnomani o'qiganligini bildiradi
+    is_read BOOLEAN DEFAULT FALSE, -- Foydalanuvchi bildirishnomani o'qiganligini bildiradi
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BIGINT DEFAULT 0
 );
 
 
@@ -23,8 +25,10 @@ CREATE TABLE CourierNotifications (
     order_id UUID, -- Bildirishnomaga bog'langan buyurtma
     type Courer_type NOT NULL, -- Bildirishnoma turi (masalan, 'yangi_tavsiya', 'buyurtma_topshiriq', 'holatni_yangilash')
     message TEXT NOT NULL, -- Bildirishnoma matni
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Bildirishnoma yaratilgan vaqt
-    is_read BOOLEAN DEFAULT FALSE -- Kuryer bildirishnomani o'qiganligini bildiradi
+    is_read BOOLEAN DEFAULT FALSE, -- Kuryer bildirishnomani o'qiganligini bildiradi
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BIGINT DEFAULT 0
 );
 
 
@@ -34,6 +38,8 @@ CREATE TABLE AdminAlerts (
     admin_id UUID NOT NULL, -- Ogohlantirishni oladigan admin
     type Alert_type NOT NULL, -- Ogohlantirish turi (masalan, 'yangi_buyurtma', 'holatni_o'zgartirish', 'kuryer_faoliyati')
     message TEXT NOT NULL, -- Ogohlantirish matni
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Ogohlantirish yaratilgan vaqt
-    is_read BOOLEAN DEFAULT FALSE -- Admin ogohlantirishni o'qiganligini bildiradi
+    is_read BOOLEAN DEFAULT FALSE, -- Admin ogohlantirishni o'qiganligini bildiradi
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BIGINT DEFAULT 0
 );

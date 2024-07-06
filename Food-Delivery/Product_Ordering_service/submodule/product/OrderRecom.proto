@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "/genproto";
 
+import "cart.proto";
 package ecommerce;
 
 // Enum for recommendation status
@@ -30,8 +31,8 @@ message CreateOrderRecommendationRequest {
 
 // Response message for order recommendation operations
 message OrderRecommendationResponse {
-    bool success = 1;             // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
-    string message = 2;           // Javob xabari
+    bool success = 1;                                 // Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+    string message = 2;                             // Javob xabari
     OrderRecommendation order_recommendation = 3; // Tavsiya ma'lumotlari (Create va Get operatsiyalari uchun)
 }
 
@@ -72,5 +73,4 @@ service OrderRecommendationService {
     rpc ListOrderRecommendations (Empty) returns (OrderRecommendationListResponse);
 }
 
-// Empty message to use for RPCs that don't require any input
-message Empty {}
+

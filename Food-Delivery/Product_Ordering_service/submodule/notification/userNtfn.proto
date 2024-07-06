@@ -2,12 +2,13 @@ syntax = "proto3";
 
 option go_package = "/genproto";
 
+import "adminAlert.proto";
 package ecommerce;
 
 // Enum for notification types
 enum NotificationType {
     ORDER_CONFIRMATION = 0; // Buyurtmani tasdiqlash bildirishnomasi
-    STATUS_UPDATE = 1;      // Holatni yangilash bildirishnomasi
+    STATUS_UPDATE_USER = 1;      // Holatni yangilash bildirishnomasi
 }
 
 // UserNotification message to represent a user notification
@@ -61,5 +62,4 @@ service UserNotificationService {
     rpc ListUserNotifications (Empty) returns (UserNotificationListResponse);
 }
 
-// Empty message to use for RPCs that don't require any input
-message Empty {}
+

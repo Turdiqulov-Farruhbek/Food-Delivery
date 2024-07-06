@@ -59,3 +59,7 @@ service AdminAlertService {
     // Barcha admin ogohlantirishlarini olish
     rpc ListAdminAlerts (Empty) returns (AdminAlertListResponse);
 }
+
+
+// Empty message to use for RPCs that don't require any input
+message Empty {}

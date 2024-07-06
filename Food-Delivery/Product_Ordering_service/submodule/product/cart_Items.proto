@@ -47,10 +47,7 @@ message CartItemListResponse {
     repeated CartItem cart_items = 1; // Savat mahsulotlari ro'yxati
 }
 
-// Request message for listing cart items
-message CartRequest {
-    string cart_id = 1;      // Savat ID'si
-}
+
 
 // Service to manage cart items
 service CartItemService {
@@ -67,5 +64,5 @@ service CartItemService {
     rpc DeleteCartItem (CartItemRequest) returns (CartItemResponse);
     
     // Savat mahsulotlari ro'yxatini olish
-    rpc ListCartItems (CartRequest) returns (CartItemListResponse);
+    rpc ListCartItems (CartItemRequest) returns (CartItemListResponse);
 }

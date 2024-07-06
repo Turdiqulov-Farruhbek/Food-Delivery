@@ -6,7 +6,7 @@ package ecommerce;
 
 // Enum for card status
 enum CardStatus {
-    PENDING = 0;
+    OR_PENDING = 0;
     COMPLETED = 1;
     CANCELED = 2;
 }

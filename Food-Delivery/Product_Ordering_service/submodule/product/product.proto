@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "/genproto";
 
+import "cart.proto";
 package ecommerce;
 
 // Product message to represent a product
@@ -65,5 +66,4 @@ service ProductService {
     rpc ListProducts (Empty) returns (ProductListResponse);
 }
 
-// Empty message to use for RPCs that don't require any input
-message Empty {}
+
