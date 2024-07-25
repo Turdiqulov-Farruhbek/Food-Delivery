@@ -43,3 +43,25 @@ CREATE TABLE CourierOrders (
     deleted_at BIGINT DEFAULT 0                           
 );
 
+
+CREATE TABLE tasks (
+    id UUID PRIMARY KEY,                               -- "id" ustuni jadvalning birlamchi kaliti bo'lib, u avtomatik ravishda o'suvchi raqamdir.
+    title VARCHAR(255) NOT NULL,                       -- "title" ustuni vazifaning nomini saqlaydi va maksimal uzunligi 255 ta belgidan iborat bo'lishi mumkin. Bu ustun bo'sh bo'lishi mumkin emas.
+    description TEXT,                                  -- "description" ustuni vazifaning batafsil tavsifini saqlaydi va uzunligi cheksiz bo'lishi mumkin.
+    status VARCHAR(50) NOT NULL,                       -- "status" ustuni vazifaning holatini (masalan, "to do", "in progress", "done") saqlaydi va maksimal uzunligi 50 ta belgidan iborat bo'lishi mumkin. Bu ustun bo'sh bo'lishi mumkin emas.
+    assigned_to INTEGER REFERENCES users(id),          -- "assigned_to" ustuni vazifa qaysi foydalanuvchiga tayinlanganligini ko'rsatadi va "users" jadvalidagi "id" ustuniga chet el kaliti sifatida murojaat qiladi.
+    due_date DATE,                                     -- "due_date" ustuni vazifaning oxirgi muddatini saqlaydi.
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,    -- "created_at" ustuni vazifa qachon yaratilganligini ko'rsatadi va sukut bo'yicha joriy vaqtni saqlaydi.
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP     -- "updated_at" ustuni vazifa qachon yangilanganligini ko'rsatadi va sukut bo'yicha joriy vaqtni saqlaydi.
+);
+
+
+CREATE TABLE courier_locations (
+    id UUID PRIMARY KEY,                               -- "id" ustuni jadvalning birlamchi kaliti bo'lib, u avtomatik ravishda o'suvchi raqamdir.
+    courier_id INTEGER REFERENCES users(id),           -- "courier_id" ustuni kurerning foydalanuvchi identifikatori bo'lib, "users" jadvalidagi "id" ustuniga chet el kaliti sifatida murojaat qiladi.
+    latitude DECIMAL(10, 8) NOT NULL,                  -- "latitude" ustuni kurerning kenglik koordinatasini saqlaydi va bu ustun bo'sh bo'lishi mumkin emas.
+    longitude DECIMAL(11, 8) NOT NULL,                 -- "longitude" ustuni kurerning uzunlik koordinatasini saqlaydi va bu ustun bo'sh bo'lishi mumkin emas.
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP     -- "updated_at" ustuni kurer joylashuvi qachon yangilanganligini ko'rsatadi va sukut bo'yicha joriy vaqtni saqlaydi.
+);
+
+

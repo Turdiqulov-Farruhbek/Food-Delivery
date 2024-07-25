@@ -13,7 +13,7 @@ import (
 )
 
 // Helper function to initialize PostgreSQL connection
-func setupDBConn(t *testing.T) *postgres.CartItem {
+func setupDBConnCartItem(t *testing.T) *postgres.CartItem {
 	connString := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s",
 		"postgres",
 		"root",
@@ -35,13 +35,13 @@ func newCartItemTest() *cartItem.CreateCartItemRequest {
 		CartId:   "fdcf6b6f-e9db-49e5-be7f-cf429c53b462",
 		ProductId: "176dab25-69a9-4195-9699-3fa52232c8d6",
 		Quantity:  1,
-		Options:   `{"ssswww": "medium", "aacc": "red"}`,
+		Options:   `{"sss": "medium", "aacc": "red"}`,
 	}
 }
 
 // Test function to create a cart item
 func TestCreateCartItem(t *testing.T) {
-	cartItemDB := setupDBConn(t)
+	cartItemDB := setupDBConnCartItem(t)
 	cartItemTest := newCartItemTest()
 
 	cartItemRes, err := cartItemDB.Create(context.Background(), cartItemTest)
@@ -59,7 +59,7 @@ func TestCreateCartItem(t *testing.T) {
 
 // Test function to get a cart item
 func TestGetCartItem(t *testing.T) {
-	cartItemDB := setupDBConn(t)
+	cartItemDB := setupDBConnCartItem(t)
 	cartItemTest := newCartItemTest()
 
 	createdCartItemRes, err := cartItemDB.Create(context.Background(), cartItemTest)
@@ -79,7 +79,7 @@ func TestGetCartItem(t *testing.T) {
 
 // Test function to update a cart item
 func TestUpdateCartItem(t *testing.T) {
-	cartItemDB := setupDBConn(t)
+	cartItemDB := setupDBConnCartItem(t)
 	cartItemTest := newCartItemTest()
 
 	createdCartItemRes, err := cartItemDB.Create(context.Background(), cartItemTest)
@@ -116,7 +116,7 @@ func TestUpdateCartItem(t *testing.T) {
 
 // Test function to delete a cart item
 func TestDeleteCartItem(t *testing.T) {
-	cartItemDB := setupDBConn(t)
+	cartItemDB := setupDBConnCartItem(t)
 	cartItemTest := newCartItemTest()
 
 	createdCartItemRes, err := cartItemDB.Create(context.Background(), cartItemTest)
@@ -143,10 +143,15 @@ func TestDeleteCartItem(t *testing.T) {
 
 // Test function to list cart items
 func TestListCartItems(t *testing.T) {
-	cartItemDB := setupDBConn(t)
+	cartItemDB := setupDBConnCartItem(t)
 
 	// Create a few cart items for testing
 	_, err := cartItemDB.Create(context.Background(), newCartItemTest())
+	if err != nil {
+		t.Fatalf("Error creating cart item: %v", err)
+	}
+
+	_, err = cartItemDB.Create(context.Background(), newCartItemTest())
 	if err != nil {
 		t.Fatalf("Error creating cart item: %v", err)
 	}

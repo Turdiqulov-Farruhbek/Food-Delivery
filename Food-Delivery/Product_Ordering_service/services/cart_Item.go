@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"product_ordering/config/logger"
 	cartItem "product_ordering/genproto"
 	"product_ordering/storage"
 )
@@ -11,16 +12,24 @@ import (
 type CartItemService struct {
 	store storage.StorageInterface
 	cartItem.UnimplementedCartItemServiceServer
+	log logger.Logger
+
 }
 
 // NewCartItemService yangi CartItemService ni yaratadi
-func NewCartItemService(store storage.StorageInterface) *CartItemService {
-	return &CartItemService{store: store}
+func NewCartItemService(store storage.StorageInterface, logg logger.Logger) *CartItemService {
+	return &CartItemService{store: store, log: logg}
 }
 
 // CreateCartItem RPC chaqiruvini bajaradi va savat mahsulotini yaratadi
 func (s *CartItemService) CreateCartItem(ctx context.Context, req *cartItem.CreateCartItemRequest) (*cartItem.CartItemResponse, error) {
-	return s.store.CartItem().Create(ctx, req)
+	res, err := s.store.CartItem().Create(ctx, req)
+	if err!= nil {
+		s.log.ERROR.Println("erroRRR", err)
+        return nil, err
+    }
+
+	return res, nil
 }
 
 // GetCartItem RPC chaqiruvini bajaradi va savat mahsuloti ma'lumotlarini qaytaradi

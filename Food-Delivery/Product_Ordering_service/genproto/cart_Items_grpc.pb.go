@@ -41,7 +41,7 @@ type CartItemServiceClient interface {
 	// Savat mahsulotini o'chirish
 	DeleteCartItem(ctx context.Context, in *CartItemRequest, opts ...grpc.CallOption) (*CartItemResponse, error)
 	// Savat mahsulotlari ro'yxatini olish
-	ListCartItems(ctx context.Context, in *CartItemRequest, opts ...grpc.CallOption) (*CartItemListResponse, error)
+	ListCartItems(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CartItemListResponse, error)
 }
 
 type cartItemServiceClient struct {
@@ -92,7 +92,7 @@ func (c *cartItemServiceClient) DeleteCartItem(ctx context.Context, in *CartItem
 	return out, nil
 }
 
-func (c *cartItemServiceClient) ListCartItems(ctx context.Context, in *CartItemRequest, opts ...grpc.CallOption) (*CartItemListResponse, error) {
+func (c *cartItemServiceClient) ListCartItems(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CartItemListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CartItemListResponse)
 	err := c.cc.Invoke(ctx, CartItemService_ListCartItems_FullMethodName, in, out, cOpts...)
@@ -117,7 +117,7 @@ type CartItemServiceServer interface {
 	// Savat mahsulotini o'chirish
 	DeleteCartItem(context.Context, *CartItemRequest) (*CartItemResponse, error)
 	// Savat mahsulotlari ro'yxatini olish
-	ListCartItems(context.Context, *CartItemRequest) (*CartItemListResponse, error)
+	ListCartItems(context.Context, *Empty) (*CartItemListResponse, error)
 	mustEmbedUnimplementedCartItemServiceServer()
 }
 
@@ -137,7 +137,7 @@ func (UnimplementedCartItemServiceServer) UpdateCartItem(context.Context, *Updat
 func (UnimplementedCartItemServiceServer) DeleteCartItem(context.Context, *CartItemRequest) (*CartItemResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCartItem not implemented")
 }
-func (UnimplementedCartItemServiceServer) ListCartItems(context.Context, *CartItemRequest) (*CartItemListResponse, error) {
+func (UnimplementedCartItemServiceServer) ListCartItems(context.Context, *Empty) (*CartItemListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCartItems not implemented")
 }
 func (UnimplementedCartItemServiceServer) mustEmbedUnimplementedCartItemServiceServer() {}
@@ -226,7 +226,7 @@ func _CartItemService_DeleteCartItem_Handler(srv interface{}, ctx context.Contex
 }
 
 func _CartItemService_ListCartItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CartItemRequest)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func _CartItemService_ListCartItems_Handler(srv interface{}, ctx context.Context
 		FullMethod: CartItemService_ListCartItems_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CartItemServiceServer).ListCartItems(ctx, req.(*CartItemRequest))
+		return srv.(CartItemServiceServer).ListCartItems(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }

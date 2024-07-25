@@ -2,6 +2,7 @@ syntax = "proto3";
 
 option go_package = "/genproto";
 
+import "cart.proto";
 package ecommerce;
 
 // CartItem message to represent an item in a cart
@@ -64,5 +65,5 @@ service CartItemService {
     rpc DeleteCartItem (CartItemRequest) returns (CartItemResponse);
     
     // Savat mahsulotlari ro'yxatini olish
-    rpc ListCartItems (CartItemRequest) returns (CartItemListResponse);
+    rpc ListCartItems (Empty) returns (CartItemListResponse);
 }

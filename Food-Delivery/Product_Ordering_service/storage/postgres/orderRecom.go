@@ -107,7 +107,7 @@ func (o *OrderRecommendation) Update(ctx context.Context, req *genproto.UpdateOr
 }
 
 func (o *OrderRecommendation) Delete(ctx context.Context, req *genproto.OrderRecommendationRequest) (*genproto.OrderRecommendationResponse, error) {
-	query := `UPDATE orderrecommendations SET deleted_at=EXTRACT(EPOCH FROM NOW())::BIGINT  WHERE deleted_at=0`
+	query := `UPDATE orderrecommendations SET deleted_at=EXTRACT(EPOCH FROM NOW())::BIGINT  WHERE recommendation_id=$1 AND deleted_at=0`
 	result, err := o.Db.Exec(ctx, query, req.RecommendationId)
 	if err != nil {
 		return nil, err
