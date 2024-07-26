@@ -28,7 +28,7 @@ gen-protoAll:
 	--go-grpc_out=./ \
 	submodule/*.proto
 
-swag-gen:`
+swag-gen:
 	~/go/bin/swag init -g ./api/api.go -o docs force 1
 
 # PROTO_DIR=proto
@@ -36,3 +36,37 @@ swag-gen:`
 
 # proto-genn:
 #     protoc -I=$(PROTO_DIR) --go_out=$(OUT_DIR) --go-grpc_out=$(OUT_DIR) $(PROTO_DIR)/*.proto
+
+
+doc-run:
+	docker run --network="host" --name libCont lib_service
+
+doc-con:
+	docker run --network="host" --publish  9090:3030 recruitment-service
+
+doc-network:
+	docker network create library
+
+doc-run-allow:
+	docker run --network="library" -p 9090:2121 library_service
+
+doc-continer-all-del:
+	docker rm $(docker ps -aq)
+	docker rmi $(docker ps images)
+
+doc-network-all:
+	docker network ls
+
+
+doc-query:
+	docker ps
+	docker image rmi auth_service
+	docker container ls
+	docker container prune
+	docker container rm libCont
+	docker build -t lib_service .
+	docker network ls
+	docker images
+	docker exec -it post-cont psql -U postgres -d library_db
+	docker system prune -af
+ 	docker volume prune -af
