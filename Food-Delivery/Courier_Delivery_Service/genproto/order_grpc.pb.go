@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: order.proto
 
+// import "courier_Order.proto";
+
 package genproto
 
 import (
@@ -19,11 +21,14 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	OrderService_CreateOrder_FullMethodName = "/ecommerce.OrderService/CreateOrder"
-	OrderService_GetOrder_FullMethodName    = "/ecommerce.OrderService/GetOrder"
-	OrderService_UpdateOrder_FullMethodName = "/ecommerce.OrderService/UpdateOrder"
-	OrderService_DeleteOrder_FullMethodName = "/ecommerce.OrderService/DeleteOrder"
-	OrderService_ListOrders_FullMethodName  = "/ecommerce.OrderService/ListOrders"
+	OrderService_CreateOrder_FullMethodName            = "/ordermanagement.OrderService/CreateOrder"
+	OrderService_GetOrder_FullMethodName               = "/ordermanagement.OrderService/GetOrder"
+	OrderService_UpdateOrder_FullMethodName            = "/ordermanagement.OrderService/UpdateOrder"
+	OrderService_DeleteOrder_FullMethodName            = "/ordermanagement.OrderService/DeleteOrder"
+	OrderService_ListOrders_FullMethodName             = "/ordermanagement.OrderService/ListOrders"
+	OrderService_GetRecommendedOrders_FullMethodName   = "/ordermanagement.OrderService/GetRecommendedOrders"
+	OrderService_UpdateOrderStatus_FullMethodName      = "/ordermanagement.OrderService/UpdateOrderStatus"
+	OrderService_GetCourierOrderHistory_FullMethodName = "/ordermanagement.OrderService/GetCourierOrderHistory"
 )
 
 // OrderServiceClient is the client API for OrderService service.
@@ -41,7 +46,13 @@ type OrderServiceClient interface {
 	// Buyurtmani o'chirish
 	DeleteOrder(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*OrderResponse, error)
 	// Barcha buyurtmalar ro'yxatini olish
-	ListOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderListResponse, error)
+	ListOrders(ctx context.Context, in *GetRecommendedOrdersRequest, opts ...grpc.CallOption) (*OrderListResponse, error)
+	// Tavsiya etilgan buyurtmalarni olish
+	GetRecommendedOrders(ctx context.Context, in *GetRecommendedOrdersRequest, opts ...grpc.CallOption) (*GetRecommendedOrdersResponse, error)
+	// Buyurtma holatini yangilash
+	UpdateOrderStatus(ctx context.Context, in *UpdateOrderStatusRequest, opts ...grpc.CallOption) (*UpdateOrderStatusResponse, error)
+	// Kuryer buyurtma tarixini olish
+	GetCourierOrderHistory(ctx context.Context, in *GetCourierOrderHistoryRequest, opts ...grpc.CallOption) (*GetCourierOrderHistoryResponse, error)
 }
 
 type orderServiceClient struct {
@@ -92,10 +103,40 @@ func (c *orderServiceClient) DeleteOrder(ctx context.Context, in *OrderRequest, 
 	return out, nil
 }
 
-func (c *orderServiceClient) ListOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderListResponse, error) {
+func (c *orderServiceClient) ListOrders(ctx context.Context, in *GetRecommendedOrdersRequest, opts ...grpc.CallOption) (*OrderListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(OrderListResponse)
 	err := c.cc.Invoke(ctx, OrderService_ListOrders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) GetRecommendedOrders(ctx context.Context, in *GetRecommendedOrdersRequest, opts ...grpc.CallOption) (*GetRecommendedOrdersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRecommendedOrdersResponse)
+	err := c.cc.Invoke(ctx, OrderService_GetRecommendedOrders_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) UpdateOrderStatus(ctx context.Context, in *UpdateOrderStatusRequest, opts ...grpc.CallOption) (*UpdateOrderStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateOrderStatusResponse)
+	err := c.cc.Invoke(ctx, OrderService_UpdateOrderStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) GetCourierOrderHistory(ctx context.Context, in *GetCourierOrderHistoryRequest, opts ...grpc.CallOption) (*GetCourierOrderHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetCourierOrderHistoryResponse)
+	err := c.cc.Invoke(ctx, OrderService_GetCourierOrderHistory_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +158,13 @@ type OrderServiceServer interface {
 	// Buyurtmani o'chirish
 	DeleteOrder(context.Context, *OrderRequest) (*OrderResponse, error)
 	// Barcha buyurtmalar ro'yxatini olish
-	ListOrders(context.Context, *Empty) (*OrderListResponse, error)
+	ListOrders(context.Context, *GetRecommendedOrdersRequest) (*OrderListResponse, error)
+	// Tavsiya etilgan buyurtmalarni olish
+	GetRecommendedOrders(context.Context, *GetRecommendedOrdersRequest) (*GetRecommendedOrdersResponse, error)
+	// Buyurtma holatini yangilash
+	UpdateOrderStatus(context.Context, *UpdateOrderStatusRequest) (*UpdateOrderStatusResponse, error)
+	// Kuryer buyurtma tarixini olish
+	GetCourierOrderHistory(context.Context, *GetCourierOrderHistoryRequest) (*GetCourierOrderHistoryResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -137,8 +184,17 @@ func (UnimplementedOrderServiceServer) UpdateOrder(context.Context, *UpdateOrder
 func (UnimplementedOrderServiceServer) DeleteOrder(context.Context, *OrderRequest) (*OrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrder not implemented")
 }
-func (UnimplementedOrderServiceServer) ListOrders(context.Context, *Empty) (*OrderListResponse, error) {
+func (UnimplementedOrderServiceServer) ListOrders(context.Context, *GetRecommendedOrdersRequest) (*OrderListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrders not implemented")
+}
+func (UnimplementedOrderServiceServer) GetRecommendedOrders(context.Context, *GetRecommendedOrdersRequest) (*GetRecommendedOrdersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecommendedOrders not implemented")
+}
+func (UnimplementedOrderServiceServer) UpdateOrderStatus(context.Context, *UpdateOrderStatusRequest) (*UpdateOrderStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateOrderStatus not implemented")
+}
+func (UnimplementedOrderServiceServer) GetCourierOrderHistory(context.Context, *GetCourierOrderHistoryRequest) (*GetCourierOrderHistoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCourierOrderHistory not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -226,7 +282,7 @@ func _OrderService_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _OrderService_ListOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(GetRecommendedOrdersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +294,61 @@ func _OrderService_ListOrders_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: OrderService_ListOrders_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).ListOrders(ctx, req.(*Empty))
+		return srv.(OrderServiceServer).ListOrders(ctx, req.(*GetRecommendedOrdersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_GetRecommendedOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecommendedOrdersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).GetRecommendedOrders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrderService_GetRecommendedOrders_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).GetRecommendedOrders(ctx, req.(*GetRecommendedOrdersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_UpdateOrderStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateOrderStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).UpdateOrderStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrderService_UpdateOrderStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).UpdateOrderStatus(ctx, req.(*UpdateOrderStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_GetCourierOrderHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCourierOrderHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).GetCourierOrderHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrderService_GetCourierOrderHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).GetCourierOrderHistory(ctx, req.(*GetCourierOrderHistoryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -247,7 +357,7 @@ func _OrderService_ListOrders_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var OrderService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ecommerce.OrderService",
+	ServiceName: "ordermanagement.OrderService",
 	HandlerType: (*OrderServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -269,6 +379,18 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListOrders",
 			Handler:    _OrderService_ListOrders_Handler,
+		},
+		{
+			MethodName: "GetRecommendedOrders",
+			Handler:    _OrderService_GetRecommendedOrders_Handler,
+		},
+		{
+			MethodName: "UpdateOrderStatus",
+			Handler:    _OrderService_UpdateOrderStatus_Handler,
+		},
+		{
+			MethodName: "GetCourierOrderHistory",
+			Handler:    _OrderService_GetCourierOrderHistory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

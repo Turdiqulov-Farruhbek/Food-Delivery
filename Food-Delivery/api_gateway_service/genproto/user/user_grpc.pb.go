@@ -19,18 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	AuthService_UserLogin_FullMethodName       = "/ecommerce.AuthService/UserLogin"
-	AuthService_UserRegister_FullMethodName    = "/ecommerce.AuthService/UserRegister"
-	AuthService_CourierLogin_FullMethodName    = "/ecommerce.AuthService/CourierLogin"
-	AuthService_CourierRegister_FullMethodName = "/ecommerce.AuthService/CourierRegister"
+	UserService_UserLogin_FullMethodName       = "/ecommerce.UserService/UserLogin"
+	UserService_UserRegister_FullMethodName    = "/ecommerce.UserService/UserRegister"
+	UserService_CourierLogin_FullMethodName    = "/ecommerce.UserService/CourierLogin"
+	UserService_CourierRegister_FullMethodName = "/ecommerce.UserService/CourierRegister"
 )
 
-// AuthServiceClient is the client API for AuthService service.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Service to manage user and courier authentication
-type AuthServiceClient interface {
+type UserServiceClient interface {
 	// Foydalanuvchi uchun autentifikatsiyani amalga oshirish
 	UserLogin(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
 	// Foydalanuvchi uchun ro'yxatdan o'tish
@@ -41,60 +41,60 @@ type AuthServiceClient interface {
 	CourierRegister(ctx context.Context, in *CourierRegisterRequest, opts ...grpc.CallOption) (*CourierRegisterResponse, error)
 }
 
-type authServiceClient struct {
+type userServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
-	return &authServiceClient{cc}
+func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
+	return &userServiceClient{cc}
 }
 
-func (c *authServiceClient) UserLogin(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error) {
+func (c *userServiceClient) UserLogin(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UserLoginResponse)
-	err := c.cc.Invoke(ctx, AuthService_UserLogin_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserService_UserLogin_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error) {
+func (c *userServiceClient) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UserRegisterResponse)
-	err := c.cc.Invoke(ctx, AuthService_UserRegister_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserService_UserRegister_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) CourierLogin(ctx context.Context, in *CourierLoginRequest, opts ...grpc.CallOption) (*CourierLoginResponse, error) {
+func (c *userServiceClient) CourierLogin(ctx context.Context, in *CourierLoginRequest, opts ...grpc.CallOption) (*CourierLoginResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierLoginResponse)
-	err := c.cc.Invoke(ctx, AuthService_CourierLogin_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserService_CourierLogin_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *authServiceClient) CourierRegister(ctx context.Context, in *CourierRegisterRequest, opts ...grpc.CallOption) (*CourierRegisterResponse, error) {
+func (c *userServiceClient) CourierRegister(ctx context.Context, in *CourierRegisterRequest, opts ...grpc.CallOption) (*CourierRegisterResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierRegisterResponse)
-	err := c.cc.Invoke(ctx, AuthService_CourierRegister_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserService_CourierRegister_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AuthServiceServer is the server API for AuthService service.
-// All implementations must embed UnimplementedAuthServiceServer
+// UserServiceServer is the server API for UserService service.
+// All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 //
 // Service to manage user and courier authentication
-type AuthServiceServer interface {
+type UserServiceServer interface {
 	// Foydalanuvchi uchun autentifikatsiyani amalga oshirish
 	UserLogin(context.Context, *UserLoginRequest) (*UserLoginResponse, error)
 	// Foydalanuvchi uchun ro'yxatdan o'tish
@@ -103,132 +103,132 @@ type AuthServiceServer interface {
 	CourierLogin(context.Context, *CourierLoginRequest) (*CourierLoginResponse, error)
 	// Kuryer uchun ro'yxatdan o'tish
 	CourierRegister(context.Context, *CourierRegisterRequest) (*CourierRegisterResponse, error)
-	mustEmbedUnimplementedAuthServiceServer()
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-// UnimplementedAuthServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedAuthServiceServer struct {
+// UnimplementedUserServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedAuthServiceServer) UserLogin(context.Context, *UserLoginRequest) (*UserLoginResponse, error) {
+func (UnimplementedUserServiceServer) UserLogin(context.Context, *UserLoginRequest) (*UserLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
 }
-func (UnimplementedAuthServiceServer) UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error) {
+func (UnimplementedUserServiceServer) UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
 }
-func (UnimplementedAuthServiceServer) CourierLogin(context.Context, *CourierLoginRequest) (*CourierLoginResponse, error) {
+func (UnimplementedUserServiceServer) CourierLogin(context.Context, *CourierLoginRequest) (*CourierLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CourierLogin not implemented")
 }
-func (UnimplementedAuthServiceServer) CourierRegister(context.Context, *CourierRegisterRequest) (*CourierRegisterResponse, error) {
+func (UnimplementedUserServiceServer) CourierRegister(context.Context, *CourierRegisterRequest) (*CourierRegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CourierRegister not implemented")
 }
-func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
+func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
-// UnsafeAuthServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AuthServiceServer will
+// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserServiceServer will
 // result in compilation errors.
-type UnsafeAuthServiceServer interface {
-	mustEmbedUnimplementedAuthServiceServer()
+type UnsafeUserServiceServer interface {
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-func RegisterAuthServiceServer(s grpc.ServiceRegistrar, srv AuthServiceServer) {
-	s.RegisterService(&AuthService_ServiceDesc, srv)
+func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
+	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _AuthService_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).UserLogin(ctx, in)
+		return srv.(UserServiceServer).UserLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_UserLogin_FullMethodName,
+		FullMethod: UserService_UserLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).UserLogin(ctx, req.(*UserLoginRequest))
+		return srv.(UserServiceServer).UserLogin(ctx, req.(*UserLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_UserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_UserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRegisterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).UserRegister(ctx, in)
+		return srv.(UserServiceServer).UserRegister(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_UserRegister_FullMethodName,
+		FullMethod: UserService_UserRegister_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).UserRegister(ctx, req.(*UserRegisterRequest))
+		return srv.(UserServiceServer).UserRegister(ctx, req.(*UserRegisterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_CourierLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_CourierLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CourierLoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).CourierLogin(ctx, in)
+		return srv.(UserServiceServer).CourierLogin(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_CourierLogin_FullMethodName,
+		FullMethod: UserService_CourierLogin_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).CourierLogin(ctx, req.(*CourierLoginRequest))
+		return srv.(UserServiceServer).CourierLogin(ctx, req.(*CourierLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_CourierRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_CourierRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CourierRegisterRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).CourierRegister(ctx, in)
+		return srv.(UserServiceServer).CourierRegister(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_CourierRegister_FullMethodName,
+		FullMethod: UserService_CourierRegister_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).CourierRegister(ctx, req.(*CourierRegisterRequest))
+		return srv.(UserServiceServer).CourierRegister(ctx, req.(*CourierRegisterRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
+// UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AuthService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ecommerce.AuthService",
-	HandlerType: (*AuthServiceServer)(nil),
+var UserService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "ecommerce.UserService",
+	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "UserLogin",
-			Handler:    _AuthService_UserLogin_Handler,
+			Handler:    _UserService_UserLogin_Handler,
 		},
 		{
 			MethodName: "UserRegister",
-			Handler:    _AuthService_UserRegister_Handler,
+			Handler:    _UserService_UserRegister_Handler,
 		},
 		{
 			MethodName: "CourierLogin",
-			Handler:    _AuthService_CourierLogin_Handler,
+			Handler:    _UserService_CourierLogin_Handler,
 		},
 		{
 			MethodName: "CourierRegister",
-			Handler:    _AuthService_CourierRegister_Handler,
+			Handler:    _UserService_CourierRegister_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
