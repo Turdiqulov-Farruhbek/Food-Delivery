@@ -2,7 +2,7 @@ package courier
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"errors"
 	"fmt"
 	"time" // time paketini import qilish
@@ -19,17 +19,17 @@ func NewCourierOrder(db *pgx.Conn) *CourierOrder {
 }
 
 // Create kuryer-buyurtma munosabatini yaratadi
-func (c *CourierOrder) CreateCourierOrder(ctx context.Context, req *genproto.CreateCourierOrderRequest) (*genproto.CourierOrderResponse, error) {
+func (c *CourierOrder) CreateCourierOrder(ctx context.Context, req *courier.CreateCourierOrderRequest) (*courier.CourierOrderResponse, error) {
 	query := `INSERT INTO courierorders (courier_id, order_id, status, assigned_time, last_updated) VALUES ($1, $2, $3, NOW(), NOW()) RETURNING courier_order_id`
 	var courierOrderID string
 	err := c.Db.QueryRow(ctx, query, req.CourierId, req.OrderId, req.Status).Scan(&courierOrderID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create courier order: %w", err)
 	}
-	return &genproto.CourierOrderResponse{
+	return &courier.CourierOrderResponse{
 		Success: true,
 		Message: "Courier order created successfully",
-		CourierOrder: &genproto.CourierOrder{
+		CourierOrder: &courier.CourierOrder{
 			CourierOrderId: courierOrderID,
 			CourierId:      req.CourierId,
 			OrderId:        req.OrderId,
@@ -41,9 +41,9 @@ func (c *CourierOrder) CreateCourierOrder(ctx context.Context, req *genproto.Cre
 }
 
 // Get kuryer-buyurtma munosabati ma'lumotlarini qaytaradi
-func (c *CourierOrder) GetCourierOrder(ctx context.Context, req *genproto.CourierOrderRequest) (*genproto.CourierOrderResponse, error) {
+func (c *CourierOrder) GetCourierOrder(ctx context.Context, req *courier.CourierOrderRequest) (*courier.CourierOrderResponse, error) {
 	query := `SELECT courier_order_id, courier_id, order_id, status, assigned_time, last_updated FROM courierorders WHERE courier_order_id=$1 AND deleted_at=0`
-	var courierOrder genproto.CourierOrder
+	var courierOrder courier.CourierOrder
 	err := c.Db.QueryRow(ctx, query, req.CourierOrderId).Scan(
 		&courierOrder.CourierOrderId,
 		&courierOrder.CourierId,
@@ -54,7 +54,7 @@ func (c *CourierOrder) GetCourierOrder(ctx context.Context, req *genproto.Courie
 	if err != nil {
 		return nil, fmt.Errorf("failed to get courier order: %w", err)
 	}
-	return &genproto.CourierOrderResponse{
+	return &courier.CourierOrderResponse{
 		Success:      true,
 		Message:      "Courier order retrieved successfully",
 		CourierOrder: &courierOrder,
@@ -62,10 +62,10 @@ func (c *CourierOrder) GetCourierOrder(ctx context.Context, req *genproto.Courie
 }
 
 // Update kuryer-buyurtma munosabatini yangilaydi
-func (c *CourierOrder) UpdateCourierOrder(ctx context.Context, req *genproto.UpdateCourierOrderRequest) (*genproto.CourierOrderResponse, error) {
+func (c *CourierOrder) UpdateCourierOrder(ctx context.Context, req *courier.UpdateCourierOrderRequest) (*courier.CourierOrderResponse, error) {
 	// Avval eski qiymatlarni olish
 	var oldCourierId, oldOrderId, oldAssignedTime string
-	var oldStatus genproto.CourierOrderStatus
+	var oldStatus courier.CourierOrderStatus
 
 	getQuery := `SELECT courier_id, order_id, status, assigned_time FROM courierorders WHERE courier_order_id=$1`
 	err := c.Db.QueryRow(ctx, getQuery, req.CourierOrderId).Scan(&oldCourierId, &oldOrderId, &oldStatus, &oldAssignedTime)
@@ -85,7 +85,7 @@ func (c *CourierOrder) UpdateCourierOrder(ctx context.Context, req *genproto.Upd
 	}
 
 	status := req.Status
-	if req.Status == genproto.CourierOrderStatus(0) { // 0 status qiymati ASSIGNED sifatida ko'riladi
+	if req.Status == courier.CourierOrderStatus(0) { // 0 status qiymati ASSIGNED sifatida ko'riladi
 		status = oldStatus
 	}
 
@@ -101,10 +101,10 @@ func (c *CourierOrder) UpdateCourierOrder(ctx context.Context, req *genproto.Upd
 		return nil, fmt.Errorf("failed to update courier order: %w", err)
 	}
 
-	return &genproto.CourierOrderResponse{
+	return &courier.CourierOrderResponse{
 		Success: true,
 		Message: "Courier order updated successfully",
-		CourierOrder: &genproto.CourierOrder{
+		CourierOrder: &courier.CourierOrder{
 			CourierOrderId: req.CourierOrderId,
 			CourierId:      courierId,
 			OrderId:        orderId,
@@ -116,7 +116,7 @@ func (c *CourierOrder) UpdateCourierOrder(ctx context.Context, req *genproto.Upd
 }
 
 // Delete kuryer-buyurtma munosabatini mantiqiy o'chiradi
-func (c *CourierOrder) DeleteCourierOrder(ctx context.Context, req *genproto.CourierOrderRequest) (*genproto.CourierOrderResponse, error) {
+func (c *CourierOrder) DeleteCourierOrder(ctx context.Context, req *courier.CourierOrderRequest) (*courier.CourierOrderResponse, error) {
 	// Mantiqiy o'chirish: deleted_at ustunini yangilash
 	query := `UPDATE courierorders SET deleted_at=EXTRACT(EPOCH FROM NOW())::BIGINT WHERE courier_order_id=$1 AND deleted_at=0`
 	result, err := c.Db.Exec(ctx, query, req.CourierOrderId)
@@ -129,14 +129,14 @@ func (c *CourierOrder) DeleteCourierOrder(ctx context.Context, req *genproto.Cou
 		return nil, errors.New("courier order not found or already deleted")
 	}
 
-	return &genproto.CourierOrderResponse{
+	return &courier.CourierOrderResponse{
 		Success: true,
 		Message: "Courier order deleted successfully",
 	}, nil
 }
 
 // List barcha kuryer-buyurtma munosabatlari ro'yxatini qaytaradi
-func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *genproto.Empty) (*genproto.CourierOrderListResponse, error) {
+func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *courier.Empty) (*courier.CourierOrderListResponse, error) {
 	query := `SELECT courier_order_id, courier_id, order_id, status, assigned_time, last_updated FROM courierorders WHERE deleted_at=0`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {
@@ -144,9 +144,9 @@ func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *genproto.Empt
 	}
 	defer rows.Close()
 
-	var courierOrders []*genproto.CourierOrder
+	var courierOrders []*courier.CourierOrder
 	for rows.Next() {
-		var courierOrder genproto.CourierOrder
+		var courierOrder courier.CourierOrder
 		err := rows.Scan(
 			&courierOrder.CourierOrderId,
 			&courierOrder.CourierId,
@@ -163,7 +163,7 @@ func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *genproto.Empt
 		return nil, fmt.Errorf("failed to iterate over courier orders: %w", rows.Err())
 	}
 
-	return &genproto.CourierOrderListResponse{
+	return &courier.CourierOrderListResponse{
 		CourierOrders: courierOrders,
 	}, nil
 }

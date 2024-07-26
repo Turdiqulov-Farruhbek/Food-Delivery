@@ -43,11 +43,17 @@ func NewGin(conn *grpc.ClientConn) *gin.Engine {
 		courier.GET("/:courierId", h.GetCourier)
 		courier.PUT("/:courierId", h.UpdateCourier)
 		courier.DELETE("/:courierId", h.DeleteCourier)
-
-		router.GET("/recommended-orders", getRecommendedOrders)
-		router.PUT("/orders/:id/status", updateOrderStatus)
-		router.GET("/orders/history", getCourierOrderHistory)
 	}
+
+	courierOrder := router.Group("/courierOrders")
+	{
+		courierOrder.POST("/create", h.CreateCourierOrder)
+		courierOrder.GET("/:orderId", h.GetCourierOrder)
+		courierOrder.PUT("/:orderId", h.UpdateCourierOrder)
+		courierOrder.DELETE("/:orderId", h.DeleteCourierOrder)
+		courierOrder.GET("/", h.ListCourierOrders)
+	}
+
 
 	order := router.Group("/orders")
 	{
@@ -56,6 +62,20 @@ func NewGin(conn *grpc.ClientConn) *gin.Engine {
 		order.GET("/", h.GetOrders)
 		order.PUT("/:orderId", h.UpdateOrder)
 		order.DELETE("/:orderId", h.DeleteOrder)
+
+		order.GET("/recommended-orders", h.GetRecommendedOrders)
+		order.PUT("/orders/:id/status", h.UpdateOrderStatus)
+		order.GET("/orders/history", h.GetCourierOrderHistory)
+	}
+
+
+	orderProduct := router.Group("/ordersProduct")
+	{
+		orderProduct.POST("/create", h.CreateOrderProduct)
+		orderProduct.GET("/:orderId", h.GetOrderProduct)
+		orderProduct.PUT("/:orderId", h.UpdateOrderProduct)
+		orderProduct.DELETE("/:orderId", h.DeleteOrderProduct)
+		orderProduct.GET("/", h.ListOrdersProduct)
 	}
 
 	task := router.Group("/tasks")
@@ -87,6 +107,7 @@ func NewGin(conn *grpc.ClientConn) *gin.Engine {
 	{
 		cart.POST("/create", h.CreateCart)
 		cart.GET("/:cartId", h.GetCart)
+		cart.GET("/", h.GetAllCarts)
 		cart.PUT("/:cartId", h.UpdateCart)
 		cart.DELETE("/:cartId", h.DeleteCart)
 	}
@@ -102,7 +123,7 @@ func NewGin(conn *grpc.ClientConn) *gin.Engine {
 
 	user := router.Group("/users")
 	{
-		user.POST("/create", h.CreateUser)
+		user.POST("/create", h.UserRegister)
 		user.GET("/:userId", h.GetUser)
 		user.PUT("/:userId", h.UpdateUser)
 		user.DELETE("/:userId", h.DeleteUser)

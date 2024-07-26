@@ -2,8 +2,8 @@ package postgrestest
 
 import (
 	"context"
-	"courier_delivery/genproto"
-	cr "courier_delivery/storage/postgres/courier"
+	"courier_delivery/genproto/courier"
+	psg "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
 
@@ -43,12 +43,12 @@ func TestCourierOrder_CreateCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := cr.NewCourierOrder(db)
+	storage := psg.NewCourierOrder(db)
 
-	req := &genproto.CreateCourierOrderRequest{
+	req := &courier.CreateCourierOrderRequest{
 		CourierId: "courier_123",
 		OrderId:   "order_456",
-		Status:    genproto.CourierOrderStatus_ASSIGNED,
+		Status:    courier.CourierOrderStatus_ASSIGNED,
 	}
 
 	resp, err := storage.CreateCourierOrder(context.Background(), req)
@@ -61,20 +61,20 @@ func TestCourierOrder_GetCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := cr.NewCourierOrder(db)
+	storage := psg.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
-	req := &genproto.CreateCourierOrderRequest{
+	req := &courier.CreateCourierOrderRequest{
 		CourierId: "courier_123",
 		OrderId:   "order_456",
-		Status:    genproto.CourierOrderStatus_ASSIGNED,
+		Status:    courier.CourierOrderStatus_ASSIGNED,
 	}
 
 	createResp, err := storage.CreateCourierOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtmani olish
-	getReq := &genproto.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
+	getReq := &courier.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
 	getResp, err := storage.GetCourierOrder(context.Background(), getReq)
 	require.NoError(t, err)
 	assert.True(t, getResp.Success)
@@ -86,24 +86,24 @@ func TestCourierOrder_UpdateCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := cr.NewCourierOrder(db)
+	storage := psg.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
-	req := &genproto.CreateCourierOrderRequest{
+	req := &courier.CreateCourierOrderRequest{
 		CourierId: "courier_123",
 		OrderId:   "order_456",
-		Status:    genproto.CourierOrderStatus_ASSIGNED,
+		Status:    courier.CourierOrderStatus_ASSIGNED,
 	}
 
 	createResp, err := storage.CreateCourierOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtmani yangilash
-	updateReq := &genproto.UpdateCourierOrderRequest{
+	updateReq := &courier.UpdateCourierOrderRequest{
 		CourierOrderId: createResp.CourierOrder.CourierOrderId,
 		CourierId:      "courier_789",
 		OrderId:        "order_101",
-		Status:         genproto.CourierOrderStatus_DELIVERED,
+		Status:         courier.CourierOrderStatus_DELIVERED,
 	}
 
 	updateResp, err := storage.UpdateCourierOrder(context.Background(), updateReq)
@@ -117,26 +117,26 @@ func TestCourierOrder_DeleteCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := cr.NewCourierOrder(db)
+	storage := psg.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
-	req := &genproto.CreateCourierOrderRequest{
+	req := &courier.CreateCourierOrderRequest{
 		CourierId: "courier_123",
 		OrderId:   "order_456",
-		Status:    genproto.CourierOrderStatus_ASSIGNED,
+		Status:    courier.CourierOrderStatus_ASSIGNED,
 	}
 
 	createResp, err := storage.CreateCourierOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtmani o'chirish
-	deleteReq := &genproto.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
+	deleteReq := &courier.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
 	deleteResp, err := storage.DeleteCourierOrder(context.Background(), deleteReq)
 	require.NoError(t, err)
 	assert.True(t, deleteResp.Success)
 
 	// O'chirilgan buyurtmani qayta olishga urinish
-	getReq := &genproto.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
+	getReq := &courier.CourierOrderRequest{CourierOrderId: createResp.CourierOrder.CourierOrderId}
 	_, err = storage.GetCourierOrder(context.Background(), getReq)
 	assert.Error(t, err) // Buyurtma topilmasligi kerak
 }
@@ -145,21 +145,21 @@ func TestCourierOrder_ListCourierOrders(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := cr.NewCourierOrder(db)
+	storage := psg.NewCourierOrder(db)
 
 	// Bir nechta kuryer-buyurtma munosabatlarini yaratish
 	for i := 0; i < 3; i++ {
-		req := &genproto.CreateCourierOrderRequest{
+		req := &courier.CreateCourierOrderRequest{
 			CourierId: fmt.Sprintf("courier_%d", i),
 			OrderId:   fmt.Sprintf("order_%d", i),
-			Status:    genproto.CourierOrderStatus_ASSIGNED,
+			Status:    courier.CourierOrderStatus_ASSIGNED,
 		}
 		_, err := storage.CreateCourierOrder(context.Background(), req)
 		require.NoError(t, err)
 	}
 
 	// Barcha kuryer-buyurtma munosabatlarini olish
-	listResp, err := storage.ListCourierOrders(context.Background(), &genproto.Empty{})
+	listResp, err := storage.ListCourierOrders(context.Background(), &courier.Empty{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.CourierOrders))
 }

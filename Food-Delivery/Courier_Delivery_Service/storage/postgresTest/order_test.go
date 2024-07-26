@@ -2,7 +2,7 @@ package postgrestest
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	cr "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
@@ -46,11 +46,11 @@ func TestCreateOrder(t *testing.T) {
 
 	orderStorage := cr.NewOrder(db)
 
-	req := &genproto.CreateOrderRequest{
+	req := &courier.CreateOrderRequest{
 		CustomerId:     "customer-123",
 		OrderDetails:   "Test order details",
 		DeliveryAddress: "123 Test St",
-		PaymentStatus:  genproto.PaymentStatus_PAID,
+		PaymentStatus:  courier.PaymentStatus_PAID,
 	}
 
 	resp, err := orderStorage.CreateOrder(context.Background(), req)
@@ -71,18 +71,18 @@ func TestGetOrder(t *testing.T) {
 	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
-	req := &genproto.CreateOrderRequest{
+	req := &courier.CreateOrderRequest{
 		CustomerId:     "customer-123",
 		OrderDetails:   "Test order details",
 		DeliveryAddress: "123 Test St",
-		PaymentStatus:  genproto.PaymentStatus_PAID,
+		PaymentStatus:  courier.PaymentStatus_PAID,
 	}
 
 	createResp, err := orderStorage.CreateOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtma yozuvini olish
-	getReq := &genproto.OrderRequest{OrderId: createResp.Order.OrderId}
+	getReq := &courier.OrderRequest{OrderId: createResp.Order.OrderId}
 	getResp, err := orderStorage.GetOrder(context.Background(), getReq)
 	require.NoError(t, err)
 	assert.True(t, getResp.Success)
@@ -100,23 +100,23 @@ func TestUpdateOrder(t *testing.T) {
 	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
-	req := &genproto.CreateOrderRequest{
+	req := &courier.CreateOrderRequest{
 		CustomerId:     "customer-123",
 		OrderDetails:   "Test order details",
 		DeliveryAddress: "123 Test St",
-		PaymentStatus:  genproto.PaymentStatus_PAID,
+		PaymentStatus:  courier.PaymentStatus_PAID,
 	}
 
 	createResp, err := orderStorage.CreateOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtma yozuvini yangilash
-	updateReq := &genproto.UpdateOrderRequest{
+	updateReq := &courier.UpdateOrderRequest{
 		OrderId:        createResp.Order.OrderId,
 		CustomerId:     "customer-456",
 		OrderDetails:   "Updated order details",
 		DeliveryAddress: "456 Updated St",
-		PaymentStatus:  genproto.PaymentStatus_PENDING,
+		PaymentStatus:  courier.PaymentStatus_PENDING,
 	}
 
 	updateResp, err := orderStorage.UpdateOrder(context.Background(), updateReq)
@@ -136,24 +136,24 @@ func TestDeleteOrder(t *testing.T) {
 	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
-	req := &genproto.CreateOrderRequest{
+	req := &courier.CreateOrderRequest{
 		CustomerId:     "customer-123",
 		OrderDetails:   "Test order details",
 		DeliveryAddress: "123 Test St",
-		PaymentStatus:  genproto.PaymentStatus_PAID,
+		PaymentStatus:  courier.PaymentStatus_PAID,
 	}
 
 	createResp, err := orderStorage.CreateOrder(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan buyurtma yozuvini o'chirish
-	deleteReq := &genproto.OrderRequest{OrderId: createResp.Order.OrderId}
+	deleteReq := &courier.OrderRequest{OrderId: createResp.Order.OrderId}
 	deleteResp, err := orderStorage.DeleteOrder(context.Background(), deleteReq)
 	require.NoError(t, err)
 	assert.True(t, deleteResp.Success)
 
 	// O'chirilgan buyurtma yozuvini qayta olishga urinish
-	getReq := &genproto.OrderRequest{OrderId: createResp.Order.OrderId}
+	getReq := &courier.OrderRequest{OrderId: createResp.Order.OrderId}
 	_, err = orderStorage.GetOrder(context.Background(), getReq)
 	assert.Error(t, err) // Buyurtma topilmadi xatolik kelishi kerak
 }
@@ -167,18 +167,18 @@ func TestListOrders(t *testing.T) {
 
 	// Bir nechta buyurtma yozuvlarini yaratish
 	for i := 0; i < 3; i++ {
-		req := &genproto.CreateOrderRequest{
+		req := &courier.CreateOrderRequest{
 			CustomerId:     fmt.Sprintf("customer-%d", i),
 			OrderDetails:   fmt.Sprintf("Test order details %d", i),
 			DeliveryAddress: fmt.Sprintf("123 Test St %d", i),
-			PaymentStatus:  genproto.PaymentStatus_PAID,
+			PaymentStatus:  courier.PaymentStatus_PAID,
 		}
 		_, err := orderStorage.CreateOrder(context.Background(), req)
 		require.NoError(t, err)
 	}
 
 	// Barcha buyurtma yozuvlarini olish
-	listResp, err := orderStorage.ListOrders(context.Background(), &genproto.GetRecommendedOrdersRequest{})
+	listResp, err := orderStorage.ListOrders(context.Background(), &courier.GetRecommendedOrdersRequest{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.Orders))
 }

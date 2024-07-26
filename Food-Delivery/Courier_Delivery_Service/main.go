@@ -8,7 +8,7 @@ import (
 
 	cfg "courier_delivery/config"
 	"courier_delivery/config/logger"
-	gen "courier_delivery/genproto"
+	gen "courier_delivery/genproto/courier"
 	src "courier_delivery/service/courier"
 	post "courier_delivery/storage/postgres"
 

@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"courier_delivery/config/logger"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"courier_delivery/storage"
 )
 
 // TaskService vazifalar uchun gRPC xizmatini taqdim etadi
 type TaskService struct {
 	store storage.StorageCourierInterface
-	genproto.UnimplementedTaskServiceServer
+	courier.UnimplementedTaskServiceServer
 	log logger.Logger
 }
 
@@ -21,7 +21,7 @@ func NewTaskService(store storage.StorageCourierInterface, log logger.Logger) *T
 }
 
 // CreateTask RPC chaqiruvini bajaradi va yangi vazifa yozuvini yaratadi
-func (s *TaskService) CreateTask(ctx context.Context, req *genproto.CreateTaskRequest) (*genproto.TaskResponse, error) {
+func (s *TaskService) CreateTask(ctx context.Context, req *courier.CreateTaskRequest) (*courier.TaskResponse, error) {
 	res, err := s.store.Task().CreateTask(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to create task: %v", err)
@@ -32,7 +32,7 @@ func (s *TaskService) CreateTask(ctx context.Context, req *genproto.CreateTaskRe
 }
 
 // GetTask RPC chaqiruvini bajaradi va vazifa yozuvini qaytaradi
-func (s *TaskService) GetTask(ctx context.Context, req *genproto.GetTaskRequest) (*genproto.TaskResponse, error) {
+func (s *TaskService) GetTask(ctx context.Context, req *courier.GetTaskRequest) (*courier.TaskResponse, error) {
 	res, err := s.store.Task().GetTask(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to get task with ID %s: %v", req.Id, err)
@@ -43,7 +43,7 @@ func (s *TaskService) GetTask(ctx context.Context, req *genproto.GetTaskRequest)
 }
 
 // UpdateTask RPC chaqiruvini bajaradi va vazifa yozuvini yangilaydi
-func (s *TaskService) UpdateTask(ctx context.Context, req *genproto.UpdateTaskRequest) (*genproto.TaskResponse, error) {
+func (s *TaskService) UpdateTask(ctx context.Context, req *courier.UpdateTaskRequest) (*courier.TaskResponse, error) {
 	res, err := s.store.Task().UpdateTask(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to update task with ID %s: %v", req.Id, err)
@@ -54,7 +54,7 @@ func (s *TaskService) UpdateTask(ctx context.Context, req *genproto.UpdateTaskRe
 }
 
 // DeleteTask RPC chaqiruvini bajaradi va vazifa yozuvini o'chiradi
-func (s *TaskService) DeleteTask(ctx context.Context, req *genproto.DeleteTaskRequest) (*genproto.DeleteTaskResponse, error) {
+func (s *TaskService) DeleteTask(ctx context.Context, req *courier.DeleteTaskRequest) (*courier.DeleteTaskResponse, error) {
 	res, err := s.store.Task().DeleteTask(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to delete task with ID %s: %v", req.Id, err)
@@ -65,7 +65,7 @@ func (s *TaskService) DeleteTask(ctx context.Context, req *genproto.DeleteTaskRe
 }
 
 // GetAllTasks RPC chaqiruvini bajaradi va berilgan foydalanuvchiga tayinlangan barcha vazifalarni qaytaradi
-func (s *TaskService) GetAllTasks(ctx context.Context, req *genproto.GetAllTasksRequest) (*genproto.GetAllTasksResponse, error) {
+func (s *TaskService) GetAllTasks(ctx context.Context, req *courier.GetAllTasksRequest) (*courier.GetAllTasksResponse, error) {
 	res, err := s.store.Task().GetAllTasks(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to get all tasks for assigned_to %d: %v", req.AssignedTo, err)

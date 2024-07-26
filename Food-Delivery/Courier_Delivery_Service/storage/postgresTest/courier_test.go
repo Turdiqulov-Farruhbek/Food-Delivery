@@ -2,7 +2,7 @@ package postgrestest
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	cr "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
@@ -46,11 +46,11 @@ func TestCreateCourier(t *testing.T) {
 
 	storage := cr.NewCourier(db)
 
-	req := &genproto.CreateCourierRequest{
+	req := &courier.CreateCourierRequest{
 		Name:        "John Doe",
 		PhoneNumber: "1234567890",
 		Email:       "john@example.com",
-		Status:      genproto.CourierStatus_UNAVAILABLE,
+		Status:      courier.CourierStatus_UNAVAILABLE,
 	}
 
 	resp, err := storage.CreateCourier(context.Background(), req)
@@ -71,18 +71,18 @@ func TestGetCourier(t *testing.T) {
 	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
-	req := &genproto.CreateCourierRequest{
+	req := &courier.CreateCourierRequest{
 		Name:        "John Doe",
 		PhoneNumber: "1234567890",
 		Email:       "john@example.com",
-		Status:      genproto.CourierStatus_AVAILABLE,
+		Status:      courier.CourierStatus_AVAILABLE,
 	}
 
 	createResp, err := storage.CreateCourier(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan kuryer yozuvini olish
-	getReq := &genproto.CourierRequest{CourierId: createResp.Courier.CourierId}
+	getReq := &courier.CourierRequest{CourierId: createResp.Courier.CourierId}
 	getResp, err := storage.GetCourier(context.Background(), getReq)
 	require.NoError(t, err)
 	assert.True(t, getResp.Success)
@@ -100,23 +100,23 @@ func TestUpdateCourier(t *testing.T) {
 	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
-	req := &genproto.CreateCourierRequest{
+	req := &courier.CreateCourierRequest{
 		Name:        "John Doe",
 		PhoneNumber: "1234567890",
 		Email:       "john@example.com",
-		Status:      genproto.CourierStatus_UNAVAILABLE,
+		Status:      courier.CourierStatus_UNAVAILABLE,
 	}
 
 	createResp, err := storage.CreateCourier(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan kuryer yozuvini yangilash
-	updateReq := &genproto.UpdateCourierRequest{
+	updateReq := &courier.UpdateCourierRequest{
 		CourierId:   createResp.Courier.CourierId,
 		Name:        "Jane Doe",
 		PhoneNumber: "0987654321",
 		Email:       "jane@example.com",
-		Status:      genproto.CourierStatus_AVAILABLE,
+		Status:      courier.CourierStatus_AVAILABLE,
 	}
 
 	updateResp, err := storage.UpdateCourier(context.Background(), updateReq)
@@ -136,24 +136,24 @@ func TestDeleteCourier(t *testing.T) {
 	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
-	req := &genproto.CreateCourierRequest{
+	req := &courier.CreateCourierRequest{
 		Name:        "John Doe",
 		PhoneNumber: "1234567890",
 		Email:       "john@example.com",
-		Status:      genproto.CourierStatus_UNAVAILABLE,
+		Status:      courier.CourierStatus_UNAVAILABLE,
 	}
 
 	createResp, err := storage.CreateCourier(context.Background(), req)
 	require.NoError(t, err)
 
 	// Yaratilgan kuryer yozuvini o'chirish
-	deleteReq := &genproto.CourierRequest{CourierId: createResp.Courier.CourierId}
+	deleteReq := &courier.CourierRequest{CourierId: createResp.Courier.CourierId}
 	deleteResp, err := storage.DeleteCourier(context.Background(), deleteReq)
 	require.NoError(t, err)
 	assert.True(t, deleteResp.Success)
 
 	// O'chirilgan kuryer yozuvini qayta olishga urinish
-	getReq := &genproto.CourierRequest{CourierId: createResp.Courier.CourierId}
+	getReq := &courier.CourierRequest{CourierId: createResp.Courier.CourierId}
 	_, err = storage.GetCourier(context.Background(), getReq)
 	assert.Error(t, err) // Kuryer topilmasligi kerak
 }
@@ -167,18 +167,18 @@ func TestListCouriers(t *testing.T) {
 
 	// Bir nechta kuryer yozuvlarini yaratish
 	for i := 0; i < 3; i++ {
-		req := &genproto.CreateCourierRequest{
+		req := &courier.CreateCourierRequest{
 			Name:        fmt.Sprintf("Courier %d", i),
 			PhoneNumber: fmt.Sprintf("12345678%d", i),
 			Email:       fmt.Sprintf("courier%d@example.com", i),
-			Status:      genproto.CourierStatus_UNAVAILABLE,
+			Status:      courier.CourierStatus_UNAVAILABLE,
 		}
 		_, err := storage.CreateCourier(context.Background(), req)
 		require.NoError(t, err)
 	}
 
 	// Barcha kuryer yozuvlarini olish
-	listResp, err := storage.ListCouriers(context.Background(), &genproto.Empty{})
+	listResp, err := storage.ListCouriers(context.Background(), &courier.Empty{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.Couriers))
 }

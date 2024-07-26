@@ -2,7 +2,7 @@ package courier
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -17,9 +17,9 @@ func NewCourierLocation(db *pgx.Conn) *CourierLocation {
 }
 
 // CreateCourierLocation yangi kuryer lokatsiyasini yaratadi
-func (c *CourierLocation) CreateCourierLocation(ctx context.Context, req *genproto.CreateCourierLocationRequest) (*genproto.CourierLocationResponse, error) {
+func (c *CourierLocation) CreateCourierLocation(ctx context.Context, req *courier.CreateCourierLocationRequest) (*courier.CourierLocationResponse, error) {
 	query := `INSERT INTO courier_locations (courier_id, latitude, longitude, updated_at) VALUES ($1, $2, $3, NOW()) RETURNING id, updated_at`
-	var location genproto.CourierLocationResponse
+	var location courier.CourierLocationResponse
 	err := c.Db.QueryRow(ctx, query, req.CourierId, req.Latitude, req.Longitude).Scan(&location.Id, &location.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create courier location: %w", err)
@@ -31,9 +31,9 @@ func (c *CourierLocation) CreateCourierLocation(ctx context.Context, req *genpro
 }
 
 // GetCourierLocation kuryer lokatsiyasini ID orqali qaytaradi
-func (c *CourierLocation) GetCourierLocation(ctx context.Context, req *genproto.GetCourierLocationRequest) (*genproto.CourierLocationResponse, error) {
+func (c *CourierLocation) GetCourierLocation(ctx context.Context, req *courier.GetCourierLocationRequest) (*courier.CourierLocationResponse, error) {
 	query := `SELECT id, courier_id, latitude, longitude, updated_at FROM courier_locations WHERE id=$1`
-	var location genproto.CourierLocationResponse
+	var location courier.CourierLocationResponse
 	err := c.Db.QueryRow(ctx, query, req.Id).Scan(&location.Id, &location.CourierId, &location.Latitude, &location.Longitude, &location.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get courier location: %w", err)
@@ -42,9 +42,9 @@ func (c *CourierLocation) GetCourierLocation(ctx context.Context, req *genproto.
 }
 
 // UpdateCourierLocation kuryer lokatsiyasini yangilaydi
-func (c *CourierLocation) UpdateCourierLocation(ctx context.Context, req *genproto.UpdateCourierLocationRequest) (*genproto.CourierLocationResponse, error) {
+func (c *CourierLocation) UpdateCourierLocation(ctx context.Context, req *courier.UpdateCourierLocationRequest) (*courier.CourierLocationResponse, error) {
 	query := `UPDATE courier_locations SET latitude=$1, longitude=$2, updated_at=NOW() WHERE id=$3 RETURNING id, courier_id, latitude, longitude, updated_at`
-	var location genproto.CourierLocationResponse
+	var location courier.CourierLocationResponse
 	err := c.Db.QueryRow(ctx, query, req.Latitude, req.Longitude, req.Id).Scan(&location.Id, &location.CourierId, &location.Latitude, &location.Longitude, &location.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update courier location: %w", err)
@@ -53,20 +53,20 @@ func (c *CourierLocation) UpdateCourierLocation(ctx context.Context, req *genpro
 }
 
 // DeleteCourierLocation kuryer lokatsiyasini o'chiradi
-func (c *CourierLocation) DeleteCourierLocation(ctx context.Context, req *genproto.DeleteCourierLocationRequest) (*genproto.DeleteCourierLocationResponse, error) {
+func (c *CourierLocation) DeleteCourierLocation(ctx context.Context, req *courier.DeleteCourierLocationRequest) (*courier.DeleteCourierLocationResponse, error) {
 	query := `DELETE FROM courier_locations WHERE id=$1 RETURNING id, `
 	_, err := c.Db.Exec(ctx, query, req.Id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to delete courier location: %w", err)
 	}
-	return &genproto.DeleteCourierLocationResponse{
+	return &courier.DeleteCourierLocationResponse{
 		Success: true,
         Message: "Courier location deleted successfully",
 	}, nil
 }
 
 // GetAllCourierLocations barcha kuryer lokatsiyalarini qaytaradi
-func (c *CourierLocation) GetAllCourierLocations(ctx context.Context, req *genproto.GetAllCourierLocationsRequest) (*genproto.GetAllCourierLocationsResponse, error) {
+func (c *CourierLocation) GetAllCourierLocations(ctx context.Context, req *courier.GetAllCourierLocationsRequest) (*courier.GetAllCourierLocationsResponse, error) {
 	query := `SELECT id, courier_id, latitude, longitude, updated_at FROM courier_locations`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {
@@ -74,9 +74,9 @@ func (c *CourierLocation) GetAllCourierLocations(ctx context.Context, req *genpr
 	}
 	defer rows.Close()
 
-	var locations []*genproto.CourierLocationResponse
+	var locations []*courier.CourierLocationResponse
 	for rows.Next() {
-		var location genproto.CourierLocationResponse
+		var location courier.CourierLocationResponse
 		err := rows.Scan(&location.Id, &location.CourierId, &location.Latitude, &location.Longitude, &location.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan courier location: %w", err)
@@ -87,7 +87,7 @@ func (c *CourierLocation) GetAllCourierLocations(ctx context.Context, req *genpr
 		return nil, fmt.Errorf("failed to iterate over courier locations: %w", rows.Err())
 	}
 
-	return &genproto.GetAllCourierLocationsResponse{
+	return &courier.GetAllCourierLocationsResponse{
 		Locations: locations,
 	}, nil
 }

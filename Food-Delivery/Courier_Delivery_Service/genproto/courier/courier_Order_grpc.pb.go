@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: courier_Order.proto
 
-package genproto
+package courier
 
 import (
 	context "context"

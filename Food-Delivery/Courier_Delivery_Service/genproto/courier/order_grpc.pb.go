@@ -6,7 +6,7 @@
 
 // import "courier_Order.proto";
 
-package genproto
+package courier
 
 import (
 	context "context"

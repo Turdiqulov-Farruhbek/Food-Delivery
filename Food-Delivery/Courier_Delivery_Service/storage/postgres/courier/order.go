@@ -2,7 +2,7 @@ package courier
 
 import (
 	"context"
-	gen "courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"fmt"
 	"time"
 
@@ -18,7 +18,7 @@ func NewOrder(db *pgx.Conn) *Order {
 }
 
 // CreateOrder yangi buyurtma yozuvini yaratadi
-func (o *Order) CreateOrder(ctx context.Context, req *gen.CreateOrderRequest) (*gen.OrderResponse, error) {
+func (o *Order) CreateOrder(ctx context.Context, req *courier.CreateOrderRequest) (*courier.OrderResponse, error) {
 	query := `INSERT INTO orders (customer_id, order_details, delivery_address, payment_status, order_date) VALUES ($1, $2, $3, $4, NOW()) RETURNING order_id, order_date`
 	var orderID string
 	var orderDate time.Time
@@ -26,10 +26,10 @@ func (o *Order) CreateOrder(ctx context.Context, req *gen.CreateOrderRequest) (*
 	if err != nil {
 		return nil, fmt.Errorf("failed to create order: %w", err)
 	}
-	return &gen.OrderResponse{
+	return &courier.OrderResponse{
 		Success: true,
 		Message: "Order created successfully",
-		Order: &gen.Order{
+		Order: &courier.Order{
 			OrderId:         orderID,
 			CustomerId:      req.CustomerId,
 			OrderDetails:    req.OrderDetails,
@@ -41,9 +41,9 @@ func (o *Order) CreateOrder(ctx context.Context, req *gen.CreateOrderRequest) (*
 }
 
 // GetOrder buyurtma yozuvini qaytaradi
-func (o *Order) GetOrder(ctx context.Context, req *gen.OrderRequest) (*gen.OrderResponse, error) {
+func (o *Order) GetOrder(ctx context.Context, req *courier.OrderRequest) (*courier.OrderResponse, error) {
 	query := `SELECT order_id, customer_id, order_details, delivery_address, payment_status, order_date FROM orders WHERE order_id=$1`
-	var order gen.Order
+	var order courier.Order
 	err := o.Db.QueryRow(ctx, query, req.OrderId).Scan(
 		&order.OrderId,
 		&order.CustomerId,
@@ -54,7 +54,7 @@ func (o *Order) GetOrder(ctx context.Context, req *gen.OrderRequest) (*gen.Order
 	if err != nil {
 		return nil, fmt.Errorf("failed to get order: %w", err)
 	}
-	return &gen.OrderResponse{
+	return &courier.OrderResponse{
 		Success: true,
 		Message: "Order retrieved successfully",
 		Order:   &order,
@@ -62,9 +62,9 @@ func (o *Order) GetOrder(ctx context.Context, req *gen.OrderRequest) (*gen.Order
 }
 
 // UpdateOrder buyurtma yozuvini yangilaydi
-func (o *Order) UpdateOrder(ctx context.Context, req *gen.UpdateOrderRequest) (*gen.OrderResponse, error) {
+func (o *Order) UpdateOrder(ctx context.Context, req *courier.UpdateOrderRequest) (*courier.OrderResponse, error) {
 	query := `UPDATE orders SET customer_id=$1, order_details=$2, delivery_address=$3, payment_status=$4, updated_at=NOW() WHERE order_id=$5 RETURNING order_id, customer_id, order_details, delivery_address, payment_status, order_date`
-	var order gen.Order
+	var order courier.Order
 	err := o.Db.QueryRow(ctx, query, req.CustomerId, req.OrderDetails, req.DeliveryAddress, req.PaymentStatus, req.OrderId).Scan(
 		&order.OrderId,
 		&order.CustomerId,
@@ -75,7 +75,7 @@ func (o *Order) UpdateOrder(ctx context.Context, req *gen.UpdateOrderRequest) (*
 	if err != nil {
 		return nil, fmt.Errorf("failed to update order: %w", err)
 	}
-	return &gen.OrderResponse{
+	return &courier.OrderResponse{
 		Success: true,
 		Message: "Order updated successfully",
 		Order:   &order,
@@ -83,7 +83,7 @@ func (o *Order) UpdateOrder(ctx context.Context, req *gen.UpdateOrderRequest) (*
 }
 
 // DeleteOrder buyurtma yozuvini o'chiradi
-func (o *Order) DeleteOrder(ctx context.Context, req *gen.OrderRequest) (*gen.OrderResponse, error) {
+func (o *Order) DeleteOrder(ctx context.Context, req *courier.OrderRequest) (*courier.OrderResponse, error) {
 	query := `DELETE FROM orders WHERE order_id=$1`
 	result, err := o.Db.Exec(ctx, query, req.OrderId)
 	if err != nil {
@@ -94,14 +94,14 @@ func (o *Order) DeleteOrder(ctx context.Context, req *gen.OrderRequest) (*gen.Or
 		return nil, fmt.Errorf("order not found")
 	}
 
-	return &gen.OrderResponse{
+	return &courier.OrderResponse{
 		Success: true,
 		Message: "Order deleted successfully",
 	}, nil
 }
 
 // ListOrders barcha buyurtma yozuvlarini qaytaradi
-func (o *Order) ListOrders(ctx context.Context, req *gen.GetRecommendedOrdersRequest) (*gen.OrderListResponse, error) {
+func (o *Order) ListOrders(ctx context.Context, req *courier.GetRecommendedOrdersRequest) (*courier.OrderListResponse, error) {
 	query := `SELECT order_id, customer_id, order_details, delivery_address, payment_status, order_date FROM orders`
 	rows, err := o.Db.Query(ctx, query)
 	if err != nil {
@@ -109,9 +109,9 @@ func (o *Order) ListOrders(ctx context.Context, req *gen.GetRecommendedOrdersReq
 	}
 	defer rows.Close()
 
-	var orders []*gen.Order
+	var orders []*courier.Order
 	for rows.Next() {
-		var order gen.Order
+		var order courier.Order
 		err := rows.Scan(
 			&order.OrderId,
 			&order.CustomerId,
@@ -128,27 +128,27 @@ func (o *Order) ListOrders(ctx context.Context, req *gen.GetRecommendedOrdersReq
 		return nil, fmt.Errorf("failed to iterate over orders: %w", rows.Err())
 	}
 
-	return &gen.OrderListResponse{
+	return &courier.OrderListResponse{
 		Orders: orders,
 	}, nil
 }
 
 // UpdateOrderStatus buyurtma holatini yangilaydi
-func (o *Order) UpdateOrderStatus(ctx context.Context, req *gen.UpdateOrderStatusRequest) (*gen.UpdateOrderStatusResponse, error) {
+func (o *Order) UpdateOrderStatus(ctx context.Context, req *courier.UpdateOrderStatusRequest) (*courier.UpdateOrderStatusResponse, error) {
 	query := `UPDATE orders SET status=$1 WHERE order_id=$2`
 	_, err := o.Db.Exec(ctx, query, req.Status, req.OrderId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update order status: %w", err)
 	}
 
-	return &gen.UpdateOrderStatusResponse{
+	return &courier.UpdateOrderStatusResponse{
 		Success: true,
 		Message: "Order status updated successfully",
 	}, nil
 }
 
 // GetCourierOrderHistory kuryer buyurtma tarixini qaytaradi
-func (o *Order) GetCourierOrderHistory(ctx context.Context, req *gen.GetCourierOrderHistoryRequest) (*gen.GetCourierOrderHistoryResponse, error) {
+func (o *Order) GetCourierOrderHistory(ctx context.Context, req *courier.GetCourierOrderHistoryRequest) (*courier.GetCourierOrderHistoryResponse, error) {
 	query := `SELECT order_id, customer_id, order_details, delivery_address, payment_status, order_date FROM orders WHERE courier_id=$1`
 	rows, err := o.Db.Query(ctx, query, req.CourierId)
 	if err != nil {
@@ -156,9 +156,9 @@ func (o *Order) GetCourierOrderHistory(ctx context.Context, req *gen.GetCourierO
 	}
 	defer rows.Close()
 
-	var orders []*gen.Order
+	var orders []*courier.Order
 	for rows.Next() {
-		var order gen.Order
+		var order courier.Order
 		err := rows.Scan(
 			&order.OrderId,
 			&order.CustomerId,
@@ -175,7 +175,7 @@ func (o *Order) GetCourierOrderHistory(ctx context.Context, req *gen.GetCourierO
 		return nil, fmt.Errorf("failed to iterate over orders: %w", rows.Err())
 	}
 
-	return &gen.GetCourierOrderHistoryResponse{
+	return &courier.GetCourierOrderHistoryResponse{
 		Orders: orders,
 	}, nil
 }

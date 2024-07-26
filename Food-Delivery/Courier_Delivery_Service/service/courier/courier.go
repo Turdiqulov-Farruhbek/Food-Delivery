@@ -4,14 +4,14 @@ import (
 	"context"
 
 	"courier_delivery/config/logger"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"courier_delivery/storage"
 )
 
 // CourierService kuryerlar uchun gRPC xizmatini taqdim etadi
 type CourierService struct {
 	store storage.StorageCourierInterface
-	genproto.UnimplementedCourierServiceServer
+	courier.UnimplementedCourierServiceServer
 	log logger.Logger
 }
 
@@ -21,7 +21,7 @@ func NewCourierService(store storage.StorageCourierInterface, log logger.Logger)
 }
 
 // CreateCourier RPC chaqiruvini bajaradi va yangi kuryer yozuvini yaratadi
-func (s *CourierService) CreateCourier(ctx context.Context, req *genproto.CreateCourierRequest) (*genproto.CourierResponse, error) {
+func (s *CourierService) CreateCourier(ctx context.Context, req *courier.CreateCourierRequest) (*courier.CourierResponse, error) {
 	res, err := s.store.Courier().CreateCourier(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to create courier: %v", err)
@@ -32,7 +32,7 @@ func (s *CourierService) CreateCourier(ctx context.Context, req *genproto.Create
 }
 
 // GetCourier RPC chaqiruvini bajaradi va kuryer yozuvini kuryer_id orqali qaytaradi
-func (s *CourierService) GetCourier(ctx context.Context, req *genproto.CourierRequest) (*genproto.CourierResponse, error) {
+func (s *CourierService) GetCourier(ctx context.Context, req *courier.CourierRequest) (*courier.CourierResponse, error) {
 	res, err := s.store.Courier().GetCourier(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to get courier with ID %s: %v", req.CourierId, err)
@@ -43,7 +43,7 @@ func (s *CourierService) GetCourier(ctx context.Context, req *genproto.CourierRe
 }
 
 // UpdateCourier RPC chaqiruvini bajaradi va kuryer yozuvini yangilaydi
-func (s *CourierService) UpdateCourier(ctx context.Context, req *genproto.UpdateCourierRequest) (*genproto.CourierResponse, error) {
+func (s *CourierService) UpdateCourier(ctx context.Context, req *courier.UpdateCourierRequest) (*courier.CourierResponse, error) {
 	res, err := s.store.Courier().UpdateCourier(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to update courier with ID %s: %v", req.CourierId, err)
@@ -54,7 +54,7 @@ func (s *CourierService) UpdateCourier(ctx context.Context, req *genproto.Update
 }
 
 // DeleteCourier RPC chaqiruvini bajaradi va kuryer yozuvini mantiqiy o'chiradi
-func (s *CourierService) DeleteCourier(ctx context.Context, req *genproto.CourierRequest) (*genproto.CourierResponse, error) {
+func (s *CourierService) DeleteCourier(ctx context.Context, req *courier.CourierRequest) (*courier.CourierResponse, error) {
 	res, err := s.store.Courier().DeleteCourier(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to delete courier with ID %s: %v", req.CourierId, err)
@@ -65,7 +65,7 @@ func (s *CourierService) DeleteCourier(ctx context.Context, req *genproto.Courie
 }
 
 // ListCouriers RPC chaqiruvini bajaradi va barcha kuryer yozuvlarini qaytaradi
-func (s *CourierService) ListCouriers(ctx context.Context, req *genproto.Empty) (*genproto.CourierListResponse, error) {
+func (s *CourierService) ListCouriers(ctx context.Context, req *courier.Empty) (*courier.CourierListResponse, error) {
 	res, err := s.store.Courier().ListCouriers(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to list couriers: %v", err)

@@ -58,15 +58,15 @@ doc-network-all:
 	docker network ls
 
 
-doc-query:
-	docker ps
-	docker image rmi auth_service
-	docker container ls
-	docker container prune
-	docker container rm libCont
-	docker build -t lib_service .
-	docker network ls
-	docker images
-	docker exec -it post-cont psql -U postgres -d library_db
-	docker system prune -af
- 	docker volume prune -af
+# doc-query:
+# 	docker ps
+# 	docker image rmi auth_service
+# 	docker container ls
+# 	docker container prune
+# 	docker container rm libCont
+# 	docker build -t lib_service .
+# 	docker network ls
+# 	docker images
+# 	docker exec -it post-cont psql -U postgres -d library_db
+# 	docker system prune -af
+#  	docker volume prune -af

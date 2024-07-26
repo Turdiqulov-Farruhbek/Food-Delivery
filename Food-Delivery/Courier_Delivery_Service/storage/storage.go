@@ -2,7 +2,7 @@ package storage
 
 import(
 	"context"
-	courierOrder "courier_delivery/genproto"
+	courierOrder "courier_delivery/genproto/courier"
 
 )
 

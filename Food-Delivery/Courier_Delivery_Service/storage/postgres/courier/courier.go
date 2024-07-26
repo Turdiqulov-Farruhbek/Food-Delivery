@@ -2,7 +2,7 @@ package courier
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	cr "courier_delivery/genproto/courier"
 	"errors"
 	"fmt"
 
@@ -18,17 +18,17 @@ func NewCourier(db *pgx.Conn) *Courier{
 }
 
 // CreateCourier yangi kuryer yozuvini yaratadi
-func (c *Courier) CreateCourier(ctx context.Context, req *genproto.CreateCourierRequest) (*genproto.CourierResponse, error) {
+func (c *Courier) CreateCourier(ctx context.Context, req *cr.CreateCourierRequest) (*cr.CourierResponse, error) {
 	query := `INSERT INTO couriers (name, phone_number, email, status) VALUES ($1, $2, $3, $4) RETURNING courier_id`
 	var courierID string
 	err := c.Db.QueryRow(ctx, query, req.Name, req.PhoneNumber, req.Email, req.Status).Scan(&courierID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create courier: %w", err)
 	}
-	return &genproto.CourierResponse{
+	return &cr.CourierResponse{
 		Success: true,
 		Message: "Courier created successfully",
-		Courier: &genproto.Courier{
+		Courier: &cr.Courier{
 			CourierId:   courierID,
 			Name:        req.Name,
 			PhoneNumber: req.PhoneNumber,
@@ -39,9 +39,9 @@ func (c *Courier) CreateCourier(ctx context.Context, req *genproto.CreateCourier
 }
 
 // GetCourier kuryer yozuvini kuryer_id orqali qaytaradi
-func (c *Courier) GetCourier(ctx context.Context, req *genproto.CourierRequest) (*genproto.CourierResponse, error) {
+func (c *Courier) GetCourier(ctx context.Context, req *cr.CourierRequest) (*cr.CourierResponse, error) {
 	query := `SELECT courier_id, name, phone_number, email, status FROM couriers WHERE courier_id=$1 AND deleted_at=0`
-	var courier genproto.Courier
+	var courier cr.Courier
 	err := c.Db.QueryRow(ctx, query, req.CourierId).Scan(
 		&courier.CourierId,
 		&courier.Name,
@@ -51,7 +51,7 @@ func (c *Courier) GetCourier(ctx context.Context, req *genproto.CourierRequest) 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get courier: %w", err)
 	}
-	return &genproto.CourierResponse{
+	return &cr.CourierResponse{
 		Success: true,
 		Message: "Courier retrieved successfully",
 		Courier: &courier,
@@ -59,10 +59,10 @@ func (c *Courier) GetCourier(ctx context.Context, req *genproto.CourierRequest) 
 }
 
 // UpdateCourier kuryer yozuvini yangilaydi
-func (c *Courier) UpdateCourier(ctx context.Context, req *genproto.UpdateCourierRequest) (*genproto.CourierResponse, error) {
+func (c *Courier) UpdateCourier(ctx context.Context, req *cr.UpdateCourierRequest) (*cr.CourierResponse, error) {
 	// Eski qiymatlarni olish
 	var oldName, oldPhoneNumber, oldEmail string
-	var oldStatus genproto.CourierStatus
+	var oldStatus cr.CourierStatus
 
 	getQuery := `SELECT name, phone_number, email, status FROM couriers WHERE courier_id=$1`
 	err := c.Db.QueryRow(ctx, getQuery, req.CourierId).Scan(&oldName, &oldPhoneNumber, &oldEmail, &oldStatus)
@@ -87,7 +87,7 @@ func (c *Courier) UpdateCourier(ctx context.Context, req *genproto.UpdateCourier
 	}
 
 	status := req.Status
-	if req.Status == genproto.CourierStatus(0) {
+	if req.Status == cr.CourierStatus(0) {
 		status = oldStatus
 	}
 
@@ -98,10 +98,10 @@ func (c *Courier) UpdateCourier(ctx context.Context, req *genproto.UpdateCourier
 		return nil, fmt.Errorf("failed to update courier: %w", err)
 	}
 
-	return &genproto.CourierResponse{
+	return &cr.CourierResponse{
 		Success: true,
 		Message: "Courier updated successfully",
-		Courier: &genproto.Courier{
+		Courier: &cr.Courier{
 			CourierId:   req.CourierId,
 			Name:        name,
 			PhoneNumber: phoneNumber,
@@ -112,7 +112,7 @@ func (c *Courier) UpdateCourier(ctx context.Context, req *genproto.UpdateCourier
 }
 
 // DeleteCourier kuryer yozuvini mantiqiy o'chiradi (deleted_at ni yangilash)
-func (c *Courier) DeleteCourier(ctx context.Context, req *genproto.CourierRequest) (*genproto.CourierResponse, error) {
+func (c *Courier) DeleteCourier(ctx context.Context, req *cr.CourierRequest) (*cr.CourierResponse, error) {
 	query := `UPDATE couriers SET deleted_at=EXTRACT(EPOCH FROM NOW())::BIGINT WHERE courier_id=$1 AND deleted_at=0`
 	result, err := c.Db.Exec(ctx, query, req.CourierId)
 	if err != nil {
@@ -124,14 +124,14 @@ func (c *Courier) DeleteCourier(ctx context.Context, req *genproto.CourierReques
 		return nil, errors.New("courier not found or already deleted")
 	}
 
-	return &genproto.CourierResponse{
+	return &cr.CourierResponse{
 		Success: true,
 		Message: "Courier deleted successfully",
 	}, nil
 }
 
 // ListCouriers barcha kuryer yozuvlarini qaytaradi
-func (c *Courier) ListCouriers(ctx context.Context, req *genproto.Empty) (*genproto.CourierListResponse, error) {
+func (c *Courier) ListCouriers(ctx context.Context, req *cr.Empty) (*cr.CourierListResponse, error) {
 	query := `SELECT courier_id, name, phone_number, email, status FROM couriers WHERE deleted_at=0`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {
@@ -139,9 +139,9 @@ func (c *Courier) ListCouriers(ctx context.Context, req *genproto.Empty) (*genpr
 	}
 	defer rows.Close()
 
-	var couriers []*genproto.Courier
+	var couriers []*cr.Courier
 	for rows.Next() {
-		var courier genproto.Courier
+		var courier cr.Courier
 		err := rows.Scan(
 			&courier.CourierId,
 			&courier.Name,
@@ -157,7 +157,7 @@ func (c *Courier) ListCouriers(ctx context.Context, req *genproto.Empty) (*genpr
 		return nil, fmt.Errorf("failed to iterate over couriers: %w", rows.Err())
 	}
 
-	return &genproto.CourierListResponse{
+	return &cr.CourierListResponse{
 		Couriers: couriers,
 	}, nil
 }

@@ -2,7 +2,7 @@ package courier
 
 import (
 	"context"
-	"courier_delivery/genproto"
+	"courier_delivery/genproto/courier"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -17,9 +17,9 @@ func NewTask(db *pgx.Conn) *Task {
 }
 
 // CreateTask yangi vazifani yaratadi
-func (t *Task) CreateTask(ctx context.Context, req *genproto.CreateTaskRequest) (*genproto.TaskResponse, error) {
+func (t *Task) CreateTask(ctx context.Context, req *courier.CreateTaskRequest) (*courier.TaskResponse, error) {
 	query := `INSERT INTO tasks (title, description, status, assigned_to, due_date, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, NOW(), NOW()) RETURNING id, created_at, updated_at`
-	var task genproto.TaskResponse
+	var task courier.TaskResponse
 	err := t.Db.QueryRow(ctx, query, req.Title, req.Description, req.Status, req.AssignedTo, req.DueDate).Scan(&task.Id, &task.CreatedAt, &task.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create task: %w", err)
@@ -33,9 +33,9 @@ func (t *Task) CreateTask(ctx context.Context, req *genproto.CreateTaskRequest) 
 }
 
 // GetTask vazifani ID orqali qaytaradi
-func (t *Task) GetTask(ctx context.Context, req *genproto.GetTaskRequest) (*genproto.TaskResponse, error) {
+func (t *Task) GetTask(ctx context.Context, req *courier.GetTaskRequest) (*courier.TaskResponse, error) {
 	query := `SELECT id, title, description, status, assigned_to, due_date, created_at, updated_at FROM tasks WHERE id=$1`
-	var task genproto.TaskResponse
+	var task courier.TaskResponse
 	err := t.Db.QueryRow(ctx, query, req.Id).Scan(&task.Id, &task.Title, &task.Description, &task.Status, &task.AssignedTo, &task.DueDate, &task.CreatedAt, &task.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get task: %w", err)
@@ -44,9 +44,9 @@ func (t *Task) GetTask(ctx context.Context, req *genproto.GetTaskRequest) (*genp
 }
 
 // UpdateTask vazifani yangilaydi
-func (t *Task) UpdateTask(ctx context.Context, req *genproto.UpdateTaskRequest) (*genproto.TaskResponse, error) {
+func (t *Task) UpdateTask(ctx context.Context, req *courier.UpdateTaskRequest) (*courier.TaskResponse, error) {
 	query := `UPDATE tasks SET title=$1, description=$2, status=$3, assigned_to=$4, due_date=$5, updated_at=NOW() WHERE id=$6 RETURNING id, title, description, status, assigned_to, due_date, created_at, updated_at`
-	var task genproto.TaskResponse
+	var task courier.TaskResponse
 	err := t.Db.QueryRow(ctx, query, req.Title, req.Description, req.Status, req.AssignedTo, req.DueDate, req.Id).Scan(&task.Id, &task.Title, &task.Description, &task.Status, &task.AssignedTo, &task.DueDate, &task.CreatedAt, &task.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update task: %w", err)
@@ -55,20 +55,20 @@ func (t *Task) UpdateTask(ctx context.Context, req *genproto.UpdateTaskRequest) 
 }
 
 // DeleteTask vazifani o'chiradi
-func (t *Task) DeleteTask(ctx context.Context, req *genproto.DeleteTaskRequest) (*genproto.DeleteTaskResponse, error) {
+func (t *Task) DeleteTask(ctx context.Context, req *courier.DeleteTaskRequest) (*courier.DeleteTaskResponse, error) {
 	query := `DELETE FROM tasks WHERE id=$1`
 	_, err := t.Db.Exec(ctx, query, req.Id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to delete task: %w", err)
 	}
-	return &genproto.DeleteTaskResponse{
+	return &courier.DeleteTaskResponse{
 		Success: true,
 		Message: "Task deleted successfully",
 	}, nil
 }
 
 // GetAllTasks berilgan foydalanuvchiga tayinlangan barcha vazifalarni qaytaradi
-func (t *Task) GetAllTasks(ctx context.Context, req *genproto.GetAllTasksRequest) (*genproto.GetAllTasksResponse, error) {
+func (t *Task) GetAllTasks(ctx context.Context, req *courier.GetAllTasksRequest) (*courier.GetAllTasksResponse, error) {
 	query := `SELECT id, title, description, status, assigned_to, due_date, created_at, updated_at FROM tasks WHERE assigned_to=$1`
 	rows, err := t.Db.Query(ctx, query, req.AssignedTo)
 	if err != nil {
@@ -76,9 +76,9 @@ func (t *Task) GetAllTasks(ctx context.Context, req *genproto.GetAllTasksRequest
 	}
 	defer rows.Close()
 
-	var tasks []*genproto.TaskResponse
+	var tasks []*courier.TaskResponse
 	for rows.Next() {
-		var task genproto.TaskResponse
+		var task courier.TaskResponse
 		err := rows.Scan(&task.Id, &task.Title, &task.Description, &task.Status, &task.AssignedTo, &task.DueDate, &task.CreatedAt, &task.UpdatedAt)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan task: %w", err)
@@ -89,7 +89,7 @@ func (t *Task) GetAllTasks(ctx context.Context, req *genproto.GetAllTasksRequest
 		return nil, fmt.Errorf("failed to iterate over tasks: %w", rows.Err())
 	}
 
-	return &genproto.GetAllTasksResponse{
+	return &courier.GetAllTasksResponse{
 		Tasks: tasks,
 	}, nil
 }
