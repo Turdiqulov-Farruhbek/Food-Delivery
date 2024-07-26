@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: courier_locations.proto
 
-package courier
+package genproto
 
 import (
 	context "context"

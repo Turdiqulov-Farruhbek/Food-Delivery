@@ -11,6 +11,8 @@ type StorageInterface interface {
 	CourierOrder() CourierOrderInterface
 	Courier() CourierInterface
 	Order() OrderInterface
+	Task() TaskInterface
+	CourierLocation() CourierLocationInterface
 }
 
 
@@ -36,5 +38,21 @@ type OrderInterface interface {
 	GetOrder (ctx context.Context, req *courierOrder.OrderRequest) (*courierOrder.OrderResponse, error)
 	UpdateOrder (ctx context.Context, req *courierOrder.UpdateOrderRequest) (*courierOrder.OrderResponse, error)
 	DeleteOrder (ctx context.Context, req *courierOrder.OrderRequest) (*courierOrder.OrderResponse, error)
-	ListOrders (ctx context.Context, req *courierOrder.Empty) (*courierOrder.OrderListResponse, error)
+	ListOrders (ctx context.Context, req *courierOrder.GetRecommendedOrdersRequest) (*courierOrder.OrderListResponse, error)
+}
+
+type TaskInterface interface {
+	CreateTask (ctx context.Context, req *courierOrder.CreateTaskRequest) (*courierOrder.TaskResponse, error)
+	GetTask (ctx context.Context, req *courierOrder.GetTaskRequest) (*courierOrder.TaskResponse, error)
+	UpdateTask (ctx context.Context, req *courierOrder.UpdateTaskRequest) (*courierOrder.TaskResponse, error)
+	DeleteTask (ctx context.Context, req *courierOrder.DeleteTaskRequest) (*courierOrder.DeleteTaskResponse, error)
+	GetAllTasks (ctx context.Context, req *courierOrder.GetAllTasksRequest) (*courierOrder.GetAllTasksResponse, error)
+}
+
+type CourierLocationInterface interface {
+	CreateCourierLocation (ctx context.Context, req *courierOrder.CreateCourierLocationRequest) (*courierOrder.CourierLocationResponse, error)
+    GetCourierLocation (ctx context.Context, req *courierOrder.GetCourierLocationRequest) (*courierOrder.CourierLocationResponse, error)
+    UpdateCourierLocation (ctx context.Context, req *courierOrder.UpdateCourierLocationRequest) (*courierOrder.CourierLocationResponse, error)
+	DeleteCourierLocation (ctx context.Context, req *courierOrder.DeleteCourierLocationRequest) (*courierOrder.DeleteCourierLocationResponse, error)
+	GetAllCourierLocations (ctx context.Context, req *courierOrder.GetAllCourierLocationsRequest) (*courierOrder.GetAllCourierLocationsResponse, error)
 }

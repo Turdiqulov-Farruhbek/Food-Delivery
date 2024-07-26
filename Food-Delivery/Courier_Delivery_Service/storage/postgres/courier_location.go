@@ -54,14 +54,14 @@ func (c *CourierLocation) UpdateCourierLocation(ctx context.Context, req *genpro
 
 // DeleteCourierLocation kuryer lokatsiyasini o'chiradi
 func (c *CourierLocation) DeleteCourierLocation(ctx context.Context, req *genproto.DeleteCourierLocationRequest) (*genproto.DeleteCourierLocationResponse, error) {
-	query := `DELETE FROM courier_locations WHERE id=$1`
+	query := `DELETE FROM courier_locations WHERE id=$1 RETURNING id, `
 	_, err := c.Db.Exec(ctx, query, req.Id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to delete courier location: %w", err)
 	}
 	return &genproto.DeleteCourierLocationResponse{
 		Success: true,
-		Message: "Courier location deleted successfully",
+        Message: "Courier location deleted successfully",
 	}, nil
 }
 

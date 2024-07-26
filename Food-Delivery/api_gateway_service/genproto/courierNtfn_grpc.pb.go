@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: courierNtfn.proto
 
-package notification
+package genproto
 
 import (
 	context "context"

@@ -65,7 +65,7 @@ func (s *OrderService) DeleteOrder(ctx context.Context, req *genproto.OrderReque
 }
 
 // ListOrders RPC chaqiruvini bajaradi va barcha buyurtmalar ro'yxatini qaytaradi
-func (s *OrderService) ListOrders(ctx context.Context, req *genproto.Empty) (*genproto.OrderListResponse, error) {
+func (s *OrderService) ListOrders(ctx context.Context, req *genproto.GetRecommendedOrdersRequest) (*genproto.OrderListResponse, error) {
 	res, err := s.store.Order().ListOrders(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to list orders: %v", err)

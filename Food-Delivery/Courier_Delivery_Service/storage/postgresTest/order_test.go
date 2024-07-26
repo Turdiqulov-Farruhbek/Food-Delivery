@@ -178,7 +178,7 @@ func TestListOrders(t *testing.T) {
 	}
 
 	// Barcha buyurtma yozuvlarini olish
-	listResp, err := orderStorage.ListOrders(context.Background(), &genproto.Empty{})
+	listResp, err := orderStorage.ListOrders(context.Background(), &genproto.GetRecommendedOrdersRequest{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.Orders))
 }

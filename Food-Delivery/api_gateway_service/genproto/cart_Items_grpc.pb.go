@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: cart_Items.proto
 
-package product
+package genproto
 
 import (
 	context "context"

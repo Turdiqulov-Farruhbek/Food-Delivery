@@ -39,6 +39,8 @@ func main() {
 	gen.RegisterCourierOrderServiceServer(server, src.NewCourierOrderService(db, *logger))
 	gen.RegisterCourierServiceServer(server, src.NewCourierService(db, *logger))
 	gen.RegisterOrderServiceServer(server, src.NewOrderService(db, *logger))
+	gen.RegisterCourierLocationServiceServer(server, src.NewCourierLocationService(db, *logger))
+	gen.RegisterTaskServiceServer(server, src.NewTaskService(db, *logger))
 
 	log.Println("Server is running on port :2020")
 	if err := server.Serve(liss); err != nil {

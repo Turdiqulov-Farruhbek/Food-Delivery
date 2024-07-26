@@ -134,7 +134,7 @@ func (o *Order) DeleteOrder(ctx context.Context, req *genproto.OrderRequest) (*g
 }
 
 // ListOrders barcha buyurtma yozuvlarini qaytaradi
-func (o *Order) ListOrders(ctx context.Context, req *genproto.Empty) (*genproto.OrderListResponse, error) {
+func (o *Order) ListOrders(ctx context.Context, req *genproto.GetRecommendedOrdersRequest) (*genproto.OrderListResponse, error) {
 	query := `SELECT order_id, customer_id, order_details, delivery_address, payment_status, order_date FROM orders WHERE deleted_at=0`
 	rows, err := o.Db.Query(ctx, query)
 	if err != nil {

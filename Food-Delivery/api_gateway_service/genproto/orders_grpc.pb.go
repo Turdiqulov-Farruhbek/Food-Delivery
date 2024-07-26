@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.4.0
 // - protoc             v3.12.4
-// source: order.proto
+// source: orders.proto
 
-package courier
+package genproto
 
 import (
 	context "context"
@@ -40,8 +40,8 @@ type OrderServiceClient interface {
 	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*OrderResponse, error)
 	// Buyurtmani o'chirish
 	DeleteOrder(ctx context.Context, in *OrderRequest, opts ...grpc.CallOption) (*OrderResponse, error)
-	// Barcha buyurtmalar ro'yxatini olish
-	ListOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderListResponse, error)
+	// Buyurtmalar ro'yxatini olish
+	ListOrders(ctx context.Context, in *OrderListRequest, opts ...grpc.CallOption) (*OrderListResponse, error)
 }
 
 type orderServiceClient struct {
@@ -92,7 +92,7 @@ func (c *orderServiceClient) DeleteOrder(ctx context.Context, in *OrderRequest, 
 	return out, nil
 }
 
-func (c *orderServiceClient) ListOrders(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderListResponse, error) {
+func (c *orderServiceClient) ListOrders(ctx context.Context, in *OrderListRequest, opts ...grpc.CallOption) (*OrderListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(OrderListResponse)
 	err := c.cc.Invoke(ctx, OrderService_ListOrders_FullMethodName, in, out, cOpts...)
@@ -116,8 +116,8 @@ type OrderServiceServer interface {
 	UpdateOrder(context.Context, *UpdateOrderRequest) (*OrderResponse, error)
 	// Buyurtmani o'chirish
 	DeleteOrder(context.Context, *OrderRequest) (*OrderResponse, error)
-	// Barcha buyurtmalar ro'yxatini olish
-	ListOrders(context.Context, *Empty) (*OrderListResponse, error)
+	// Buyurtmalar ro'yxatini olish
+	ListOrders(context.Context, *OrderListRequest) (*OrderListResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -137,7 +137,7 @@ func (UnimplementedOrderServiceServer) UpdateOrder(context.Context, *UpdateOrder
 func (UnimplementedOrderServiceServer) DeleteOrder(context.Context, *OrderRequest) (*OrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrder not implemented")
 }
-func (UnimplementedOrderServiceServer) ListOrders(context.Context, *Empty) (*OrderListResponse, error) {
+func (UnimplementedOrderServiceServer) ListOrders(context.Context, *OrderListRequest) (*OrderListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrders not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
@@ -226,7 +226,7 @@ func _OrderService_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _OrderService_ListOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(OrderListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func _OrderService_ListOrders_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: OrderService_ListOrders_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).ListOrders(ctx, req.(*Empty))
+		return srv.(OrderServiceServer).ListOrders(ctx, req.(*OrderListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -272,5 +272,5 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "order.proto",
+	Metadata: "orders.proto",
 }
