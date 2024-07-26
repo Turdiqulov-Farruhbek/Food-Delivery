@@ -68,7 +68,7 @@ func (s *TaskService) DeleteTask(ctx context.Context, req *genproto.DeleteTaskRe
 func (s *TaskService) GetAllTasks(ctx context.Context, req *genproto.GetAllTasksRequest) (*genproto.GetAllTasksResponse, error) {
 	res, err := s.store.Task().GetAllTasks(ctx, req)
 	if err != nil {
-		s.log.ERROR.Printf("Failed to get all tasks for assigned_to %s: %v", req.AssignedTo, err)
+		s.log.ERROR.Printf("Failed to get all tasks for assigned_to %d: %v", req.AssignedTo, err)
 		return nil, err
 	}
 	s.log.INFO.Println("Successfully retrieved all tasks for assigned_to:", req.AssignedTo)
