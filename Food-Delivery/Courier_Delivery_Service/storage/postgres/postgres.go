@@ -6,6 +6,8 @@ import (
 	"log/slog"
 
 	"courier_delivery/config"
+	ps "courier_delivery/storage/postgres/courier"
+
 	stg "courier_delivery/storage"
 
 	"github.com/jackc/pgx/v5"
@@ -52,21 +54,21 @@ func DbCon() (*StorageStruct, error) {
 
 func (s *StorageStruct) CourierOrder() stg.CourierOrderInterface {
 	if s.CourierOrder_S == nil {
-		s.CourierOrder_S = NewCourierOrder(s.DB)
+		s.CourierOrder_S = ps.NewCourierOrder(s.DB)
 	}
 	return s.CourierOrder_S
 }
 
 func (s *StorageStruct) Courier() stg.CourierInterface {
 	if s.Courier_S == nil {
-		s.Courier_S = NewCourier(s.DB)
+		s.Courier_S = ps.NewCourier(s.DB)
 	}
 	return s.Courier_S
 }
 
 func (s *StorageStruct) Order() stg.OrderInterface {
 	if s.Order_S == nil {
-		s.Order_S = NewOrder(s.DB)
+		s.Order_S = ps.NewOrder(s.DB)
 	}
 	return s.Order_S
 }
@@ -74,14 +76,14 @@ func (s *StorageStruct) Order() stg.OrderInterface {
 
 func (s *StorageStruct) Task() stg.TaskInterface {
 	if s.Task_S == nil {
-        s.Task_S = NewTask(s.DB)
+        s.Task_S = ps.NewTask(s.DB)
     }
     return s.Task_S
 }
 
 func (s *StorageStruct) CourierLocation() stg.CourierLocationInterface {
 	if s.CourierLocation_S == nil {
-        s.CourierLocation_S = NewCourierLocation(s.DB)
+        s.CourierLocation_S = ps.NewCourierLocation(s.DB)
     }
     return s.CourierLocation_S
 }

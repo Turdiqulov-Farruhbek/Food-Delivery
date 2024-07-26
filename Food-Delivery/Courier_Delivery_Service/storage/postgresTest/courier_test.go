@@ -3,7 +3,7 @@ package postgrestest
 import (
 	"context"
 	"courier_delivery/genproto"
-	"courier_delivery/storage/postgres"
+	cr "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
 
@@ -44,7 +44,7 @@ func TestCreateCourier(t *testing.T) {
 	db := setupTestDBCourer(t)
 	defer teardownTestDBCourier(t, db)
 
-	storage := postgres.NewCourier(db)
+	storage := cr.NewCourier(db)
 
 	req := &genproto.CreateCourierRequest{
 		Name:        "John Doe",
@@ -68,7 +68,7 @@ func TestGetCourier(t *testing.T) {
 	db := setupTestDBCourer(t)
 	defer teardownTestDBCourier(t, db)
 
-	storage := postgres.NewCourier(db)
+	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
 	req := &genproto.CreateCourierRequest{
@@ -97,7 +97,7 @@ func TestUpdateCourier(t *testing.T) {
 	db := setupTestDBCourer(t)
 	defer teardownTestDBCourier(t, db)
 
-	storage := postgres.NewCourier(db)
+	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
 	req := &genproto.CreateCourierRequest{
@@ -133,7 +133,7 @@ func TestDeleteCourier(t *testing.T) {
 	db := setupTestDBCourer(t)
 	defer teardownTestDBCourier(t, db)
 
-	storage := postgres.NewCourier(db)
+	storage := cr.NewCourier(db)
 
 	// Avval yangi kuryer yozuvini yaratish
 	req := &genproto.CreateCourierRequest{
@@ -163,7 +163,7 @@ func TestListCouriers(t *testing.T) {
 	db := setupTestDBCourer(t)
 	defer teardownTestDBCourier(t, db)
 
-	storage := postgres.NewCourier(db)
+	storage := cr.NewCourier(db)
 
 	// Bir nechta kuryer yozuvlarini yaratish
 	for i := 0; i < 3; i++ {

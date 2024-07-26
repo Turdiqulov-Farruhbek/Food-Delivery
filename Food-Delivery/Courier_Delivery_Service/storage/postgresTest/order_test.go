@@ -3,7 +3,7 @@ package postgrestest
 import (
 	"context"
 	"courier_delivery/genproto"
-	"courier_delivery/storage/postgres"
+	cr "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
 
@@ -44,7 +44,7 @@ func TestCreateOrder(t *testing.T) {
 	db := setupTestDBOrder(t)
 	defer teardownTestDBOrder(t, db)
 
-	orderStorage := postgres.NewOrder(db)
+	orderStorage := cr.NewOrder(db)
 
 	req := &genproto.CreateOrderRequest{
 		CustomerId:     "customer-123",
@@ -68,7 +68,7 @@ func TestGetOrder(t *testing.T) {
 	db := setupTestDBOrder(t)
 	defer teardownTestDBOrder(t, db)
 
-	orderStorage := postgres.NewOrder(db)
+	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
 	req := &genproto.CreateOrderRequest{
@@ -97,7 +97,7 @@ func TestUpdateOrder(t *testing.T) {
 	db := setupTestDBOrder(t)
 	defer teardownTestDBOrder(t, db)
 
-	orderStorage := postgres.NewOrder(db)
+	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
 	req := &genproto.CreateOrderRequest{
@@ -133,7 +133,7 @@ func TestDeleteOrder(t *testing.T) {
 	db := setupTestDBOrder(t)
 	defer teardownTestDBOrder(t, db)
 
-	orderStorage := postgres.NewOrder(db)
+	orderStorage := cr.NewOrder(db)
 
 	// Avval yangi buyurtma yozuvini yaratish
 	req := &genproto.CreateOrderRequest{
@@ -163,7 +163,7 @@ func TestListOrders(t *testing.T) {
 	db := setupTestDBOrder(t)
 	defer teardownTestDBOrder(t, db)
 
-	orderStorage := postgres.NewOrder(db)
+	orderStorage := cr.NewOrder(db)
 
 	// Bir nechta buyurtma yozuvlarini yaratish
 	for i := 0; i < 3; i++ {

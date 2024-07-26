@@ -3,7 +3,7 @@ package postgrestest
 import (
 	"context"
 	"courier_delivery/genproto"
-	"courier_delivery/storage/postgres"
+	cr "courier_delivery/storage/postgres/courier"
 	"fmt"
 	"testing"
 
@@ -43,7 +43,7 @@ func TestCourierOrder_CreateCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := postgres.NewCourierOrder(db)
+	storage := cr.NewCourierOrder(db)
 
 	req := &genproto.CreateCourierOrderRequest{
 		CourierId: "courier_123",
@@ -61,7 +61,7 @@ func TestCourierOrder_GetCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := postgres.NewCourierOrder(db)
+	storage := cr.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
 	req := &genproto.CreateCourierOrderRequest{
@@ -86,7 +86,7 @@ func TestCourierOrder_UpdateCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := postgres.NewCourierOrder(db)
+	storage := cr.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
 	req := &genproto.CreateCourierOrderRequest{
@@ -117,7 +117,7 @@ func TestCourierOrder_DeleteCourierOrder(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := postgres.NewCourierOrder(db)
+	storage := cr.NewCourierOrder(db)
 
 	// Avval yangi kuryer-buyurtma munosabatini yaratish
 	req := &genproto.CreateCourierOrderRequest{
@@ -145,7 +145,7 @@ func TestCourierOrder_ListCourierOrders(t *testing.T) {
 	db := setupTestDB(t)
 	defer teardownTestDB(t, db)
 
-	storage := postgres.NewCourierOrder(db)
+	storage := cr.NewCourierOrder(db)
 
 	// Bir nechta kuryer-buyurtma munosabatlarini yaratish
 	for i := 0; i < 3; i++ {

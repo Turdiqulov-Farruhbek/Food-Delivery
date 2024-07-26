@@ -7,14 +7,13 @@ import(
 )
 
 
-type StorageInterface interface {
+type StorageCourierInterface interface {
 	CourierOrder() CourierOrderInterface
 	Courier() CourierInterface
 	Order() OrderInterface
 	Task() TaskInterface
 	CourierLocation() CourierLocationInterface
 }
-
 
 
 type CourierOrderInterface interface {
