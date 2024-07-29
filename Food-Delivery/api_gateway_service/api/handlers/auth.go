@@ -60,6 +60,98 @@ func (h *Handler) UserLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary Get All Users
+// @Description Retrieve a list of all users
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 200 {object} user.GetAllUsersResponse
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /api/users [get]
+func (h *Handler) GetAllUsers(c *gin.Context) {
+	resp, err := h.User.GetAllUsers(context.Background(), &user.GetAllUsersRequest{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+// @Summary Get User By ID
+// @Description Retrieve a specific user by ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} user.UserResponse
+// @Failure 404 {object} string "User Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /api/users/{user_id} [get]
+func (h *Handler) GetUser(c *gin.Context) {
+	userID := c.Param("user_id")
+	resp, err := h.User.GetUser(context.Background(), &user.UserRequest{UserId: userID})
+	if err != nil {
+		if err.Error() == "user not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+// @Summary Update User
+// @Description Update user details
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body user.UpdateUserRequest true "Update User Data"
+// @Success 200 {object} user.UserResponse
+// @Failure 400 {object} string "Invalid Data"
+// @Failure 404 {object} string "User Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /api/users/{user_id} [put]
+func (h *Handler) UpdateUser(c *gin.Context) {
+	var req user.UpdateUserRequest
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	userID := c.Param("user_id")
+	req.UserId = userID
+	resp, err := h.User.UpdateUser(context.Background(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+// @Summary Delete User
+// @Description Delete a user by ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user_id path string true "User ID"
+// @Success 200 {object} user.UserResponse
+// @Failure 404 {object} string "User Not Found"
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /api/users/{user_id} [delete]
+func (h *Handler) DeleteUser(c *gin.Context) {
+	userID := c.Param("user_id")
+	resp, err := h.User.DeleteUser(context.Background(), &user.UserRequest{UserId: userID})
+	if err != nil {
+		if err.Error() == "user not found" {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
 // @Summary Courier Registration
 // @Description Register a new courier in the system
 // @Tags Couriers
@@ -112,3 +204,95 @@ func (h *Handler) CourierLogin(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, resp)
 }
+
+// @Summary Get All Couriers
+// @Description Retrieve a list of all couriers
+// @Tags Couriers
+// @Accept json
+// @Produce json
+// @Success 200 {object} user.GetAllCouriersResponse
+// @Failure 500 {object} string "Internal Server Error"
+// @Router /api/couriers [get]
+func (h *Handler) GetAllCouriers(c *gin.Context) {
+	resp, err := h.User.GetAllCouriers(context.Background(), &user.GetAllCouriersRequest{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+// // @Summary Get Courier By ID
+// // @Description Retrieve a specific courier by ID
+// // @Tags Couriers
+// // @Accept json
+// // @Produce json
+// // @Param courier_id path string true "Courier ID"
+// // @Success 200 {object} user.CourierResponse
+// // @Failure 404 {object} string "Courier Not Found"
+// // @Failure 500 {object} string "Internal Server Error"
+// // @Router /api/couriers/{courier_id} [get]
+// func (h *Handler) GetCourier(c *gin.Context) {
+// 	courierID := c.Param("courier_id")
+// 	resp, err := h.User.GetCourier(context.Background(), &user.CourierRequest{CourierId: courierID})
+// 	if err != nil {
+// 		if err.Error() == "courier not found" {
+// 			c.JSON(http.StatusNotFound, gin.H{"error": "Courier not found"})
+// 		} else {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		}
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, resp)
+// }
+
+// // @Summary Update Courier
+// // @Description Update courier details
+// // @Tags Couriers
+// // @Accept json
+// // @Produce json
+// // @Param courier body user.UpdateCourierRequest true "Update Courier Data"
+// // @Success 200 {object} user.CourierResponse
+// // @Failure 400 {object} string "Invalid Data"
+// // @Failure 404 {object} string "Courier Not Found"
+// // @Failure 500 {object} string "Internal Server Error"
+// // @Router /api/couriers/{courier_id} [put]
+// func (h *Handler) UpdateCourier(c *gin.Context) {
+// 	var req user.UpdateCourierRequest
+// 	if err := c.BindJSON(&req); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	courierID := c.Param("courier_id")
+// 	req.CourierId = courierID
+// 	resp, err := h.User.UpdateCourier(context.Background(), &req)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, resp)
+// }
+
+// // @Summary Delete Courier
+// // @Description Delete a courier by ID
+// // @Tags Couriers
+// // @Accept json
+// // @Produce json
+// // @Param courier_id path string true "Courier ID"
+// // @Success 200 {object} user.CourierResponse
+// // @Failure 404 {object} string "Courier Not Found"
+// // @Failure 500 {object} string "Internal Server Error"
+// // @Router /api/couriers/{courier_id} [delete]
+// func (h *Handler) DeleteCourier(c *gin.Context) {
+// 	courierID := c.Param("courier_id")
+// 	resp, err := h.User.DeleteCourier(context.Background(), &user.CourierRequest{CourierId: courierID})
+// 	if err != nil {
+// 		if err.Error() == "courier not found" {
+// 			c.JSON(http.StatusNotFound, gin.H{"error": "Courier not found"})
+// 		} else {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		}
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, resp)
+// }

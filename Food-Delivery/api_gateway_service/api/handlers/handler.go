@@ -23,7 +23,7 @@ type Handler struct {
 	Order_P               p.OrderProductServiceClient
 	OrderRecommendation_P p.OrderRecommendationServiceClient
 	Product_P             p.ProductServiceClient
-	User                  u.UserServiceClient
+	User                  u.AuthServiceClient
 }
 
 func NewHandler(conn *grpc.ClientConn) *Handler {
@@ -41,6 +41,6 @@ func NewHandler(conn *grpc.ClientConn) *Handler {
         Order_P:               p.NewOrderProductServiceClient(conn),
         OrderRecommendation_P: p.NewOrderRecommendationServiceClient(conn),
 		Product_P:             p.NewProductServiceClient(conn),
-        User:                  u.NewUserServiceClient(conn),
+        User:                  u.NewAuthServiceClient(conn),
 	}
 }
