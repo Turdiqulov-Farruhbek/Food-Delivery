@@ -15,7 +15,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param task body courier.CreateTaskRequest true "Task Data"
-// @Success 201 {object} courier.CreateTaskResponse
+// @Success 201 {object} courier.TaskResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/tasks/create [post]
@@ -39,7 +39,7 @@ func (h *Handler) CreateTask(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param taskId path string true "Task ID"
-// @Success 200 {object} courier.GetTaskResponse
+// @Success 200 {object} courier.TaskResponse
 // @Failure 400 {object} string "Invalid Task ID"
 // @Failure 404 {object} string "Task Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -60,7 +60,7 @@ func (h *Handler) GetTask(c *gin.Context) {
 // @Tags Tasks
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} courier.GetTasksResponse
+// @Success 200 {object} courier.GetAllTasksResponse
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/tasks [get]
 func (h *Handler) GetTasks(c *gin.Context) {
@@ -81,7 +81,7 @@ func (h *Handler) GetTasks(c *gin.Context) {
 // @Security BearerAuth
 // @Param taskId path string true "Task ID"
 // @Param task body courier.UpdateTaskRequest true "Task Data"
-// @Success 200 {object} courier.UpdateTaskResponse
+// @Success 200 {object} courier.TaskResponse
 // @Failure 400 {object} string "Invalid Task ID"
 // @Failure 404 {object} string "Task Not Found"
 // @Failure 500 {object} string "Internal Server Error"

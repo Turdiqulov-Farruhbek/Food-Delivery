@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param order body courier.CreateOrderRequest true "Order Data"
-// @Success 201 {object} courier.CreateOrderResponse
+// @Success 201 {object} courier.OrderResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/orders/create [post]
@@ -40,7 +40,7 @@ func (h *Handler) CreateOrder(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param orderId path string true "Order ID"
-// @Success 200 {object} courier.GetOrderResponse
+// @Success 200 {object} courier.OrderResponse
 // @Failure 400 {object} string "Invalid Order ID"
 // @Failure 404 {object} string "Order Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -61,7 +61,7 @@ func (h *Handler) GetOrder(c *gin.Context) {
 // @Tags Orders
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} courier.GetOrdersResponse
+// @Success 200 {object} courier.OrderListResponse
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/orders [get]
 func (h *Handler) GetOrders(c *gin.Context) {
@@ -82,7 +82,7 @@ func (h *Handler) GetOrders(c *gin.Context) {
 // @Security BearerAuth
 // @Param orderId path string true "Order ID"
 // @Param order body courier.UpdateOrderRequest true "Order Data"
-// @Success 200 {object} courier.UpdateOrderResponse
+// @Success 200 {object} courier.OrderResponse
 // @Failure 400 {object} string "Invalid Order ID"
 // @Failure 404 {object} string "Order Not Found"
 // @Failure 500 {object} string "Internal Server Error"

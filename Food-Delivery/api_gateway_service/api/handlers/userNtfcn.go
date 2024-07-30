@@ -17,7 +17,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param notification body notification.CreateUserNotificationRequest true "Notification Data"
-// @Success 201 {object} notification.CreateUserNotificationResponse
+// @Success 201 {object} notification.CreateUserNotificationRequest
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/notifications/user [post]
@@ -42,7 +42,7 @@ func (h *Handler) CreateUserNotification(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param notificationId path string true "Notification ID"
-// @Success 200 {object} notification.GetUserNotificationResponse
+// @Success 200 {object} notification.UserNotificationRequest
 // @Failure 400 {object} string "Invalid Notification ID"
 // @Failure 404 {object} string "Notification Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -83,6 +83,7 @@ func (h *Handler) ListUserNotifications(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param notificationId path string true "Notification ID"
+// @Success 200 {object} notification.UserNotificationResponse
 // @Success 204 {object} string "No Content"
 // @Failure 400 {object} string "Invalid Notification ID"
 // @Failure 404 {object} string "Notification Not Found"

@@ -111,7 +111,7 @@ func (h *Handler) DeleteCourierLocation(c *gin.Context) {
 // @Tags Courier
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} courier.GetAllCourierResponse
+// @Success 200 {object} courier.GetAllCourierLocationsResponse
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/courier-locations [get]
 func (h *Handler) GetAllCourier(c *gin.Context) {

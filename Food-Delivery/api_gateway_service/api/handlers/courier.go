@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param courier body courier.CreateCourierRequest true "Courier Data"
-// @Success 201 {object} courier.CreateCourierResponse
+// @Success 201 {object} courier.CourierResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/couriers/create [post]
@@ -40,7 +40,7 @@ func (h *Handler) CreateCourier(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param courierId path string true "Courier ID"
-// @Success 200 {object} courier.GetCourierResponse
+// @Success 200 {object} courier.CourierResponse
 // @Failure 400 {object} string "Invalid Courier ID"
 // @Failure 404 {object} string "Courier Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -64,7 +64,7 @@ func (h *Handler) GetCourier(c *gin.Context) {
 // @Security BearerAuth
 // @Param courierId path string true "Courier ID"
 // @Param courier body courier.UpdateCourierRequest true "Courier Data"
-// @Success 200 {object} courier.UpdateCourierResponse
+// @Success 200 {object} courier.CourierResponse
 // @Failure 400 {object} string "Invalid Courier ID"
 // @Failure 404 {object} string "Courier Not Found"
 // @Failure 500 {object} string "Internal Server Error"

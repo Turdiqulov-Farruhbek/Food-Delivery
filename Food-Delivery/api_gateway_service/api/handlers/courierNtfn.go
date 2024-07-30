@@ -15,7 +15,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param notification body notification.CreateCourierNotificationRequest true "Notification Data"
-// @Success 201 {object} notification.CreateCourierNotificationResponse
+// @Success 201 {object} notification.CourierNotificationResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/notifications/courier [post]
@@ -41,7 +41,7 @@ func (h *Handler) CreateCourierNotification(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param notificationId path string true "Notification ID"
-// @Success 200 {object} notification.GetCourierNotificationResponse
+// @Success 200 {object} notification.CourierNotificationResponse
 // @Failure 400 {object} string "Invalid Notification ID"
 // @Failure 404 {object} string "Notification Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -63,7 +63,7 @@ func (h *Handler) GetCourierNotification(c *gin.Context) {
 // @Tags Notifications
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} notification.CourierNotificationListResponse
+// @Success 200 {object} notification.CourierNotificationResponse
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/notifications/courier [get]
 func (h *Handler) ListCourierNotifications(c *gin.Context) {

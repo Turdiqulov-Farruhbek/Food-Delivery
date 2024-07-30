@@ -3,7 +3,7 @@ package api
 import (
 	handler "gateway/api/handlers"
 
-	// _ "gateway/docs"
+	_ "gateway/docs"
 	_ "gateway/genproto/courier"
 	_ "gateway/genproto/notification"
 	_ "gateway/genproto/product"

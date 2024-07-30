@@ -1,0 +1,3426 @@
+basePath: /
+definitions:
+  courier.Courier:
+    properties:
+      courier_id:
+        description: Kuryerning noyob ID'si
+        type: string
+      email:
+        description: Kuryerning elektron pochtasi
+        type: string
+      name:
+        description: Kuryerning ismi
+        type: string
+      phone_number:
+        description: Kuryerning telefon raqami
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierStatus'
+        description: Kuryerning holati
+    type: object
+  courier.CourierLocationResponse:
+    properties:
+      courier_id:
+        type: string
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      updated_at:
+        description: ISO 8601 timestamp format (e.g., "2023-12-31T12:34:56Z")
+        type: string
+    type: object
+  courier.CourierOrder:
+    properties:
+      assigned_time:
+        description: Tayinlangan vaqt
+        type: string
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      courier_order_id:
+        description: Kuryer-buyurtma munosabatining noyob ID'si
+        type: string
+      last_updated:
+        description: Oxirgi yangilangan vaqt
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierOrderStatus'
+        description: Yetkazib berish holati
+    type: object
+  courier.CourierOrderListResponse:
+    properties:
+      courier_orders:
+        description: Kuryer-buyurtma munosabatlari ro'yxati
+        items:
+          $ref: '#/definitions/courier.CourierOrder'
+        type: array
+    type: object
+  courier.CourierOrderResponse:
+    properties:
+      courier_order:
+        allOf:
+        - $ref: '#/definitions/courier.CourierOrder'
+        description: Kuryer-buyurtma munosabatlari ma'lumotlari (Create va Get operatsiyalari
+          uchun)
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  courier.CourierOrderStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-comments:
+      CourierOrderStatus_ASSIGNED: 'Yetkazib berish holati: tayinlangan'
+      CourierOrderStatus_DELIVERED: 'Yetkazib berish holati: yetkazilgan'
+      CourierOrderStatus_EN_ROUTE: 'Yetkazib berish holati: yetkazilmoqda'
+      CourierOrderStatus_PAYMENT_COLLECTED: 'Yetkazib berish holati: to''lov yig''ilgan'
+      CourierOrderStatus_PICKED_UP: 'Yetkazib berish holati: olib ketilgan'
+    x-enum-varnames:
+    - CourierOrderStatus_ASSIGNED
+    - CourierOrderStatus_PICKED_UP
+    - CourierOrderStatus_EN_ROUTE
+    - CourierOrderStatus_DELIVERED
+    - CourierOrderStatus_PAYMENT_COLLECTED
+  courier.CourierResponse:
+    properties:
+      courier:
+        allOf:
+        - $ref: '#/definitions/courier.Courier'
+        description: Kuryer ma'lumotlari (Create va Get operatsiyalari uchun)
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  courier.CourierStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      CourierStatus_AVAILABLE: 'Kuryer holati: mavjud'
+      CourierStatus_ON_DELIVERY: 'Kuryer holati: yetkazish jarayonida'
+      CourierStatus_UNAVAILABLE: 'Kuryer holati: mavjud emas'
+    x-enum-varnames:
+    - CourierStatus_AVAILABLE
+    - CourierStatus_UNAVAILABLE
+    - CourierStatus_ON_DELIVERY
+  courier.CreateCourierLocationRequest:
+    properties:
+      courier_id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  courier.CreateCourierOrderRequest:
+    properties:
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierOrderStatus'
+        description: Yetkazib berish holati
+    type: object
+  courier.CreateCourierRequest:
+    properties:
+      email:
+        description: Kuryerning elektron pochtasi
+        type: string
+      name:
+        description: Kuryerning ismi
+        type: string
+      phone_number:
+        description: Kuryerning telefon raqami
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierStatus'
+        description: Kuryerning holati
+    type: object
+  courier.CreateOrderRequest:
+    properties:
+      customer_id:
+        description: Mijozning ID'si
+        type: string
+      delivery_address:
+        description: Yetkazib berish manzili
+        type: string
+      order_details:
+        description: Buyurtma tafsilotlari
+        type: string
+      payment_status:
+        allOf:
+        - $ref: '#/definitions/courier.PaymentStatus'
+        description: To'lov holati
+    type: object
+  courier.CreateTaskRequest:
+    properties:
+      assigned_to:
+        type: integer
+      description:
+        type: string
+      due_date:
+        description: ISO 8601 date format (e.g., "2023-12-31")
+        type: string
+      status:
+        $ref: '#/definitions/courier.TaskStatus'
+      title:
+        type: string
+    type: object
+  courier.DeleteCourierLocationResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  courier.GetAllCourierLocationsResponse:
+    properties:
+      locations:
+        items:
+          $ref: '#/definitions/courier.CourierLocationResponse'
+        type: array
+    type: object
+  courier.GetAllTasksResponse:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/courier.TaskResponse'
+        type: array
+    type: object
+  courier.GetCourierOrderHistoryResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/courier.Order'
+        type: array
+    type: object
+  courier.GetRecommendedOrdersResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/courier.Order'
+        type: array
+    type: object
+  courier.Order:
+    properties:
+      customer_id:
+        description: Mijozning ID'si
+        type: string
+      delivery_address:
+        description: Yetkazib berish manzili
+        type: string
+      order_date:
+        description: Buyurtma sanasi
+        type: string
+      order_details:
+        description: Buyurtma tafsilotlari
+        type: string
+      order_id:
+        description: Buyurtmaning noyob ID'si
+        type: string
+      payment_status:
+        allOf:
+        - $ref: '#/definitions/courier.PaymentStatus'
+        description: To'lov holati
+    type: object
+  courier.OrderListResponse:
+    properties:
+      orders:
+        description: Buyurtmalar ro'yxati
+        items:
+          $ref: '#/definitions/courier.Order'
+        type: array
+    type: object
+  courier.OrderResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      order:
+        allOf:
+        - $ref: '#/definitions/courier.Order'
+        description: Buyurtma ma'lumotlari (Create va Get operatsiyalari uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  courier.OrderStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    type: integer
+    x-enum-varnames:
+    - OrderStatus_PENDING_Status
+    - OrderStatus_ACCEPTED
+    - OrderStatus_IN_PROGRESS
+    - OrderStatus_DELIVERED
+    - OrderStatus_CANCELED
+  courier.PaymentStatus:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-comments:
+      PaymentStatus_PAID: 'To''lov holati: to''langan'
+      PaymentStatus_PENDING: 'To''lov holati: kutilyapti'
+    x-enum-varnames:
+    - PaymentStatus_PENDING
+    - PaymentStatus_PAID
+  courier.TaskResponse:
+    properties:
+      assigned_to:
+        type: integer
+      created_at:
+        description: ISO 8601 timestamp format (e.g., "2023-12-31T12:34:56Z")
+        type: string
+      description:
+        type: string
+      due_date:
+        description: ISO 8601 date format (e.g., "2023-12-31")
+        type: string
+      id:
+        type: string
+      status:
+        $ref: '#/definitions/courier.TaskStatus'
+      title:
+        type: string
+      updated_at:
+        description: ISO 8601 timestamp format (e.g., "2023-12-31T12:34:56Z")
+        type: string
+    type: object
+  courier.TaskStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - TaskStatus_TODO
+    - TaskStatus_IN_PROGRESS
+    - TaskStatus_DONE
+  courier.UpdateCourierLocationRequest:
+    properties:
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+    type: object
+  courier.UpdateCourierOrderRequest:
+    properties:
+      assigned_time:
+        description: Tayinlangan vaqt
+        type: string
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      courier_order_id:
+        description: Kuryer-buyurtma munosabatining noyob ID'si
+        type: string
+      last_updated:
+        description: Oxirgi yangilangan vaqt
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierOrderStatus'
+        description: Yetkazib berish holati
+    type: object
+  courier.UpdateCourierRequest:
+    properties:
+      courier_id:
+        description: Kuryerning noyob ID'si
+        type: string
+      email:
+        description: Kuryerning elektron pochtasi
+        type: string
+      name:
+        description: Kuryerning ismi
+        type: string
+      phone_number:
+        description: Kuryerning telefon raqami
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/courier.CourierStatus'
+        description: Kuryerning holati
+    type: object
+  courier.UpdateOrderRequest:
+    properties:
+      customer_id:
+        description: Mijozning ID'si
+        type: string
+      delivery_address:
+        description: Yetkazib berish manzili
+        type: string
+      order_details:
+        description: Buyurtma tafsilotlari
+        type: string
+      order_id:
+        description: Buyurtmaning noyob ID'si
+        type: string
+      payment_status:
+        allOf:
+        - $ref: '#/definitions/courier.PaymentStatus'
+        description: To'lov holati
+    type: object
+  courier.UpdateOrderStatusRequest:
+    properties:
+      order_id:
+        type: string
+      status:
+        $ref: '#/definitions/courier.OrderStatus'
+    type: object
+  courier.UpdateOrderStatusResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  courier.UpdateTaskRequest:
+    properties:
+      assigned_to:
+        type: integer
+      description:
+        type: string
+      due_date:
+        description: ISO 8601 date format (e.g., "2023-12-31")
+        type: string
+      id:
+        type: string
+      status:
+        $ref: '#/definitions/courier.TaskStatus'
+      title:
+        type: string
+    type: object
+  notification.AdminAlert:
+    properties:
+      admin_id:
+        description: Ogohlantirishni oladigan admin ID'si
+        type: string
+      alert_id:
+        description: Ogohlantirish ID'si
+        type: string
+      created_at:
+        description: Ogohlantirish yaratilgan vaqt
+        type: string
+      is_read:
+        description: Admin ogohlantirishni o'qiganligini bildiradi
+        type: boolean
+      message:
+        description: Ogohlantirish matni
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.AdminAlertType'
+        description: Ogohlantirish turi
+    type: object
+  notification.AdminAlertResponse:
+    properties:
+      alert:
+        allOf:
+        - $ref: '#/definitions/notification.AdminAlert'
+        description: Admin ogohlantirishi ma'lumotlari (Create operatsiyasi uchun)
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  notification.AdminAlertType:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      AdminAlertType_COURIER_ACTIVITY: Kuryer faoliyati ogohlantirishi
+      AdminAlertType_NEW_ORDER: Yangi buyurtma ogohlantirishi
+      AdminAlertType_STATUS_CHANGE: Holat o'zgarishi ogohlantirishi
+    x-enum-varnames:
+    - AdminAlertType_NEW_ORDER
+    - AdminAlertType_STATUS_CHANGE
+    - AdminAlertType_COURIER_ACTIVITY
+  notification.CourierNotification:
+    properties:
+      courier_id:
+        description: Bildirishnomani oladigan kuryer ID'si
+        type: string
+      created_at:
+        description: Bildirishnoma yaratilgan vaqt
+        type: string
+      is_read:
+        description: Kuryer bildirishnomani o'qiganligini bildiradi
+        type: boolean
+      message:
+        description: Bildirishnoma matni
+        type: string
+      notification_id:
+        description: Bildirishnoma ID'si
+        type: string
+      order_id:
+        description: Bildirishnomaga bog'langan buyurtma ID'si
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.CourierNotificationType'
+        description: Bildirishnoma turi
+    type: object
+  notification.CourierNotificationResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      notification:
+        allOf:
+        - $ref: '#/definitions/notification.CourierNotification'
+        description: Kuryer bildirishnomasi ma'lumotlari (Create operatsiyasi uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  notification.CourierNotificationType:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      CourierNotificationType_NEW_RECOMMENDATION: Yangi tavsiya bildirishnomasi
+      CourierNotificationType_ORDER_ASSIGNMENT: Buyurtma topshiriq bildirishnomasi
+      CourierNotificationType_STATUS_UPDATE: Holatni yangilash bildirishnomasi
+    x-enum-varnames:
+    - CourierNotificationType_NEW_RECOMMENDATION
+    - CourierNotificationType_ORDER_ASSIGNMENT
+    - CourierNotificationType_STATUS_UPDATE
+  notification.CreateAdminAlertRequest:
+    properties:
+      admin_id:
+        description: Ogohlantirishni oladigan admin ID'si
+        type: string
+      message:
+        description: Ogohlantirish matni
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.AdminAlertType'
+        description: Ogohlantirish turi
+    type: object
+  notification.CreateCourierNotificationRequest:
+    properties:
+      courier_id:
+        description: Bildirishnomani oladigan kuryer ID'si
+        type: string
+      message:
+        description: Bildirishnoma matni
+        type: string
+      order_id:
+        description: Bildirishnomaga bog'langan buyurtma ID'si
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.CourierNotificationType'
+        description: Bildirishnoma turi
+    type: object
+  notification.CreateUserNotificationRequest:
+    properties:
+      message:
+        description: Bildirishnoma matni
+        type: string
+      order_id:
+        description: Bildirishnomaga bog'langan buyurtma ID'si
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.NotificationType'
+        description: Bildirishnoma turi
+      user_id:
+        description: Bildirishnomani oladigan foydalanuvchi ID'si
+        type: string
+    type: object
+  notification.NotificationType:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-comments:
+      NotificationType_ORDER_CONFIRMATION: Buyurtmani tasdiqlash bildirishnomasi
+      NotificationType_STATUS_UPDATE_USER: Holatni yangilash bildirishnomasi
+    x-enum-varnames:
+    - NotificationType_ORDER_CONFIRMATION
+    - NotificationType_STATUS_UPDATE_USER
+  notification.UpdateAdminAlertRequest:
+    properties:
+      alert_id:
+        description: Ogohlantirish ID'si
+        type: string
+      is_read:
+        description: Yangilangan o'qilganligi holati
+        type: boolean
+      message:
+        description: Yangilangan ogohlantirish matni
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.AdminAlertType'
+        description: Ogohlantirish turi (yangilanishi mumkin)
+    type: object
+  notification.UserNotification:
+    properties:
+      created_at:
+        description: Bildirishnoma yaratilgan vaqt
+        type: string
+      is_read:
+        description: Foydalanuvchi bildirishnomani o'qiganligini bildiradi
+        type: boolean
+      message:
+        description: Bildirishnoma matni
+        type: string
+      notification_id:
+        description: Bildirishnoma ID'si
+        type: string
+      order_id:
+        description: Bildirishnomaga bog'langan buyurtma ID'si
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/notification.NotificationType'
+        description: Bildirishnoma turi
+      user_id:
+        description: Bildirishnomani oladigan foydalanuvchi ID'si
+        type: string
+    type: object
+  notification.UserNotificationListResponse:
+    properties:
+      notifications:
+        description: Foydalanuvchi bildirishnomalari ro'yxati
+        items:
+          $ref: '#/definitions/notification.UserNotification'
+        type: array
+    type: object
+  notification.UserNotificationRequest:
+    properties:
+      notification_id:
+        description: Bildirishnoma ID'si
+        type: string
+    type: object
+  notification.UserNotificationResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      notification:
+        allOf:
+        - $ref: '#/definitions/notification.UserNotification'
+        description: Foydalanuvchi bildirishnomasi ma'lumotlari (Create operatsiyasi
+          uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.CardStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - CardStatus_OR_PENDING
+    - CardStatus_COMPLETED
+    - CardStatus_CANCELED
+  product.Cart:
+    properties:
+      cart_id:
+        description: Savatning noyob ID'si
+        type: string
+      created_at:
+        description: Savat yaratilgan vaqti
+        type: string
+      user_id:
+        description: Savatga ega foydalanuvchi ID'si
+        type: string
+    type: object
+  product.CartItem:
+    properties:
+      cart_id:
+        description: Savat ID'si
+        type: string
+      cart_item_id:
+        description: Savat mahsuloti noyob ID'si
+        type: string
+      options:
+        description: Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+        type: string
+      product_id:
+        description: Mahsulot ID'si
+        type: string
+      quantity:
+        description: Mahsulot miqdori
+        type: integer
+    type: object
+  product.CartItemListResponse:
+    properties:
+      cart_items:
+        description: Savat mahsulotlari ro'yxati
+        items:
+          $ref: '#/definitions/product.CartItem'
+        type: array
+    type: object
+  product.CartItemResponse:
+    properties:
+      cart_item:
+        allOf:
+        - $ref: '#/definitions/product.CartItem'
+        description: Savat mahsuloti ma'lumotlari (Create va Get operatsiyalari uchun)
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.CartListResponse:
+    properties:
+      carts:
+        description: Savatlar ro'yxati
+        items:
+          $ref: '#/definitions/product.Cart'
+        type: array
+    type: object
+  product.CartResponse:
+    properties:
+      cart:
+        allOf:
+        - $ref: '#/definitions/product.Cart'
+        description: Savat ma'lumotlari (Create va Get operatsiyalari uchun)
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.CreateCartItemRequest:
+    properties:
+      cart_id:
+        description: Savat ID'si
+        type: string
+      options:
+        description: Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+        type: string
+      product_id:
+        description: Mahsulot ID'si
+        type: string
+      quantity:
+        description: Mahsulot miqdori
+        type: integer
+    type: object
+  product.CreateCartRequest:
+    properties:
+      user_id:
+        description: Savatga ega foydalanuvchi ID'si
+        type: string
+    type: object
+  product.CreateOrderProductRequest:
+    properties:
+      status:
+        allOf:
+        - $ref: '#/definitions/product.CardStatus'
+        description: Buyurtma holati
+      total_price:
+        description: Buyurtma umumiy summasi
+        type: number
+      user_id:
+        description: Buyurtma bergan foydalanuvchi ID'si
+        type: string
+    type: object
+  product.CreateOrderRecommendationRequest:
+    properties:
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      recommended_at:
+        description: Tavsiya qilingan vaqt
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/product.RecommendationStatus'
+        description: Tavsiya holati
+    type: object
+  product.CreateProductRequest:
+    properties:
+      description:
+        description: Mahsulot tavsifi
+        type: string
+      image_url:
+        description: Mahsulotning rasmini saqlovchi URL
+        type: string
+      name:
+        description: Mahsulot nomi
+        type: string
+      price:
+        description: Mahsulot narxi
+        type: number
+    type: object
+  product.OrderProduct:
+    properties:
+      created_at:
+        description: Buyurtma yaratilgan vaqti
+        type: string
+      order_id:
+        description: Buyurtma noyob ID'si
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/product.CardStatus'
+        description: Buyurtma holati
+      total_price:
+        description: Buyurtma umumiy summasi
+        type: number
+      user_id:
+        description: Buyurtma bergan foydalanuvchi ID'si
+        type: string
+    type: object
+  product.OrderProductListResponse:
+    properties:
+      orders:
+        description: Buyurtmalar ro'yxati
+        items:
+          $ref: '#/definitions/product.OrderProduct'
+        type: array
+    type: object
+  product.OrderProductResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      order:
+        allOf:
+        - $ref: '#/definitions/product.OrderProduct'
+        description: Buyurtma ma'lumotlari (Create va Get operatsiyalari uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.OrderRecommendation:
+    properties:
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      recommendation_id:
+        description: Tavsiya noyob ID'si
+        type: string
+      recommended_at:
+        description: Tavsiya qilingan vaqt
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/product.RecommendationStatus'
+        description: Tavsiya holati
+    type: object
+  product.OrderRecommendationListResponse:
+    properties:
+      order_recommendations:
+        description: Tavsiyalar ro'yxati
+        items:
+          $ref: '#/definitions/product.OrderRecommendation'
+        type: array
+    type: object
+  product.OrderRecommendationResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      order_recommendation:
+        allOf:
+        - $ref: '#/definitions/product.OrderRecommendation'
+        description: Tavsiya ma'lumotlari (Create va Get operatsiyalari uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.Product:
+    properties:
+      description:
+        description: Mahsulot tavsifi
+        type: string
+      image_url:
+        description: Mahsulotning rasmini saqlovchi URL
+        type: string
+      name:
+        description: Mahsulot nomi
+        type: string
+      price:
+        description: Mahsulot narxi
+        type: number
+      product_id:
+        description: Mahsulotning noyob ID'si
+        type: string
+    type: object
+  product.ProductListResponse:
+    properties:
+      products:
+        description: Mahsulotlar ro'yxati
+        items:
+          $ref: '#/definitions/product.Product'
+        type: array
+    type: object
+  product.ProductResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      product:
+        allOf:
+        - $ref: '#/definitions/product.Product'
+        description: Mahsulot ma'lumotlari (Create va Get operatsiyalari uchun)
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  product.RecommendationStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      RecommendationStatus_ACCEPTED: 'Tavsiya holati: qabul qilingan'
+      RecommendationStatus_PENDING: 'Tavsiya holati: kutayotgan'
+      RecommendationStatus_REJECTED: 'Tavsiya holati: rad etilgan'
+    x-enum-varnames:
+    - RecommendationStatus_PENDING
+    - RecommendationStatus_ACCEPTED
+    - RecommendationStatus_REJECTED
+  product.UpdateCartItemRequest:
+    properties:
+      cart_id:
+        description: Savat ID'si
+        type: string
+      cart_item_id:
+        description: Savat mahsuloti noyob ID'si
+        type: string
+      options:
+        description: Variantlar, masalan, o'lcham, qo'shimchalar va hokazo
+        type: string
+      product_id:
+        description: Mahsulot ID'si
+        type: string
+      quantity:
+        description: Mahsulot miqdori
+        type: integer
+    type: object
+  product.UpdateCartRequest:
+    properties:
+      cart_id:
+        description: Savatning noyob ID'si
+        type: string
+      user_id:
+        description: Savatga ega foydalanuvchi ID'si
+        type: string
+    type: object
+  product.UpdateOrderProductRequest:
+    properties:
+      order_id:
+        description: Buyurtma noyob ID'si
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/product.CardStatus'
+        description: Buyurtma holati
+      total_price:
+        description: Buyurtma umumiy summasi
+        type: number
+    type: object
+  product.UpdateOrderRecommendationRequest:
+    properties:
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      order_id:
+        description: Buyurtma ID'si
+        type: string
+      recommendation_id:
+        description: Tavsiya noyob ID'si
+        type: string
+      recommended_at:
+        description: Tavsiya qilingan vaqt
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/product.RecommendationStatus'
+        description: Tavsiya holati
+    type: object
+  product.UpdateProductRequest:
+    properties:
+      description:
+        description: Mahsulot tavsifi
+        type: string
+      image_url:
+        description: Mahsulotning rasmini saqlovchi URL
+        type: string
+      name:
+        description: Mahsulot nomi
+        type: string
+      price:
+        description: Mahsulot narxi
+        type: number
+      product_id:
+        description: Mahsulotning noyob ID'si
+        type: string
+    type: object
+  user.Courier:
+    properties:
+      courier_id:
+        description: Kuryer ID'si
+        type: string
+      created_at:
+        description: Kuryer yaratilgan vaqti
+        type: string
+      email:
+        description: Kuryer email manzili
+        type: string
+      full_name:
+        description: Kuryer to'liq ismi
+        type: string
+      phone_number:
+        description: Kuryer telefon raqami
+        type: string
+      status:
+        allOf:
+        - $ref: '#/definitions/user.CourierStatus'
+        description: Kuryer holati
+      updated_at:
+        description: Kuryer yangilangan vaqti
+        type: string
+    type: object
+  user.CourierLoginRequest:
+    properties:
+      email:
+        description: Kuryer email manzili
+        type: string
+      password:
+        description: Kuryer paroli
+        type: string
+    type: object
+  user.CourierLoginResponse:
+    properties:
+      courier:
+        allOf:
+        - $ref: '#/definitions/user.Courier'
+        description: Kuryer ma'lumotlari
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+      token:
+        description: JWT token or session ID
+        type: string
+    type: object
+  user.CourierRegisterRequest:
+    properties:
+      email:
+        description: Kuryer email manzili
+        type: string
+      full_name:
+        description: Kuryer to'liq ismi
+        type: string
+      password:
+        description: Kuryer paroli
+        type: string
+      phone_number:
+        description: Kuryer telefon raqami
+        type: string
+    type: object
+  user.CourierRegisterResponse:
+    properties:
+      courier:
+        allOf:
+        - $ref: '#/definitions/user.Courier'
+        description: Kuryer ma'lumotlari
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+    type: object
+  user.CourierStatus:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-varnames:
+    - CourierStatus_AVAILABLE
+    - CourierStatus_UNAVAILABLE
+    - CourierStatus_ON_DELIVERY
+  user.GetAllCouriersResponse:
+    properties:
+      couriers:
+        items:
+          $ref: '#/definitions/user.Courier'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  user.GetAllUsersResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      users:
+        items:
+          $ref: '#/definitions/user.User'
+        type: array
+    type: object
+  user.UpdateUserRequest:
+    properties:
+      email:
+        description: Foydalanuvchi email manzili
+        type: string
+      full_name:
+        description: Foydalanuvchi to'liq ismi
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/user.UserRole'
+        description: Foydalanuvchi roli
+      user_id:
+        description: Foydalanuvchi ID'si
+        type: string
+    type: object
+  user.User:
+    properties:
+      created_at:
+        description: Foydalanuvchi yaratilgan vaqti
+        type: string
+      email:
+        description: Foydalanuvchi email manzili
+        type: string
+      full_name:
+        description: Foydalanuvchi to'liq ismi
+        type: string
+      role:
+        allOf:
+        - $ref: '#/definitions/user.UserRole'
+        description: Foydalanuvchi roli
+      updated_at:
+        description: Foydalanuvchi yangilangan vaqti
+        type: string
+      user_id:
+        description: Foydalanuvchi ID'si
+        type: string
+    type: object
+  user.UserLoginRequest:
+    properties:
+      email:
+        description: Foydalanuvchi email manzili
+        type: string
+      password:
+        description: Foydalanuvchi paroli
+        type: string
+    type: object
+  user.UserLoginResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+      token:
+        description: JWT token or session ID
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/user.User'
+        description: Foydalanuvchi ma'lumotlari
+    type: object
+  user.UserRegisterRequest:
+    properties:
+      email:
+        description: Foydalanuvchi email manzili
+        type: string
+      full_name:
+        description: Foydalanuvchi to'liq ismi
+        type: string
+      password:
+        description: Foydalanuvchi paroli
+        type: string
+    type: object
+  user.UserRegisterResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+      user:
+        allOf:
+        - $ref: '#/definitions/user.User'
+        description: Foydalanuvchi ma'lumotlari
+    type: object
+  user.UserResponse:
+    properties:
+      message:
+        description: Javob xabari
+        type: string
+      success:
+        description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
+        type: boolean
+      user:
+        allOf:
+        - $ref: '#/definitions/user.User'
+        description: Foydalanuvchi ma'lumotlari
+    type: object
+  user.UserRole:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-varnames:
+    - UserRole_USER
+    - UserRole_ADMIN
+info:
+  contact: {}
+  description: API for Food Delivery System resources
+  title: Food Delivery System API
+  version: "1.0"
+paths:
+  /api/alerts/admin:
+    post:
+      consumes:
+      - application/json
+      description: Add a new admin alert to the system
+      parameters:
+      - description: Alert Data
+        in: body
+        name: alert
+        required: true
+        schema:
+          $ref: '#/definitions/notification.CreateAdminAlertRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/notification.AdminAlertResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new admin alert
+      tags:
+      - Alerts
+  /api/alerts/admin/{alertId}:
+    delete:
+      description: Remove an admin alert from the system by its ID
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alertId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.AdminAlertResponse'
+        "400":
+          description: Invalid Alert ID
+          schema:
+            type: string
+        "404":
+          description: Alert Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete admin alert by ID
+      tags:
+      - Alerts
+    get:
+      description: Retrieve details of an admin alert by its ID
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alertId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.AdminAlertResponse'
+        "400":
+          description: Invalid Alert ID
+          schema:
+            type: string
+        "404":
+          description: Alert Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get admin alert by ID
+      tags:
+      - Alerts
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing admin alert by its ID
+      parameters:
+      - description: Alert ID
+        in: path
+        name: alertId
+        required: true
+        type: string
+      - description: Alert Data
+        in: body
+        name: alert
+        required: true
+        schema:
+          $ref: '#/definitions/notification.UpdateAdminAlertRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.AdminAlertResponse'
+        "400":
+          description: Invalid Alert ID
+          schema:
+            type: string
+        "404":
+          description: Alert Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update admin alert by ID
+      tags:
+      - Alerts
+  /api/cart-items:
+    get:
+      description: Retrieve a list of all items in a specific cart
+      parameters:
+      - description: Cart ID
+        in: query
+        name: cartId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartItemListResponse'
+        "400":
+          description: Invalid Cart ID
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all cart items
+      tags:
+      - CartItems
+  /api/cart-items/{cartItemId}:
+    delete:
+      description: Remove a cart item from the system by its ID
+      parameters:
+      - description: Cart Item ID
+        in: path
+        name: cartItemId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart Item deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid Cart Item ID
+          schema:
+            type: string
+        "404":
+          description: Cart Item Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete cart item by ID
+      tags:
+      - CartItems
+    get:
+      description: Retrieve details of a cart item by its ID
+      parameters:
+      - description: Cart Item ID
+        in: path
+        name: cartItemId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartItemResponse'
+        "400":
+          description: Invalid Cart Item ID
+          schema:
+            type: string
+        "404":
+          description: Cart Item Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get cart item by ID
+      tags:
+      - CartItems
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing cart item by its ID
+      parameters:
+      - description: Cart Item ID
+        in: path
+        name: cartItemId
+        required: true
+        type: string
+      - description: Cart Item Data
+        in: body
+        name: cart_item
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartItemResponse'
+        "400":
+          description: Invalid Cart Item ID
+          schema:
+            type: string
+        "404":
+          description: Cart Item Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update cart item by ID
+      tags:
+      - CartItems
+  /api/cart-items/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new item to a cart
+      parameters:
+      - description: Cart Item Data
+        in: body
+        name: cart_item
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/product.CartItemResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new cart item
+      tags:
+      - CartItems
+  /api/carts:
+    get:
+      description: Retrieve a list of all carts
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all carts
+      tags:
+      - Carts
+  /api/carts/{cartId}:
+    delete:
+      description: Remove a cart from the system by its ID
+      parameters:
+      - description: Cart ID
+        in: path
+        name: cartId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid Cart ID
+          schema:
+            type: string
+        "404":
+          description: Cart Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete cart by ID
+      tags:
+      - Carts
+    get:
+      description: Retrieve details of a cart by its ID
+      parameters:
+      - description: Cart ID
+        in: path
+        name: cartId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartResponse'
+        "400":
+          description: Invalid Cart ID
+          schema:
+            type: string
+        "404":
+          description: Cart Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get cart by ID
+      tags:
+      - Carts
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing cart by its ID
+      parameters:
+      - description: Cart ID
+        in: path
+        name: cartId
+        required: true
+        type: string
+      - description: Cart Data
+        in: body
+        name: cart
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.CartResponse'
+        "400":
+          description: Invalid Cart ID
+          schema:
+            type: string
+        "404":
+          description: Cart Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update cart by ID
+      tags:
+      - Carts
+  /api/carts/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new cart to the system
+      parameters:
+      - description: Cart Data
+        in: body
+        name: cart
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateCartRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/product.CartResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new cart
+      tags:
+      - Carts
+  /api/courier-locations:
+    get:
+      description: Retrieve a list of all courier locations in the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.GetAllCourierLocationsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all courier locations
+      tags:
+      - Courier
+  /api/courier-locations/{locationId}:
+    delete:
+      description: Remove a courier location from the system by its ID
+      parameters:
+      - description: Courier Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.DeleteCourierLocationResponse'
+        "400":
+          description: Invalid Location ID
+          schema:
+            type: string
+        "404":
+          description: Location Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete courier location by ID
+      tags:
+      - Courier
+    get:
+      description: Retrieve details of a courier location by its ID
+      parameters:
+      - description: Courier Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierLocationResponse'
+        "400":
+          description: Invalid Location ID
+          schema:
+            type: string
+        "404":
+          description: Location Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get courier location by ID
+      tags:
+      - Courier
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing courier location by its ID
+      parameters:
+      - description: Courier Location ID
+        in: path
+        name: locationId
+        required: true
+        type: string
+      - description: Courier Location Data
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateCourierLocationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierLocationResponse'
+        "400":
+          description: Invalid Location ID
+          schema:
+            type: string
+        "404":
+          description: Location Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update courier location by ID
+      tags:
+      - Courier
+  /api/courier-locations/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new courier location to the system
+      parameters:
+      - description: Courier Location Data
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/courier.CreateCourierLocationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/courier.CourierLocationResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new courier location
+      tags:
+      - Courier
+  /api/courier-orders:
+    get:
+      description: Retrieve a list of all courier orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierOrderListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all courier orders
+      tags:
+      - CourierOrders
+    post:
+      consumes:
+      - application/json
+      description: Add a new courier order to the system
+      parameters:
+      - description: Courier Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/courier.CreateCourierOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/courier.CourierOrderResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new courier order
+      tags:
+      - CourierOrders
+    put:
+      consumes:
+      - application/json
+      description: Modify details of an existing courier order
+      parameters:
+      - description: Courier Order Update Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateCourierOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierOrderResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update a courier order
+      tags:
+      - CourierOrders
+  /api/courier-orders/{orderId}:
+    delete:
+      description: Remove a courier order from the system by its ID
+      parameters:
+      - description: Courier Order ID
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a courier order
+      tags:
+      - CourierOrders
+    get:
+      description: Retrieve details of a courier order by its ID
+      parameters:
+      - description: Courier Order ID
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierOrderResponse'
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get courier order by ID
+      tags:
+      - CourierOrders
+  /api/couriers:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all couriers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetAllCouriersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get All Couriers
+      tags:
+      - Couriers
+  /api/couriers/{courierId}:
+    delete:
+      description: Remove a courier from the system by their ID
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courierId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Courier deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid Courier ID
+          schema:
+            type: string
+        "404":
+          description: Courier Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete courier by ID
+      tags:
+      - Couriers
+    get:
+      description: Retrieve details of a courier by their ID
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courierId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierResponse'
+        "400":
+          description: Invalid Courier ID
+          schema:
+            type: string
+        "404":
+          description: Courier Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get courier by ID
+      tags:
+      - Couriers
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing courier by their ID
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courierId
+        required: true
+        type: string
+      - description: Courier Data
+        in: body
+        name: courier
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateCourierRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.CourierResponse'
+        "400":
+          description: Invalid Courier ID
+          schema:
+            type: string
+        "404":
+          description: Courier Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update courier by ID
+      tags:
+      - Couriers
+  /api/couriers/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new courier to the system
+      parameters:
+      - description: Courier Data
+        in: body
+        name: courier
+        required: true
+        schema:
+          $ref: '#/definitions/courier.CreateCourierRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/courier.CourierResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new courier
+      tags:
+      - Couriers
+  /api/couriers/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a courier and return a JWT token
+      parameters:
+      - description: Courier Login Data
+        in: body
+        name: courier
+        required: true
+        schema:
+          $ref: '#/definitions/user.CourierLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.CourierLoginResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Courier Login
+      tags:
+      - Couriers
+  /api/couriers/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new courier in the system
+      parameters:
+      - description: Courier Registration Data
+        in: body
+        name: courier
+        required: true
+        schema:
+          $ref: '#/definitions/user.CourierRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.CourierRegisterResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Courier Registration
+      tags:
+      - Couriers
+  /api/notifications/courier:
+    get:
+      description: Retrieve a list of all courier notifications
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.CourierNotificationResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all courier notifications
+      tags:
+      - Notifications
+    post:
+      consumes:
+      - application/json
+      description: Add a new courier notification to the system
+      parameters:
+      - description: Notification Data
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/notification.CreateCourierNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/notification.CourierNotificationResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new courier notification
+      tags:
+      - Notifications
+  /api/notifications/courier/{notificationId}:
+    delete:
+      description: Remove a courier notification from the system by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notificationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Invalid Notification ID
+          schema:
+            type: string
+        "404":
+          description: Notification Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a courier notification
+      tags:
+      - Notifications
+    get:
+      description: Retrieve details of a courier notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notificationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.CourierNotificationResponse'
+        "400":
+          description: Invalid Notification ID
+          schema:
+            type: string
+        "404":
+          description: Notification Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get courier notification by ID
+      tags:
+      - Notifications
+  /api/notifications/user:
+    get:
+      description: Retrieve a list of all user notifications
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.UserNotificationListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all user notifications
+      tags:
+      - Notifications
+    post:
+      consumes:
+      - application/json
+      description: Add a new user notification to the system
+      parameters:
+      - description: Notification Data
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/notification.CreateUserNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/notification.CreateUserNotificationRequest'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new user notification
+      tags:
+      - Notifications
+  /api/notifications/user/{notificationId}:
+    delete:
+      description: Remove a user notification from the system by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notificationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.UserNotificationResponse'
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Invalid Notification ID
+          schema:
+            type: string
+        "404":
+          description: Notification Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a user notification
+      tags:
+      - Notifications
+    get:
+      description: Retrieve details of a user notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notificationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/notification.UserNotificationRequest'
+        "400":
+          description: Invalid Notification ID
+          schema:
+            type: string
+        "404":
+          description: Notification Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get user notification by ID
+      tags:
+      - Notifications
+  /api/orders:
+    get:
+      description: Retrieve a list of all orders with optional filters
+      parameters:
+      - description: User ID Filter
+        in: query
+        name: userId
+        type: string
+      - description: Order Status Filter
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderProductListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      description: Add a new order to the system
+      parameters:
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateOrderProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/product.OrderProductResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new order
+      tags:
+      - Orders
+    put:
+      consumes:
+      - application/json
+      description: Modify details of an existing order
+      parameters:
+      - description: Order Update Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateOrderProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderProductResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update an order
+      tags:
+      - Orders
+  /api/orders/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Update the status of an existing order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Order Status
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.UpdateOrderStatusResponse'
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update order status
+      tags:
+      - Orders
+  /api/orders/{orderId}:
+    delete:
+      description: Remove an order from the system by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete an order
+      tags:
+      - Orders
+    get:
+      description: Retrieve details of an order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderProductResponse'
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get order by ID
+      tags:
+      - Orders
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: orderId
+        required: true
+        type: string
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.OrderResponse'
+        "400":
+          description: Invalid Order ID
+          schema:
+            type: string
+        "404":
+          description: Order Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update order by ID
+      tags:
+      - Orders
+  /api/orders/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new order to the system
+      parameters:
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/courier.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/courier.OrderResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new order
+      tags:
+      - Orders
+  /api/orders/history:
+    get:
+      description: Retrieve the order history for a specific courier
+      parameters:
+      - description: Courier ID
+        in: query
+        name: courierId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.GetCourierOrderHistoryResponse'
+        "400":
+          description: Invalid Courier ID
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get courier order history
+      tags:
+      - Orders
+  /api/products:
+    get:
+      description: Retrieve a list of all products in the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.ProductListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all products
+      tags:
+      - Products
+  /api/products/{productId}:
+    delete:
+      description: Remove a product from the system by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid Product ID
+          schema:
+            type: string
+        "404":
+          description: Product Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete product by ID
+      tags:
+      - Products
+    get:
+      description: Retrieve details of a product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.ProductResponse'
+        "400":
+          description: Invalid Product ID
+          schema:
+            type: string
+        "404":
+          description: Product Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get product by ID
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: string
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.ProductResponse'
+        "400":
+          description: Invalid Product ID
+          schema:
+            type: string
+        "404":
+          description: Product Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update product by ID
+      tags:
+      - Products
+  /api/products/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new product to the system
+      parameters:
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/product.ProductResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new product
+      tags:
+      - Products
+  /api/recommendations/order:
+    get:
+      description: Retrieve a list of all order recommendations
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderRecommendationListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List all order recommendations
+      tags:
+      - Recommendations
+    post:
+      consumes:
+      - application/json
+      description: Add a new order recommendation to the system
+      parameters:
+      - description: Order Recommendation Data
+        in: body
+        name: recommendation
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateOrderRecommendationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/product.OrderRecommendationResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new order recommendation
+      tags:
+      - Recommendations
+    put:
+      consumes:
+      - application/json
+      description: Modify details of an existing order recommendation
+      parameters:
+      - description: Order Recommendation Update Data
+        in: body
+        name: recommendation
+        required: true
+        schema:
+          $ref: '#/definitions/product.UpdateOrderRecommendationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderRecommendationResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "404":
+          description: Recommendation Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update an order recommendation
+      tags:
+      - Recommendations
+  /api/recommendations/order/{recommendationId}:
+    delete:
+      description: Remove an order recommendation from the system by its ID
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: recommendationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            type: string
+        "400":
+          description: Invalid Recommendation ID
+          schema:
+            type: string
+        "404":
+          description: Recommendation Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete an order recommendation
+      tags:
+      - Recommendations
+    get:
+      description: Retrieve details of an order recommendation by its ID
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: recommendationId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OrderRecommendationResponse'
+        "400":
+          description: Invalid Recommendation ID
+          schema:
+            type: string
+        "404":
+          description: Recommendation Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get order recommendation by ID
+      tags:
+      - Recommendations
+  /api/recommended-orders:
+    get:
+      description: Retrieve a list of recommended orders for a courier
+      parameters:
+      - description: Courier ID
+        in: query
+        name: courierId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.GetRecommendedOrdersResponse'
+        "400":
+          description: Invalid Courier ID
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get recommended orders for a courier
+      tags:
+      - Orders
+  /api/tasks:
+    get:
+      description: Retrieve a list of all tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.GetAllTasksResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get all tasks
+      tags:
+      - Tasks
+  /api/tasks/{taskId}:
+    delete:
+      description: Remove a task from the system by its ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: taskId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid Task ID
+          schema:
+            type: string
+        "404":
+          description: Task Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete task by ID
+      tags:
+      - Tasks
+    get:
+      description: Retrieve details of a task by its ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: taskId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.TaskResponse'
+        "400":
+          description: Invalid Task ID
+          schema:
+            type: string
+        "404":
+          description: Task Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get task by ID
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      description: Update details of an existing task by its ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: taskId
+        required: true
+        type: string
+      - description: Task Data
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/courier.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/courier.TaskResponse'
+        "400":
+          description: Invalid Task ID
+          schema:
+            type: string
+        "404":
+          description: Task Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update task by ID
+      tags:
+      - Tasks
+  /api/tasks/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new task to the system
+      parameters:
+      - description: Task Data
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/courier.CreateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/courier.TaskResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new task
+      tags:
+      - Tasks
+  /api/users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetAllUsersResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get All Users
+      tags:
+      - Users
+  /api/users/{user_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete User
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a specific user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get User By ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update user details
+      parameters:
+      - description: Update User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "404":
+          description: User Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update User
+      tags:
+      - Users
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user and return a JWT token
+      parameters:
+      - description: User Login Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserLoginResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Login
+      tags:
+      - Users
+  /api/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user in the system
+      parameters:
+      - description: User Registration Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.UserRegisterResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: User Registration
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

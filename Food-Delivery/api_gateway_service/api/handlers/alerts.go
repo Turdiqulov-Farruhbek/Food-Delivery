@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param alert body notification.CreateAdminAlertRequest true "Alert Data"
-// @Success 201 {object} notification.CreateAdminAlertResponse
+// @Success 201 {object} notification.AdminAlertResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/alerts/admin [post]
@@ -40,7 +40,7 @@ func (h *Handler) CreateAdminAlert(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param alertId path string true "Alert ID"
-// @Success 200 {object} notification.GetAdminAlertResponse
+// @Success 200 {object} notification.AdminAlertResponse
 // @Failure 400 {object} string "Invalid Alert ID"
 // @Failure 404 {object} string "Alert Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -64,7 +64,7 @@ func (h *Handler) GetAdminAlert(c *gin.Context) {
 // @Security BearerAuth
 // @Param alertId path string true "Alert ID"
 // @Param alert body notification.UpdateAdminAlertRequest true "Alert Data"
-// @Success 200 {object} notification.UpdateAdminAlertResponse
+// @Success 200 {object} notification.AdminAlertResponse
 // @Failure 400 {object} string "Invalid Alert ID"
 // @Failure 404 {object} string "Alert Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -91,7 +91,7 @@ func (h *Handler) UpdateAdminAlert(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param alertId path string true "Alert ID"
-// @Success 200 {object} string "Alert deleted successfully"
+// @Success 200 {object} notification.AdminAlertResponse
 // @Failure 400 {object} string "Invalid Alert ID"
 // @Failure 404 {object} string "Alert Not Found"
 // @Failure 500 {object} string "Internal Server Error"

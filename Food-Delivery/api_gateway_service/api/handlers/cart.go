@@ -16,7 +16,7 @@ import (
 // @Produce json
 // @Security BearerAuth
 // @Param cart body product.CreateCartRequest true "Cart Data"
-// @Success 201 {object} product.CreateCartResponse
+// @Success 201 {object} product.CartResponse
 // @Failure 400 {object} string "Invalid Data"
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/carts/create [post]
@@ -40,7 +40,7 @@ func (h *Handler) CreateCart(c *gin.Context) {
 // @Produce json
 // @Security BearerAuth
 // @Param cartId path string true "Cart ID"
-// @Success 200 {object} product.GetCartResponse
+// @Success 200 {object} product.CartResponse
 // @Failure 400 {object} string "Invalid Cart ID"
 // @Failure 404 {object} string "Cart Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -64,7 +64,7 @@ func (h *Handler) GetCart(c *gin.Context) {
 // @Security BearerAuth
 // @Param cartId path string true "Cart ID"
 // @Param cart body product.UpdateCartRequest true "Cart Data"
-// @Success 200 {object} product.UpdateCartResponse
+// @Success 200 {object} product.CartResponse
 // @Failure 400 {object} string "Invalid Cart ID"
 // @Failure 404 {object} string "Cart Not Found"
 // @Failure 500 {object} string "Internal Server Error"
@@ -113,7 +113,7 @@ func (h *Handler) DeleteCart(c *gin.Context) {
 // @Tags Carts
 // @Produce json
 // @Security BearerAuth
-// @Success 200 {object} product.GetAllCartsResponse
+// @Success 200 {object} product.CartListResponse
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/carts [get]
 func (h *Handler) GetAllCarts(c *gin.Context) {
