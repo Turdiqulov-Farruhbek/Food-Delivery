@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	cfg "product_ordering/config"
 	"product_ordering/config/logger"
-	er "product_ordering/genproto"
+	er "product_ordering/genproto/product"
 	src "product_ordering/services"
 	post "product_ordering/storage/postgres"
 	"runtime"
@@ -37,7 +37,7 @@ func main() {
 	er.RegisterCartItemServiceServer(server, src.NewCartItemService(db, *logger))
 	er.RegisterCartServiceServer(server, src.NewCartService(db))
 	er.RegisterOrderRecommendationServiceServer(server, src.NewOrderRecommendationService(db))
-	er.RegisterOrderServiceServer(server, src.NewOrderService(db))
+	er.RegisterOrderProductServiceServer(server, src.NewOrderService(db))
 	er.RegisterProductServiceServer(server, src.NewProductService(db))
 
 	log.Println("Server is running on port :2030")

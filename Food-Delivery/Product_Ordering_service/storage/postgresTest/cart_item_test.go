@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	cartItem "product_ordering/genproto"
+	cartItem "product_ordering/genproto/product"
 	"product_ordering/storage/postgres"
 
 	"github.com/jackc/pgx/v5"
@@ -32,7 +32,7 @@ func setupDBConnCartItem(t *testing.T) *postgres.CartItem {
 // Helper function to create a new cart item for testing
 func newCartItemTest() *cartItem.CreateCartItemRequest {
 	return &cartItem.CreateCartItemRequest{
-		CartId:   "fdcf6b6f-e9db-49e5-be7f-cf429c53b462",
+		CartId:    "fdcf6b6f-e9db-49e5-be7f-cf429c53b462",
 		ProductId: "176dab25-69a9-4195-9699-3fa52232c8d6",
 		Quantity:  1,
 		Options:   `{"sss": "medium", "aacc": "red"}`,
@@ -94,7 +94,7 @@ func TestUpdateCartItem(t *testing.T) {
 	cartItemTest.Quantity = 5
 	cartItemTest.Options = `{"size": "large", "color": "blue"}` // JSON format
 	CartItemId = createdCartItemRes.CartItem.CartItemId
-	
+
 	updateReq := &cartItem.UpdateCartItemRequest{
 		CartItemId: CartItemId,
 		CartId:     cartItemTest.CartId,
@@ -125,7 +125,7 @@ func TestDeleteCartItem(t *testing.T) {
 	}
 
 	req := &cartItem.CartItemRequest{CartItemId: createdCartItemRes.CartItem.CartItemId}
-	_,err = cartItemDB.Delete(context.Background(), req)
+	_, err = cartItemDB.Delete(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Error deleting cart item: %v", err)
 	}
@@ -139,7 +139,6 @@ func TestDeleteCartItem(t *testing.T) {
 		t.Fatalf("Expected error for deleted cart item, but got nil")
 	}
 }
-
 
 // Test function to list cart items
 func TestListCartItems(t *testing.T) {
@@ -156,7 +155,7 @@ func TestListCartItems(t *testing.T) {
 		t.Fatalf("Error creating cart item: %v", err)
 	}
 
-	resp, err := cartItemDB.List(context.Background(), &cartItem.Empty{})
+	resp, err := cartItemDB.List(context.Background(), &cartItem.CartItemRequest{})
 	if err != nil {
 		t.Fatalf("Error listing cart items: %v", err)
 	}

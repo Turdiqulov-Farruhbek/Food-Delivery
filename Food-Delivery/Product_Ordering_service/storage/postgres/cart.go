@@ -5,7 +5,8 @@ import (
 	"errors"
 	"time"
 
-	cart "product_ordering/genproto"
+	cart "product_ordering/genproto/product"
+
 	"github.com/jackc/pgx/v5"
 )
 
@@ -128,7 +129,3 @@ func (c *Cart) List(ctx context.Context, req *cart.Empty) (*cart.CartListRespons
 		Carts: carts,
 	}, nil
 }
-
-
-
-

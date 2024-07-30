@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"product_ordering/genproto"
+	gen "product_ordering/genproto/product"
 	"product_ordering/storage/postgres"
 	"github.com/stretchr/testify/assert"
 	"github.com/jackc/pgx/v5"
@@ -32,7 +32,7 @@ func setupDBConProduct(t *testing.T) *postgres.Product {
 // Test funksiyasi Create uchun
 func TestCreateProduct(t *testing.T) {
 	product := setupDBConProduct(t)
-	req := &genproto.CreateProductRequest{
+	req := &gen.CreateProductRequest{
 		Name:        "Test Product",
 		Description: "Test Description",
 		Price:       100.0,
@@ -47,7 +47,7 @@ func TestCreateProduct(t *testing.T) {
 // Test funksiyasi Get uchun
 func TestGetProduct(t *testing.T) {
 	product := setupDBConProduct(t)
-	req := &genproto.ProductRequest{ProductId: "1"}
+	req := &gen.ProductRequest{ProductId: "1"}
 	resp, err := product.Get(context.Background(), req)
 	assert.NoError(t, err)
 	assert.NotNil(t, resp)
@@ -57,7 +57,7 @@ func TestGetProduct(t *testing.T) {
 // Test funksiyasi Update uchun
 func TestUpdateProduct(t *testing.T) {
 	product := setupDBConProduct(t)
-	req := &genproto.UpdateProductRequest{
+	req := &gen.UpdateProductRequest{
 		ProductId:   "1",
 		Name:        "Updated Product",
 		Description: "Updated Description",
@@ -73,7 +73,7 @@ func TestUpdateProduct(t *testing.T) {
 // Test funksiyasi Delete uchun
 func TestDeleteProduct(t *testing.T) {
 	product := setupDBConProduct(t)
-	req := &genproto.ProductRequest{ProductId: "1"}
+	req := &gen.ProductRequest{ProductId: "1"}
 	resp, err := product.Delete(context.Background(), req)
 	assert.NoError(t, err)
 	assert.NotNil(t, resp)
@@ -83,7 +83,7 @@ func TestDeleteProduct(t *testing.T) {
 // Test funksiyasi List uchun
 func TestListProducts(t *testing.T) {
 	product := setupDBConProduct(t)
-	resp, err := product.List(context.Background(), &genproto.Empty{})
+	resp, err := product.List(context.Background(), &gen.Empty{})
 	assert.NoError(t, err)
 	assert.NotNil(t, resp)
 	assert.Greater(t, len(resp.Products), 0)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"product_ordering/genproto"
+	gen "product_ordering/genproto/product"
 	"product_ordering/storage/postgres"
 
 	"github.com/jackc/pgx/v5"
@@ -30,10 +30,10 @@ func setupDBConOrder(t *testing.T) *postgres.Order {
 }
 
 // Helper function to create a new order for testing
-func newOrderTest() *genproto.CreateOrderRequest {
-	return &genproto.CreateOrderRequest{
+func newOrderTest() *gen.CreateOrderProductRequest {
+	return &gen.CreateOrderProductRequest{
 		UserId:     "test-user-id",
-		Status:     genproto.CardStatus_OR_PENDING,
+		Status:     gen.CardStatus_OR_PENDING,
 		TotalPrice: 100.0,
 	}
 }
@@ -65,7 +65,7 @@ func TestGetOrder(t *testing.T) {
 		t.Fatalf("Error creating order: %v", err)
 	}
 
-	req := &genproto.OrderRequest{OrderId: createdOrderRes.Order.OrderId}
+	req := &gen.OrderProductRequest{OrderId: createdOrderRes.Order.OrderId}
 	orderRes, err := orderDB.Get(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Error getting order: %v", err)
@@ -89,9 +89,9 @@ func TestUpdateOrder(t *testing.T) {
 	}
 
 	// Update fields
-	updateReq := &genproto.UpdateOrderRequest{
+	updateReq := &gen.UpdateOrderProductRequest{
 		OrderId:    createdOrderRes.Order.OrderId,
-		Status:     genproto.CardStatus_COMPLETED,
+		Status:     gen.CardStatus_COMPLETED,
 		TotalPrice: 150.0,
 	}
 	updatedOrderRes, err := orderDB.Update(context.Background(), updateReq)
@@ -115,14 +115,14 @@ func TestDeleteOrder(t *testing.T) {
 		t.Fatalf("Error creating order: %v", err)
 	}
 
-	req := &genproto.OrderRequest{OrderId: createdOrderRes.Order.OrderId}
+	req := &gen.OrderProductRequest{OrderId: createdOrderRes.Order.OrderId}
 	_, err = orderDB.Delete(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Error deleting order: %v", err)
 	}
 
 	// Try to get the deleted order
-	getReq := &genproto.OrderRequest{OrderId: createdOrderRes.Order.OrderId}
+	getReq := &gen.OrderProductRequest{OrderId: createdOrderRes.Order.OrderId}
 	_, err = orderDB.Get(context.Background(), getReq)
 	if err == nil {
 		t.Fatalf("Expected error for deleted order, but got nil")
@@ -139,7 +139,7 @@ func TestListOrders(t *testing.T) {
 		t.Fatalf("Error creating order: %v", err)
 	}
 
-	resp, err := orderDB.List(context.Background(), &genproto.OrderListRequest{})
+	resp, err := orderDB.List(context.Background(), &gen.OrderProductListRequest{})
 	if err != nil {
 		t.Fatalf("Error listing orders: %v", err)
 	}

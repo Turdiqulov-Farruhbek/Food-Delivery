@@ -3,7 +3,8 @@ package postgres
 import (
 	"context"
 	"errors"
-	product "product_ordering/genproto"
+	product "product_ordering/genproto/product"
+
 	"github.com/jackc/pgx/v5"
 )
 

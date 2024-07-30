@@ -2,7 +2,7 @@ package service
 
 import (
 	"context"
-	product "product_ordering/genproto"
+	product "product_ordering/genproto/product"
 	"product_ordering/storage"
 )
 

@@ -2,7 +2,7 @@ package storage
 
 import (
 	"context"
-	cartItem "product_ordering/genproto"
+	cartItem "product_ordering/genproto/product"
 )
 
 type StorageInterface interface {
@@ -18,7 +18,7 @@ type CartItemInterface interface {
 	Get(ctx context.Context, req *cartItem.CartItemRequest) (*cartItem.CartItemResponse, error)
 	Update(ctx context.Context, req *cartItem.UpdateCartItemRequest) (*cartItem.CartItemResponse, error)
 	Delete(ctx context.Context, req *cartItem.CartItemRequest) (*cartItem.CartItemResponse, error)
-	List(ctx context.Context, req *cartItem.Empty) (*cartItem.CartItemListResponse, error)
+	List(ctx context.Context, req *cartItem.CartItemRequest) (*cartItem.CartItemListResponse, error)
 }
 
 type CartInterface interface {
@@ -34,15 +34,15 @@ type OrderRecomendInterface interface {
 	Get(ctx context.Context, req *cartItem.OrderRecommendationRequest) (*cartItem.OrderRecommendationResponse, error)
 	Update(ctx context.Context, req *cartItem.UpdateOrderRecommendationRequest) (*cartItem.OrderRecommendationResponse, error)
 	Delete(ctx context.Context, req *cartItem.OrderRecommendationRequest) (*cartItem.OrderRecommendationResponse, error)
-	List(ctx context.Context, req *cartItem.Empty) (*cartItem.OrderRecommendationListResponse, error)	
+	List(ctx context.Context, req *cartItem.Empty) (*cartItem.OrderRecommendationListResponse, error)
 }
 
 type OrderInterface interface {
-	Create(ctx context.Context, req *cartItem.CreateOrderRequest) (*cartItem.OrderResponse, error)
-	Get(ctx context.Context, req *cartItem.OrderRequest) (*cartItem.OrderResponse, error)
-	Update(ctx context.Context, req *cartItem.UpdateOrderRequest) (*cartItem.OrderResponse, error)
-	Delete(ctx context.Context, req *cartItem.OrderRequest) (*cartItem.OrderResponse, error)
-	List(ctx context.Context, req *cartItem.OrderListRequest) (*cartItem.OrderListResponse, error)
+	Create(ctx context.Context, req *cartItem.CreateOrderProductRequest) (*cartItem.OrderProductResponse, error)
+	Get(ctx context.Context, req *cartItem.OrderProductRequest) (*cartItem.OrderProductResponse, error)
+	Update(ctx context.Context, req *cartItem.UpdateOrderProductRequest) (*cartItem.OrderProductResponse, error)
+	Delete(ctx context.Context, req *cartItem.OrderProductRequest) (*cartItem.OrderProductResponse, error)
+	List(ctx context.Context, req *cartItem.OrderProductListRequest) (*cartItem.OrderProductListResponse, error)
 }
 
 type ProductInterface interface {

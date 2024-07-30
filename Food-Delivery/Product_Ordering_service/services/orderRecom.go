@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	orderRecommendation "product_ordering/genproto"
+	orderRecommendation "product_ordering/genproto/product"
 	"product_ordering/storage"
 )
 

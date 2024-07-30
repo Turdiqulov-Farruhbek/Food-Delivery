@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"product_ordering/genproto"
+	gen "product_ordering/genproto/product"
 	"product_ordering/storage/postgres"
 
 	"github.com/jackc/pgx/v5"
@@ -30,12 +30,12 @@ func setupDBConOrderRecommendation(t *testing.T) *postgres.OrderRecommendation {
 }
 
 // Helper function to create a new order recommendation for testing
-func newOrderRecommendationTest() *genproto.CreateOrderRecommendationRequest {
-	return &genproto.CreateOrderRecommendationRequest{
+func newOrderRecommendationTest() *gen.CreateOrderRecommendationRequest {
+	return &gen.CreateOrderRecommendationRequest{
 		OrderId:       "test-order-id",
 		CourierId:     "test-courier-id",
 		RecommendedAt: "2024-07-05T00:00:00Z",
-		Status:        genproto.RecommendationStatus_PENDING,
+		Status:        gen.RecommendationStatus_PENDING,
 	}
 }
 
@@ -68,7 +68,7 @@ func TestGetOrderRecommendation(t *testing.T) {
 		t.Fatalf("Error creating order recommendation: %v", err)
 	}
 
-	req := &genproto.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
+	req := &gen.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
 	orderRecommendationRes, err := orderRecommendationDB.Get(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Error getting order recommendation: %v", err)
@@ -93,12 +93,12 @@ func TestUpdateOrderRecommendation(t *testing.T) {
 	}
 
 	// Update fields
-	updateReq := &genproto.UpdateOrderRecommendationRequest{
+	updateReq := &gen.UpdateOrderRecommendationRequest{
 		RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId,
 		OrderId:          "updated-order-id",
 		CourierId:        "updated-courier-id",
 		RecommendedAt:    "2024-07-06T00:00:00Z",
-		Status:           genproto.RecommendationStatus_ACCEPTED,
+		Status:           gen.RecommendationStatus_ACCEPTED,
 	}
 	updatedOrderRecommendationRes, err := orderRecommendationDB.Update(context.Background(), updateReq)
 	if err != nil {
@@ -123,14 +123,14 @@ func TestDeleteOrderRecommendation(t *testing.T) {
 		t.Fatalf("Error creating order recommendation: %v", err)
 	}
 
-	req := &genproto.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
+	req := &gen.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
 	_, err = orderRecommendationDB.Delete(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Error deleting order recommendation: %v", err)
 	}
 
 	// Try to get the deleted order recommendation
-	getReq := &genproto.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
+	getReq := &gen.OrderRecommendationRequest{RecommendationId: createdOrderRecommendationRes.OrderRecommendation.RecommendationId}
 	_, err = orderRecommendationDB.Get(context.Background(), getReq)
 	if err == nil {
 		t.Fatalf("Expected error for deleted order recommendation, but got nil")
@@ -147,7 +147,7 @@ func TestListOrderRecommendations(t *testing.T) {
 		t.Fatalf("Error creating order recommendation: %v", err)
 	}
 
-	resp, err := orderRecommendationDB.List(context.Background(), &genproto.Empty{})
+	resp, err := orderRecommendationDB.List(context.Background(), &gen.Empty{})
 	if err != nil {
 		t.Fatalf("Error listing order recommendations: %v", err)
 	}

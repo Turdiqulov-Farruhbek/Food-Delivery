@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"product_ordering/config/logger"
-	cartItem "product_ordering/genproto"
+	cartItem "product_ordering/genproto/product"
 	"product_ordering/storage"
 )
 
@@ -13,7 +13,6 @@ type CartItemService struct {
 	store storage.StorageInterface
 	cartItem.UnimplementedCartItemServiceServer
 	log logger.Logger
-
 }
 
 // NewCartItemService yangi CartItemService ni yaratadi
@@ -24,10 +23,10 @@ func NewCartItemService(store storage.StorageInterface, logg logger.Logger) *Car
 // CreateCartItem RPC chaqiruvini bajaradi va savat mahsulotini yaratadi
 func (s *CartItemService) CreateCartItem(ctx context.Context, req *cartItem.CreateCartItemRequest) (*cartItem.CartItemResponse, error) {
 	res, err := s.store.CartItem().Create(ctx, req)
-	if err!= nil {
+	if err != nil {
 		s.log.ERROR.Println("erroRRR", err)
-        return nil, err
-    }
+		return nil, err
+	}
 
 	return res, nil
 }
@@ -48,6 +47,6 @@ func (s *CartItemService) DeleteCartItem(ctx context.Context, req *cartItem.Cart
 }
 
 // ListCartItems RPC chaqiruvini bajaradi va savat mahsulotlari ro'yxatini qaytaradi
-func (s *CartItemService) ListCartItems(ctx context.Context, req *cartItem.Empty) (*cartItem.CartItemListResponse, error) {
+func (s *CartItemService) ListCartItems(ctx context.Context, req *cartItem.CartItemRequest) (*cartItem.CartItemListResponse, error) {
 	return s.store.CartItem().List(ctx, req)
 }

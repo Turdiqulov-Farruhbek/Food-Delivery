@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: OrderRecom.proto
 
-package genproto
+package product
 
 import (
 	context "context"
