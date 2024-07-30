@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	ntf "Notification/genproto"
+	ntf "Notification/genproto/notification"
 	stor "Notification/storage"
 
 	"github.com/jackc/pgx/v5"

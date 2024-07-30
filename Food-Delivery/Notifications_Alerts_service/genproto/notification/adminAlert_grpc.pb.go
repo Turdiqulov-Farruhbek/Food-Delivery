@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: adminAlert.proto
 
-package genproto
+package notification
 
 import (
 	context "context"
@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	AdminAlertService_CreateAdminAlert_FullMethodName = "/ecommerce.AdminAlertService/CreateAdminAlert"
 	AdminAlertService_GetAdminAlert_FullMethodName    = "/ecommerce.AdminAlertService/GetAdminAlert"
+	AdminAlertService_UpdateAdminAlert_FullMethodName = "/ecommerce.AdminAlertService/UpdateAdminAlert"
 	AdminAlertService_DeleteAdminAlert_FullMethodName = "/ecommerce.AdminAlertService/DeleteAdminAlert"
 	AdminAlertService_ListAdminAlerts_FullMethodName  = "/ecommerce.AdminAlertService/ListAdminAlerts"
 )
@@ -35,6 +36,8 @@ type AdminAlertServiceClient interface {
 	CreateAdminAlert(ctx context.Context, in *CreateAdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error)
 	// Admin ogohlantirishini olish
 	GetAdminAlert(ctx context.Context, in *AdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error)
+	// Admin ogohlantirishini yangilash
+	UpdateAdminAlert(ctx context.Context, in *UpdateAdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error)
 	// Admin ogohlantirishini o'chirish
 	DeleteAdminAlert(ctx context.Context, in *AdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error)
 	// Barcha admin ogohlantirishlarini olish
@@ -63,6 +66,16 @@ func (c *adminAlertServiceClient) GetAdminAlert(ctx context.Context, in *AdminAl
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AdminAlertResponse)
 	err := c.cc.Invoke(ctx, AdminAlertService_GetAdminAlert_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *adminAlertServiceClient) UpdateAdminAlert(ctx context.Context, in *UpdateAdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminAlertResponse)
+	err := c.cc.Invoke(ctx, AdminAlertService_UpdateAdminAlert_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,6 +112,8 @@ type AdminAlertServiceServer interface {
 	CreateAdminAlert(context.Context, *CreateAdminAlertRequest) (*AdminAlertResponse, error)
 	// Admin ogohlantirishini olish
 	GetAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error)
+	// Admin ogohlantirishini yangilash
+	UpdateAdminAlert(context.Context, *UpdateAdminAlertRequest) (*AdminAlertResponse, error)
 	// Admin ogohlantirishini o'chirish
 	DeleteAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error)
 	// Barcha admin ogohlantirishlarini olish
@@ -115,6 +130,9 @@ func (UnimplementedAdminAlertServiceServer) CreateAdminAlert(context.Context, *C
 }
 func (UnimplementedAdminAlertServiceServer) GetAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAdminAlert not implemented")
+}
+func (UnimplementedAdminAlertServiceServer) UpdateAdminAlert(context.Context, *UpdateAdminAlertRequest) (*AdminAlertResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAdminAlert not implemented")
 }
 func (UnimplementedAdminAlertServiceServer) DeleteAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAdminAlert not implemented")
@@ -171,6 +189,24 @@ func _AdminAlertService_GetAdminAlert_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AdminAlertService_UpdateAdminAlert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAdminAlertRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AdminAlertServiceServer).UpdateAdminAlert(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AdminAlertService_UpdateAdminAlert_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AdminAlertServiceServer).UpdateAdminAlert(ctx, req.(*UpdateAdminAlertRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AdminAlertService_DeleteAdminAlert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AdminAlertRequest)
 	if err := dec(in); err != nil {
@@ -221,6 +257,10 @@ var AdminAlertService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAdminAlert",
 			Handler:    _AdminAlertService_GetAdminAlert_Handler,
+		},
+		{
+			MethodName: "UpdateAdminAlert",
+			Handler:    _AdminAlertService_UpdateAdminAlert_Handler,
 		},
 		{
 			MethodName: "DeleteAdminAlert",

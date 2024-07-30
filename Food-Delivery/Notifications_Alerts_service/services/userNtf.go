@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	ntf "Notification/genproto"
+	ntf "Notification/genproto/notification"
 	stor "Notification/storage"
 
 	"github.com/jackc/pgx/v5"
@@ -49,16 +49,16 @@ func (s *UserNotificationService) GetUserNotification(ctx context.Context, req *
 	}
 
 	return &ntf.UserNotificationResponse{
-		Success:      true,
-		Message:      "User notification retrieved successfully",
+		Success: true,
+		Message: "User notification retrieved successfully",
 		Notification: &ntf.UserNotification{
 			NotificationId: resNtf.Notification.NotificationId,
-            UserId:         resNtf.Notification.UserId,
-            OrderId:        resNtf.Notification.OrderId,
-            Type:           resNtf.Notification.Type,
-            Message:        resNtf.Notification.Message,
-            CreatedAt:     resNtf.Notification.CreatedAt,
-            IsRead:        resNtf.Notification.IsRead,
+			UserId:         resNtf.Notification.UserId,
+			OrderId:        resNtf.Notification.OrderId,
+			Type:           resNtf.Notification.Type,
+			Message:        resNtf.Notification.Message,
+			CreatedAt:      resNtf.Notification.CreatedAt,
+			IsRead:         resNtf.Notification.IsRead,
 		},
 	}, nil
 }
@@ -71,14 +71,14 @@ func (s *UserNotificationService) DeleteUserNotification(ctx context.Context, re
 
 	return &ntf.UserNotificationResponse{
 		Success: true,
-        Message: "User notification deleted successfully",
-        Notification: &ntf.UserNotification{
-            NotificationId: resp.Notification.NotificationId,
-            UserId:         resp.Notification.UserId,
-            OrderId:        resp.Notification.OrderId,
-            Type:           resp.Notification.Type,
-            Message:        resp.Notification.Message,
-        },
+		Message: "User notification deleted successfully",
+		Notification: &ntf.UserNotification{
+			NotificationId: resp.Notification.NotificationId,
+			UserId:         resp.Notification.UserId,
+			OrderId:        resp.Notification.OrderId,
+			Type:           resp.Notification.Type,
+			Message:        resp.Notification.Message,
+		},
 	}, nil
 }
 

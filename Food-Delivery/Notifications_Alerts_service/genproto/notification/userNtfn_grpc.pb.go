@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: userNtfn.proto
 
-package genproto
+package notification
 
 import (
 	context "context"

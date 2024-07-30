@@ -1,8 +1,8 @@
 package storage
 
 import (
+	ntf "Notification/genproto/notification"
 	"context"
-	ntf "Notification/genproto"
 )
 
 type StorageInterface interface {
@@ -18,18 +18,16 @@ type AdminAlirtInterface interface {
 	ListAdminAlerts(ctx context.Context, req *ntf.Empty) (*ntf.AdminAlertListResponse, error)
 }
 
-
 type CourierNtfInterface interface {
-    CreateCourierNtf(ctx context.Context, req *ntf.CreateCourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
-    GetCourierNtf(ctx context.Context, req *ntf.CourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
-    DeleteCourierNtf(ctx context.Context, req *ntf.CourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
+	CreateCourierNtf(ctx context.Context, req *ntf.CreateCourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
+	GetCourierNtf(ctx context.Context, req *ntf.CourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
+	DeleteCourierNtf(ctx context.Context, req *ntf.CourierNotificationRequest) (*ntf.CourierNotificationResponse, error)
 	ListCourierNtf(ctx context.Context, req *ntf.Empty) (*ntf.CourierNotificationListResponse, error)
 }
 
-
 type UserNtfInterface interface {
-    CreateUserNtf(ctx context.Context, req *ntf.CreateUserNotificationRequest) (*ntf.UserNotificationResponse, error)
-    GetUserNtf(ctx context.Context, req *ntf.UserNotificationRequest) (*ntf.UserNotificationResponse, error)
-    DeleteUserNtf(ctx context.Context, req *ntf.UserNotificationRequest) (*ntf.UserNotificationResponse, error)
+	CreateUserNtf(ctx context.Context, req *ntf.CreateUserNotificationRequest) (*ntf.UserNotificationResponse, error)
+	GetUserNtf(ctx context.Context, req *ntf.UserNotificationRequest) (*ntf.UserNotificationResponse, error)
+	DeleteUserNtf(ctx context.Context, req *ntf.UserNotificationRequest) (*ntf.UserNotificationResponse, error)
 	ListUserNtf(ctx context.Context, req *ntf.Empty) (*ntf.UserNotificationListResponse, error)
 }

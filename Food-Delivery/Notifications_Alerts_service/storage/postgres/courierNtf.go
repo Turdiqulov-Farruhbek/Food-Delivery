@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	ntf "Notification/genproto"
+	ntf "Notification/genproto/notification"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"

@@ -2,7 +2,7 @@ package main
 
 import (
 	cfg "Notification/config"
-	er "Notification/genproto"
+	er "Notification/genproto/notification"
 	src "Notification/services"
 	post "Notification/storage/postgres"
 	"log"

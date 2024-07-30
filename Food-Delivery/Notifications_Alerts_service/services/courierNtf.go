@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	ntf "Notification/genproto"
+	ntf "Notification/genproto/notification"
 	stor "Notification/storage"
 
 	"github.com/jackc/pgx/v5"
@@ -27,16 +27,16 @@ func (s *CourierNotificationService) CreateCourierNotification(ctx context.Conte
 	}
 
 	return &ntf.CourierNotificationResponse{
-		Success:     true,
-		Message:     "Courier notification created successfully",
+		Success: true,
+		Message: "Courier notification created successfully",
 		Notification: &ntf.CourierNotification{
 			NotificationId: resNtf.Notification.NotificationId,
-            CourierId:      resNtf.Notification.CourierId,
-            OrderId:         resNtf.Notification.OrderId,
-            Type:            resNtf.Notification.Type,
-            Message:         resNtf.Notification.Message,
-            CreatedAt:      resNtf.Notification.CreatedAt,
-            IsRead:         resNtf.Notification.IsRead,
+			CourierId:      resNtf.Notification.CourierId,
+			OrderId:        resNtf.Notification.OrderId,
+			Type:           resNtf.Notification.Type,
+			Message:        resNtf.Notification.Message,
+			CreatedAt:      resNtf.Notification.CreatedAt,
+			IsRead:         resNtf.Notification.IsRead,
 		},
 	}, nil
 }
@@ -51,16 +51,16 @@ func (s *CourierNotificationService) GetCourierNotification(ctx context.Context,
 	}
 
 	return &ntf.CourierNotificationResponse{
-		Success:     true,
-		Message:     "Courier notification retrieved successfully",
+		Success: true,
+		Message: "Courier notification retrieved successfully",
 		Notification: &ntf.CourierNotification{
 			NotificationId: resNtf.Notification.NotificationId,
-            CourierId:      resNtf.Notification.CourierId,
-            OrderId:         resNtf.Notification.OrderId,
-            Type:            resNtf.Notification.Type,
-            Message:         resNtf.Notification.Message,
-            CreatedAt:      resNtf.Notification.CreatedAt,
-            IsRead:         resNtf.Notification.IsRead,
+			CourierId:      resNtf.Notification.CourierId,
+			OrderId:        resNtf.Notification.OrderId,
+			Type:           resNtf.Notification.Type,
+			Message:        resNtf.Notification.Message,
+			CreatedAt:      resNtf.Notification.CreatedAt,
+			IsRead:         resNtf.Notification.IsRead,
 		},
 	}, nil
 }
@@ -72,16 +72,16 @@ func (s *CourierNotificationService) DeleteCourierNotification(ctx context.Conte
 	}
 
 	return &ntf.CourierNotificationResponse{
-		Success:     true,
-		Message:     "Courier notification retrieved successfully",
+		Success: true,
+		Message: "Courier notification retrieved successfully",
 		Notification: &ntf.CourierNotification{
 			NotificationId: resNtf.Notification.NotificationId,
-            CourierId:      resNtf.Notification.CourierId,
-            OrderId:         resNtf.Notification.OrderId,
-            Type:            resNtf.Notification.Type,
-            Message:         resNtf.Notification.Message,
-            CreatedAt:      resNtf.Notification.CreatedAt,
-            IsRead:         resNtf.Notification.IsRead,
+			CourierId:      resNtf.Notification.CourierId,
+			OrderId:        resNtf.Notification.OrderId,
+			Type:           resNtf.Notification.Type,
+			Message:        resNtf.Notification.Message,
+			CreatedAt:      resNtf.Notification.CreatedAt,
+			IsRead:         resNtf.Notification.IsRead,
 		},
 	}, nil
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	ntf "Notification/genproto"
+	ntf "Notification/genproto/notification"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -105,4 +105,3 @@ func (u *UserNtf) ListUserNtf(ctx context.Context, req *ntf.Empty) (*ntf.UserNot
 		Notifications: notifications,
 	}, nil
 }
-

@@ -1,0 +1,9 @@
+[submodule "Food-Delivery/Notifications_Alerts_service/path/to/submodule"]
+	path = Food-Delivery/Notifications_Alerts_service/path/to/submodule
+	url = git@github.com:Turdiqulov-Farruhbek/food_submodule.git
+[submodule "Food-Delivery/Notifications_Alerts_service/food_submodule"]
+	path = Food-Delivery/Notifications_Alerts_service/food_submodule
+	url = git@github.com:Turdiqulov-Farruhbek/food_submodule.git
+[submodule "Food-Delivery/Product_Ordering_service/food_submodule"]
+	path = Food-Delivery/Product_Ordering_service/food_submodule
+	url = git@github.com:Turdiqulov-Farruhbek/food_submodule.git
