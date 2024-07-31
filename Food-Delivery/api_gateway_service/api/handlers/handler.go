@@ -26,21 +26,21 @@ type Handler struct {
 	User                  u.AuthServiceClient
 }
 
-func NewHandler(conn *grpc.ClientConn) *Handler {
+func NewHandler(cr, pr, ntfn *grpc.ClientConn) *Handler {
 	return &Handler{
-        Courier_C:             c.NewCourierServiceClient(conn),
-        CourierOrder_C:        c.NewCourierOrderServiceClient(conn),
-        Order_C:               c.NewOrderServiceClient(conn),
-        CourierLocation_C:     c.NewCourierLocationServiceClient(conn),
-        Task_C:                c.NewTaskServiceClient(conn),
-        AdminAlert_N:          n.NewAdminAlertServiceClient(conn),
-        CourierNtfn_N:         n.NewCourierNotificationServiceClient(conn),
-        UserNtfn_N:            n.NewUserNotificationServiceClient(conn),
-        Cart_P:                p.NewCartServiceClient(conn),
-        CartItemS_P:           p.NewCartItemServiceClient(conn),
-        Order_P:               p.NewOrderProductServiceClient(conn),
-        OrderRecommendation_P: p.NewOrderRecommendationServiceClient(conn),
-		Product_P:             p.NewProductServiceClient(conn),
-        User:                  u.NewAuthServiceClient(conn),
+        Courier_C:             c.NewCourierServiceClient(cr),
+        CourierOrder_C:        c.NewCourierOrderServiceClient(cr),
+        Order_C:               c.NewOrderServiceClient(cr),
+        CourierLocation_C:     c.NewCourierLocationServiceClient(cr),
+        Task_C:                c.NewTaskServiceClient(cr),
+        AdminAlert_N:          n.NewAdminAlertServiceClient(ntfn),
+        CourierNtfn_N:         n.NewCourierNotificationServiceClient(ntfn),
+        UserNtfn_N:            n.NewUserNotificationServiceClient(ntfn),
+        Cart_P:                p.NewCartServiceClient(pr),
+        CartItemS_P:           p.NewCartItemServiceClient(pr),
+        Order_P:               p.NewOrderProductServiceClient(pr),
+        OrderRecommendation_P: p.NewOrderRecommendationServiceClient(pr),
+		Product_P:             p.NewProductServiceClient(pr),
+        User:                  u.NewAuthServiceClient(cr),
 	}
 }

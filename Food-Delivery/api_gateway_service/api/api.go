@@ -23,8 +23,8 @@ import (
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
-func NewGin(conn *grpc.ClientConn) *gin.Engine {
-	h := handler.NewHandler(conn)
+func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
+	h := handler.NewHandler(cr, pr, ntfn)
 
 	router := gin.Default()
 

@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: courierNtfn.proto
 
+// import "adminAlert.proto";
+
 package notification
 
 import (

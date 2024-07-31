@@ -68,7 +68,7 @@ func (h *Handler) GetUserNotification(c *gin.Context) {
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/notifications/user [get]
 func (h *Handler) ListUserNotifications(c *gin.Context) {
-	resp, err := h.UserNtfn_N.ListUserNotifications(context.Background(), &notification.Empty{})
+	resp, err := h.UserNtfn_N.ListUserNotifications(context.Background(), &notification.EmptyUser{})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
