@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: courier.proto
 
+// import "courier_Order.proto";
+
 package courier
 
 import (
@@ -41,7 +43,7 @@ type CourierServiceClient interface {
 	// Kuryerni o'chirish
 	DeleteCourier(ctx context.Context, in *CourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
 	// Barcha kuryerlar ro'yxatini olish
-	ListCouriers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierListResponse, error)
+	ListCouriers(ctx context.Context, in *EmptyCourier, opts ...grpc.CallOption) (*CourierListResponse, error)
 }
 
 type courierServiceClient struct {
@@ -92,7 +94,7 @@ func (c *courierServiceClient) DeleteCourier(ctx context.Context, in *CourierReq
 	return out, nil
 }
 
-func (c *courierServiceClient) ListCouriers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierListResponse, error) {
+func (c *courierServiceClient) ListCouriers(ctx context.Context, in *EmptyCourier, opts ...grpc.CallOption) (*CourierListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierListResponse)
 	err := c.cc.Invoke(ctx, CourierService_ListCouriers_FullMethodName, in, out, cOpts...)
@@ -117,7 +119,7 @@ type CourierServiceServer interface {
 	// Kuryerni o'chirish
 	DeleteCourier(context.Context, *CourierRequest) (*CourierResponse, error)
 	// Barcha kuryerlar ro'yxatini olish
-	ListCouriers(context.Context, *Empty) (*CourierListResponse, error)
+	ListCouriers(context.Context, *EmptyCourier) (*CourierListResponse, error)
 	mustEmbedUnimplementedCourierServiceServer()
 }
 
@@ -137,7 +139,7 @@ func (UnimplementedCourierServiceServer) UpdateCourier(context.Context, *UpdateC
 func (UnimplementedCourierServiceServer) DeleteCourier(context.Context, *CourierRequest) (*CourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCourier not implemented")
 }
-func (UnimplementedCourierServiceServer) ListCouriers(context.Context, *Empty) (*CourierListResponse, error) {
+func (UnimplementedCourierServiceServer) ListCouriers(context.Context, *EmptyCourier) (*CourierListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCouriers not implemented")
 }
 func (UnimplementedCourierServiceServer) mustEmbedUnimplementedCourierServiceServer() {}
@@ -226,7 +228,7 @@ func _CourierService_DeleteCourier_Handler(srv interface{}, ctx context.Context,
 }
 
 func _CourierService_ListCouriers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyCourier)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +240,7 @@ func _CourierService_ListCouriers_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: CourierService_ListCouriers_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierServiceServer).ListCouriers(ctx, req.(*Empty))
+		return srv.(CourierServiceServer).ListCouriers(ctx, req.(*EmptyCourier))
 	}
 	return interceptor(ctx, in, info, handler)
 }
