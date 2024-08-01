@@ -21,7 +21,7 @@ type CourierOrderInterface interface {
 	GetCourierOrder (ctx context.Context, req *courierOrder.CourierOrderRequest) (*courierOrder.CourierOrderResponse, error)
 	UpdateCourierOrder (ctx context.Context, req *courierOrder.UpdateCourierOrderRequest) (*courierOrder.CourierOrderResponse, error)
 	DeleteCourierOrder (ctx context.Context, req *courierOrder.CourierOrderRequest) (*courierOrder.CourierOrderResponse, error)
-	ListCourierOrders (ctx context.Context, req *courierOrder.Empty) (*courierOrder.CourierOrderListResponse, error)
+	ListCourierOrders (ctx context.Context, req *courierOrder.EmptyCourierOrder) (*courierOrder.CourierOrderListResponse, error)
 }
 
 type CourierInterface interface {
@@ -29,7 +29,7 @@ type CourierInterface interface {
 	GetCourier (ctx context.Context, req *courierOrder.CourierRequest) (*courierOrder.CourierResponse, error)
 	UpdateCourier (ctx context.Context, req *courierOrder.UpdateCourierRequest) (*courierOrder.CourierResponse, error)
 	DeleteCourier (ctx context.Context, req *courierOrder.CourierRequest) (*courierOrder.CourierResponse, error)
-	ListCouriers (ctx context.Context, req *courierOrder.Empty) (*courierOrder.CourierListResponse, error)
+	ListCouriers (ctx context.Context, req *courierOrder.EmptyCourier) (*courierOrder.CourierListResponse, error)
 }
 
 type OrderInterface interface {

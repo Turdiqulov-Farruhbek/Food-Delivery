@@ -159,7 +159,7 @@ func TestCourierOrder_ListCourierOrders(t *testing.T) {
 	}
 
 	// Barcha kuryer-buyurtma munosabatlarini olish
-	listResp, err := storage.ListCourierOrders(context.Background(), &courier.Empty{})
+	listResp, err := storage.ListCourierOrders(context.Background(), &courier.EmptyCourierOrder{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.CourierOrders))
 }

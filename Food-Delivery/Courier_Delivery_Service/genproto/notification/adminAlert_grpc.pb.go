@@ -41,7 +41,7 @@ type AdminAlertServiceClient interface {
 	// Admin ogohlantirishini o'chirish
 	DeleteAdminAlert(ctx context.Context, in *AdminAlertRequest, opts ...grpc.CallOption) (*AdminAlertResponse, error)
 	// Barcha admin ogohlantirishlarini olish
-	ListAdminAlerts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AdminAlertListResponse, error)
+	ListAdminAlerts(ctx context.Context, in *EmptyAdmen, opts ...grpc.CallOption) (*AdminAlertListResponse, error)
 }
 
 type adminAlertServiceClient struct {
@@ -92,7 +92,7 @@ func (c *adminAlertServiceClient) DeleteAdminAlert(ctx context.Context, in *Admi
 	return out, nil
 }
 
-func (c *adminAlertServiceClient) ListAdminAlerts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AdminAlertListResponse, error) {
+func (c *adminAlertServiceClient) ListAdminAlerts(ctx context.Context, in *EmptyAdmen, opts ...grpc.CallOption) (*AdminAlertListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AdminAlertListResponse)
 	err := c.cc.Invoke(ctx, AdminAlertService_ListAdminAlerts_FullMethodName, in, out, cOpts...)
@@ -117,7 +117,7 @@ type AdminAlertServiceServer interface {
 	// Admin ogohlantirishini o'chirish
 	DeleteAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error)
 	// Barcha admin ogohlantirishlarini olish
-	ListAdminAlerts(context.Context, *Empty) (*AdminAlertListResponse, error)
+	ListAdminAlerts(context.Context, *EmptyAdmen) (*AdminAlertListResponse, error)
 	mustEmbedUnimplementedAdminAlertServiceServer()
 }
 
@@ -137,7 +137,7 @@ func (UnimplementedAdminAlertServiceServer) UpdateAdminAlert(context.Context, *U
 func (UnimplementedAdminAlertServiceServer) DeleteAdminAlert(context.Context, *AdminAlertRequest) (*AdminAlertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAdminAlert not implemented")
 }
-func (UnimplementedAdminAlertServiceServer) ListAdminAlerts(context.Context, *Empty) (*AdminAlertListResponse, error) {
+func (UnimplementedAdminAlertServiceServer) ListAdminAlerts(context.Context, *EmptyAdmen) (*AdminAlertListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAdminAlerts not implemented")
 }
 func (UnimplementedAdminAlertServiceServer) mustEmbedUnimplementedAdminAlertServiceServer() {}
@@ -226,7 +226,7 @@ func _AdminAlertService_DeleteAdminAlert_Handler(srv interface{}, ctx context.Co
 }
 
 func _AdminAlertService_ListAdminAlerts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyAdmen)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func _AdminAlertService_ListAdminAlerts_Handler(srv interface{}, ctx context.Con
 		FullMethod: AdminAlertService_ListAdminAlerts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AdminAlertServiceServer).ListAdminAlerts(ctx, req.(*Empty))
+		return srv.(AdminAlertServiceServer).ListAdminAlerts(ctx, req.(*EmptyAdmen))
 	}
 	return interceptor(ctx, in, info, handler)
 }

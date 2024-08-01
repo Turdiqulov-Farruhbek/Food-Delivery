@@ -131,7 +131,7 @@ func (c *Courier) DeleteCourier(ctx context.Context, req *cr.CourierRequest) (*c
 }
 
 // ListCouriers barcha kuryer yozuvlarini qaytaradi
-func (c *Courier) ListCouriers(ctx context.Context, req *cr.Empty) (*cr.CourierListResponse, error) {
+func (c *Courier) ListCouriers(ctx context.Context, req *cr.EmptyCourier) (*cr.CourierListResponse, error) {
 	query := `SELECT courier_id, name, phone_number, email, status FROM couriers WHERE deleted_at=0`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {

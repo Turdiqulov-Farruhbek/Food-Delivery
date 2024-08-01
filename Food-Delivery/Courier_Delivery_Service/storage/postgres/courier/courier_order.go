@@ -136,7 +136,7 @@ func (c *CourierOrder) DeleteCourierOrder(ctx context.Context, req *courier.Cour
 }
 
 // List barcha kuryer-buyurtma munosabatlari ro'yxatini qaytaradi
-func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *courier.Empty) (*courier.CourierOrderListResponse, error) {
+func (c *CourierOrder) ListCourierOrders(ctx context.Context, req *courier.EmptyCourierOrder) (*courier.CourierOrderListResponse, error) {
 	query := `SELECT courier_order_id, courier_id, order_id, status, assigned_time, last_updated FROM courierorders WHERE deleted_at=0`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {

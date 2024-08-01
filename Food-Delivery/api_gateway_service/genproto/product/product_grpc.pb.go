@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: product.proto
 
+// import "cart.proto";
+
 package product
 
 import (
@@ -41,7 +43,7 @@ type ProductServiceClient interface {
 	// Mahsulotni o'chirish
 	DeleteProduct(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductResponse, error)
 	// Mahsulotlar ro'yxatini olish
-	ListProducts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ProductListResponse, error)
+	ListProducts(ctx context.Context, in *EmptyProduct, opts ...grpc.CallOption) (*ProductListResponse, error)
 }
 
 type productServiceClient struct {
@@ -92,7 +94,7 @@ func (c *productServiceClient) DeleteProduct(ctx context.Context, in *ProductReq
 	return out, nil
 }
 
-func (c *productServiceClient) ListProducts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ProductListResponse, error) {
+func (c *productServiceClient) ListProducts(ctx context.Context, in *EmptyProduct, opts ...grpc.CallOption) (*ProductListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProductListResponse)
 	err := c.cc.Invoke(ctx, ProductService_ListProducts_FullMethodName, in, out, cOpts...)
@@ -117,7 +119,7 @@ type ProductServiceServer interface {
 	// Mahsulotni o'chirish
 	DeleteProduct(context.Context, *ProductRequest) (*ProductResponse, error)
 	// Mahsulotlar ro'yxatini olish
-	ListProducts(context.Context, *Empty) (*ProductListResponse, error)
+	ListProducts(context.Context, *EmptyProduct) (*ProductListResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -137,7 +139,7 @@ func (UnimplementedProductServiceServer) UpdateProduct(context.Context, *UpdateP
 func (UnimplementedProductServiceServer) DeleteProduct(context.Context, *ProductRequest) (*ProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProduct not implemented")
 }
-func (UnimplementedProductServiceServer) ListProducts(context.Context, *Empty) (*ProductListResponse, error) {
+func (UnimplementedProductServiceServer) ListProducts(context.Context, *EmptyProduct) (*ProductListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProducts not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
@@ -226,7 +228,7 @@ func _ProductService_DeleteProduct_Handler(srv interface{}, ctx context.Context,
 }
 
 func _ProductService_ListProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyProduct)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +240,7 @@ func _ProductService_ListProducts_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: ProductService_ListProducts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).ListProducts(ctx, req.(*Empty))
+		return srv.(ProductServiceServer).ListProducts(ctx, req.(*EmptyProduct))
 	}
 	return interceptor(ctx, in, info, handler)
 }

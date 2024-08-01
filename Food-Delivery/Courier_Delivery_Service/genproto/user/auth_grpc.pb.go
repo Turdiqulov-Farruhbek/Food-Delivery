@@ -60,15 +60,15 @@ type AuthServiceClient interface {
 	// Foydalanuvchi o'chirish
 	DeleteUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 	// Kuryer yaratish
-	CreateCourier(ctx context.Context, in *CreateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	CreateCourier(ctx context.Context, in *CreateCourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error)
 	// Kuryer ma'lumotlarini olish
-	GetCourier(ctx context.Context, in *CourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	GetCourier(ctx context.Context, in *CourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error)
 	// Kuryerlar ro'yxatini olish
 	GetAllCouriers(ctx context.Context, in *GetAllCouriersRequest, opts ...grpc.CallOption) (*GetAllCouriersResponse, error)
 	// Kuryer ma'lumotlarini yangilash
-	UpdateCourier(ctx context.Context, in *UpdateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	UpdateCourier(ctx context.Context, in *UpdateCourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error)
 	// Kuryer o'chirish
-	DeleteCourier(ctx context.Context, in *CourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	DeleteCourier(ctx context.Context, in *CourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error)
 }
 
 type authServiceClient struct {
@@ -169,9 +169,9 @@ func (c *authServiceClient) DeleteUser(ctx context.Context, in *UserRequest, opt
 	return out, nil
 }
 
-func (c *authServiceClient) CreateCourier(ctx context.Context, in *CreateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *authServiceClient) CreateCourier(ctx context.Context, in *CreateCourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CourierResponse)
+	out := new(CourierResponseAuth)
 	err := c.cc.Invoke(ctx, AuthService_CreateCourier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -179,9 +179,9 @@ func (c *authServiceClient) CreateCourier(ctx context.Context, in *CreateCourier
 	return out, nil
 }
 
-func (c *authServiceClient) GetCourier(ctx context.Context, in *CourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *authServiceClient) GetCourier(ctx context.Context, in *CourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CourierResponse)
+	out := new(CourierResponseAuth)
 	err := c.cc.Invoke(ctx, AuthService_GetCourier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -199,9 +199,9 @@ func (c *authServiceClient) GetAllCouriers(ctx context.Context, in *GetAllCourie
 	return out, nil
 }
 
-func (c *authServiceClient) UpdateCourier(ctx context.Context, in *UpdateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *authServiceClient) UpdateCourier(ctx context.Context, in *UpdateCourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CourierResponse)
+	out := new(CourierResponseAuth)
 	err := c.cc.Invoke(ctx, AuthService_UpdateCourier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -209,9 +209,9 @@ func (c *authServiceClient) UpdateCourier(ctx context.Context, in *UpdateCourier
 	return out, nil
 }
 
-func (c *authServiceClient) DeleteCourier(ctx context.Context, in *CourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *authServiceClient) DeleteCourier(ctx context.Context, in *CourierRequestAuth, opts ...grpc.CallOption) (*CourierResponseAuth, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CourierResponse)
+	out := new(CourierResponseAuth)
 	err := c.cc.Invoke(ctx, AuthService_DeleteCourier_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -244,15 +244,15 @@ type AuthServiceServer interface {
 	// Foydalanuvchi o'chirish
 	DeleteUser(context.Context, *UserRequest) (*UserResponse, error)
 	// Kuryer yaratish
-	CreateCourier(context.Context, *CreateCourierRequest) (*CourierResponse, error)
+	CreateCourier(context.Context, *CreateCourierRequestAuth) (*CourierResponseAuth, error)
 	// Kuryer ma'lumotlarini olish
-	GetCourier(context.Context, *CourierRequest) (*CourierResponse, error)
+	GetCourier(context.Context, *CourierRequestAuth) (*CourierResponseAuth, error)
 	// Kuryerlar ro'yxatini olish
 	GetAllCouriers(context.Context, *GetAllCouriersRequest) (*GetAllCouriersResponse, error)
 	// Kuryer ma'lumotlarini yangilash
-	UpdateCourier(context.Context, *UpdateCourierRequest) (*CourierResponse, error)
+	UpdateCourier(context.Context, *UpdateCourierRequestAuth) (*CourierResponseAuth, error)
 	// Kuryer o'chirish
-	DeleteCourier(context.Context, *CourierRequest) (*CourierResponse, error)
+	DeleteCourier(context.Context, *CourierRequestAuth) (*CourierResponseAuth, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -287,19 +287,19 @@ func (UnimplementedAuthServiceServer) UpdateUser(context.Context, *UpdateUserReq
 func (UnimplementedAuthServiceServer) DeleteUser(context.Context, *UserRequest) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedAuthServiceServer) CreateCourier(context.Context, *CreateCourierRequest) (*CourierResponse, error) {
+func (UnimplementedAuthServiceServer) CreateCourier(context.Context, *CreateCourierRequestAuth) (*CourierResponseAuth, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCourier not implemented")
 }
-func (UnimplementedAuthServiceServer) GetCourier(context.Context, *CourierRequest) (*CourierResponse, error) {
+func (UnimplementedAuthServiceServer) GetCourier(context.Context, *CourierRequestAuth) (*CourierResponseAuth, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCourier not implemented")
 }
 func (UnimplementedAuthServiceServer) GetAllCouriers(context.Context, *GetAllCouriersRequest) (*GetAllCouriersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllCouriers not implemented")
 }
-func (UnimplementedAuthServiceServer) UpdateCourier(context.Context, *UpdateCourierRequest) (*CourierResponse, error) {
+func (UnimplementedAuthServiceServer) UpdateCourier(context.Context, *UpdateCourierRequestAuth) (*CourierResponseAuth, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateCourier not implemented")
 }
-func (UnimplementedAuthServiceServer) DeleteCourier(context.Context, *CourierRequest) (*CourierResponse, error) {
+func (UnimplementedAuthServiceServer) DeleteCourier(context.Context, *CourierRequestAuth) (*CourierResponseAuth, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCourier not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
@@ -478,7 +478,7 @@ func _AuthService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _AuthService_CreateCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateCourierRequest)
+	in := new(CreateCourierRequestAuth)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -490,13 +490,13 @@ func _AuthService_CreateCourier_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: AuthService_CreateCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).CreateCourier(ctx, req.(*CreateCourierRequest))
+		return srv.(AuthServiceServer).CreateCourier(ctx, req.(*CreateCourierRequestAuth))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AuthService_GetCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CourierRequest)
+	in := new(CourierRequestAuth)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -508,7 +508,7 @@ func _AuthService_GetCourier_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: AuthService_GetCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).GetCourier(ctx, req.(*CourierRequest))
+		return srv.(AuthServiceServer).GetCourier(ctx, req.(*CourierRequestAuth))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -532,7 +532,7 @@ func _AuthService_GetAllCouriers_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _AuthService_UpdateCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateCourierRequest)
+	in := new(UpdateCourierRequestAuth)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -544,13 +544,13 @@ func _AuthService_UpdateCourier_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: AuthService_UpdateCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).UpdateCourier(ctx, req.(*UpdateCourierRequest))
+		return srv.(AuthServiceServer).UpdateCourier(ctx, req.(*UpdateCourierRequestAuth))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _AuthService_DeleteCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CourierRequest)
+	in := new(CourierRequestAuth)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -562,7 +562,7 @@ func _AuthService_DeleteCourier_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: AuthService_DeleteCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).DeleteCourier(ctx, req.(*CourierRequest))
+		return srv.(AuthServiceServer).DeleteCourier(ctx, req.(*CourierRequestAuth))
 	}
 	return interceptor(ctx, in, info, handler)
 }

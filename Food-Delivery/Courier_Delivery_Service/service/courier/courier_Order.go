@@ -65,7 +65,7 @@ func (s *CourierOrderService) DeleteCourierOrder(ctx context.Context, req *couri
 }
 
 // ListCourierOrders RPC chaqiruvini bajaradi va barcha kuryer-buyurtma munosabatlarini qaytaradi
-func (s *CourierOrderService) ListCourierOrders(ctx context.Context, req *courier.Empty) (*courier.CourierOrderListResponse, error) {
+func (s *CourierOrderService) ListCourierOrders(ctx context.Context, req *courier.EmptyCourierOrder) (*courier.CourierOrderListResponse, error) {
 	res, err := s.store.CourierOrder().ListCourierOrders(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to list courier orders: %v", err)

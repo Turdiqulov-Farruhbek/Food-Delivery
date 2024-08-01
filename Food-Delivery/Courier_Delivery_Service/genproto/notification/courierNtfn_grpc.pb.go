@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: courierNtfn.proto
 
+// import "adminAlert.proto";
+
 package notification
 
 import (
@@ -38,7 +40,7 @@ type CourierNotificationServiceClient interface {
 	// Kuryer bildirishnomasini o'chirish
 	DeleteCourierNotification(ctx context.Context, in *CourierNotificationRequest, opts ...grpc.CallOption) (*CourierNotificationResponse, error)
 	// Barcha kuryer bildirishnomalarini olish
-	ListCourierNotifications(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierNotificationListResponse, error)
+	ListCourierNotifications(ctx context.Context, in *EmptyCourierNtfn, opts ...grpc.CallOption) (*CourierNotificationListResponse, error)
 }
 
 type courierNotificationServiceClient struct {
@@ -79,7 +81,7 @@ func (c *courierNotificationServiceClient) DeleteCourierNotification(ctx context
 	return out, nil
 }
 
-func (c *courierNotificationServiceClient) ListCourierNotifications(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierNotificationListResponse, error) {
+func (c *courierNotificationServiceClient) ListCourierNotifications(ctx context.Context, in *EmptyCourierNtfn, opts ...grpc.CallOption) (*CourierNotificationListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierNotificationListResponse)
 	err := c.cc.Invoke(ctx, CourierNotificationService_ListCourierNotifications_FullMethodName, in, out, cOpts...)
@@ -102,7 +104,7 @@ type CourierNotificationServiceServer interface {
 	// Kuryer bildirishnomasini o'chirish
 	DeleteCourierNotification(context.Context, *CourierNotificationRequest) (*CourierNotificationResponse, error)
 	// Barcha kuryer bildirishnomalarini olish
-	ListCourierNotifications(context.Context, *Empty) (*CourierNotificationListResponse, error)
+	ListCourierNotifications(context.Context, *EmptyCourierNtfn) (*CourierNotificationListResponse, error)
 	mustEmbedUnimplementedCourierNotificationServiceServer()
 }
 
@@ -119,7 +121,7 @@ func (UnimplementedCourierNotificationServiceServer) GetCourierNotification(cont
 func (UnimplementedCourierNotificationServiceServer) DeleteCourierNotification(context.Context, *CourierNotificationRequest) (*CourierNotificationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCourierNotification not implemented")
 }
-func (UnimplementedCourierNotificationServiceServer) ListCourierNotifications(context.Context, *Empty) (*CourierNotificationListResponse, error) {
+func (UnimplementedCourierNotificationServiceServer) ListCourierNotifications(context.Context, *EmptyCourierNtfn) (*CourierNotificationListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCourierNotifications not implemented")
 }
 func (UnimplementedCourierNotificationServiceServer) mustEmbedUnimplementedCourierNotificationServiceServer() {
@@ -191,7 +193,7 @@ func _CourierNotificationService_DeleteCourierNotification_Handler(srv interface
 }
 
 func _CourierNotificationService_ListCourierNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyCourierNtfn)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -203,7 +205,7 @@ func _CourierNotificationService_ListCourierNotifications_Handler(srv interface{
 		FullMethod: CourierNotificationService_ListCourierNotifications_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierNotificationServiceServer).ListCourierNotifications(ctx, req.(*Empty))
+		return srv.(CourierNotificationServiceServer).ListCourierNotifications(ctx, req.(*EmptyCourierNtfn))
 	}
 	return interceptor(ctx, in, info, handler)
 }

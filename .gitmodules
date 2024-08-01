@@ -7,3 +7,6 @@
 [submodule "Food-Delivery/Product_Ordering_service/food_submodule"]
 	path = Food-Delivery/Product_Ordering_service/food_submodule
 	url = git@github.com:Turdiqulov-Farruhbek/food_submodule.git
+[submodule "Food-Delivery/Courier_Delivery_Service/food_submodule"]
+	path = Food-Delivery/Courier_Delivery_Service/food_submodule
+	url = git@github.com:Turdiqulov-Farruhbek/food_submodule.git

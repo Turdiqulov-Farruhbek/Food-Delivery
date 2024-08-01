@@ -67,7 +67,7 @@ func (h *Handler) GetCourierNotification(c *gin.Context) {
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/notifications/courier [get]
 func (h *Handler) ListCourierNotifications(c *gin.Context) {
-	resp, err := h.CourierNtfn_N.ListCourierNotifications(context.Background(), &notification.EmptyCourier{})
+	resp, err := h.CourierNtfn_N.ListCourierNotifications(context.Background(), &notification.EmptyCourierNtfn{})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

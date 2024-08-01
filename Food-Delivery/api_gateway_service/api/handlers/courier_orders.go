@@ -117,7 +117,7 @@ func (h *Handler) DeleteCourierOrder(c *gin.Context) {
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/courier-orders [get]
 func (h *Handler) ListCourierOrders(c *gin.Context) {
-	req := &courier.Empty{}
+	req := &courier.EmptyCourierOrder{}
 	resp, err := h.CourierOrder_C.ListCourierOrders(context.Background(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

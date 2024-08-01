@@ -178,7 +178,7 @@ func TestListCouriers(t *testing.T) {
 	}
 
 	// Barcha kuryer yozuvlarini olish
-	listResp, err := storage.ListCouriers(context.Background(), &courier.Empty{})
+	listResp, err := storage.ListCouriers(context.Background(), &courier.EmptyCourier{})
 	require.NoError(t, err)
 	assert.Equal(t, 3, len(listResp.Couriers))
 }

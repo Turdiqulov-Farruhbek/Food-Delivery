@@ -117,7 +117,7 @@ func (h *Handler) DeleteCart(c *gin.Context) {
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/carts [get]
 func (h *Handler) GetAllCarts(c *gin.Context) {
-	req := &product.Empty{}
+	req := &product.EmptyCart{}
 	resp, err := h.Cart_P.ListCarts(context.Background(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

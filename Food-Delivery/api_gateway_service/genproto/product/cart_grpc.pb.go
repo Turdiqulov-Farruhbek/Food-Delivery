@@ -41,7 +41,7 @@ type CartServiceClient interface {
 	// Savatni o'chirish
 	DeleteCart(ctx context.Context, in *CartRequest, opts ...grpc.CallOption) (*CartResponse, error)
 	// Savatlar ro'yxatini olish
-	ListCarts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CartListResponse, error)
+	ListCarts(ctx context.Context, in *EmptyCart, opts ...grpc.CallOption) (*CartListResponse, error)
 }
 
 type cartServiceClient struct {
@@ -92,7 +92,7 @@ func (c *cartServiceClient) DeleteCart(ctx context.Context, in *CartRequest, opt
 	return out, nil
 }
 
-func (c *cartServiceClient) ListCarts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CartListResponse, error) {
+func (c *cartServiceClient) ListCarts(ctx context.Context, in *EmptyCart, opts ...grpc.CallOption) (*CartListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CartListResponse)
 	err := c.cc.Invoke(ctx, CartService_ListCarts_FullMethodName, in, out, cOpts...)
@@ -117,7 +117,7 @@ type CartServiceServer interface {
 	// Savatni o'chirish
 	DeleteCart(context.Context, *CartRequest) (*CartResponse, error)
 	// Savatlar ro'yxatini olish
-	ListCarts(context.Context, *Empty) (*CartListResponse, error)
+	ListCarts(context.Context, *EmptyCart) (*CartListResponse, error)
 	mustEmbedUnimplementedCartServiceServer()
 }
 
@@ -137,7 +137,7 @@ func (UnimplementedCartServiceServer) UpdateCart(context.Context, *UpdateCartReq
 func (UnimplementedCartServiceServer) DeleteCart(context.Context, *CartRequest) (*CartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCart not implemented")
 }
-func (UnimplementedCartServiceServer) ListCarts(context.Context, *Empty) (*CartListResponse, error) {
+func (UnimplementedCartServiceServer) ListCarts(context.Context, *EmptyCart) (*CartListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCarts not implemented")
 }
 func (UnimplementedCartServiceServer) mustEmbedUnimplementedCartServiceServer() {}
@@ -226,7 +226,7 @@ func _CartService_DeleteCart_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _CartService_ListCarts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyCart)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -238,7 +238,7 @@ func _CartService_ListCarts_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: CartService_ListCarts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CartServiceServer).ListCarts(ctx, req.(*Empty))
+		return srv.(CartServiceServer).ListCarts(ctx, req.(*EmptyCart))
 	}
 	return interceptor(ctx, in, info, handler)
 }

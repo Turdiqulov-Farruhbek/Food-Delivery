@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: OrderRecom.proto
 
+// import "cart.proto";
+
 package product
 
 import (
@@ -41,7 +43,7 @@ type OrderRecommendationServiceClient interface {
 	// Buyurtma tavsiyasini o'chirish
 	DeleteOrderRecommendation(ctx context.Context, in *OrderRecommendationRequest, opts ...grpc.CallOption) (*OrderRecommendationResponse, error)
 	// Barcha buyurtma tavsiyalari ro'yxatini olish
-	ListOrderRecommendations(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderRecommendationListResponse, error)
+	ListOrderRecommendations(ctx context.Context, in *EmptyOrderRecom, opts ...grpc.CallOption) (*OrderRecommendationListResponse, error)
 }
 
 type orderRecommendationServiceClient struct {
@@ -92,7 +94,7 @@ func (c *orderRecommendationServiceClient) DeleteOrderRecommendation(ctx context
 	return out, nil
 }
 
-func (c *orderRecommendationServiceClient) ListOrderRecommendations(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*OrderRecommendationListResponse, error) {
+func (c *orderRecommendationServiceClient) ListOrderRecommendations(ctx context.Context, in *EmptyOrderRecom, opts ...grpc.CallOption) (*OrderRecommendationListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(OrderRecommendationListResponse)
 	err := c.cc.Invoke(ctx, OrderRecommendationService_ListOrderRecommendations_FullMethodName, in, out, cOpts...)
@@ -117,7 +119,7 @@ type OrderRecommendationServiceServer interface {
 	// Buyurtma tavsiyasini o'chirish
 	DeleteOrderRecommendation(context.Context, *OrderRecommendationRequest) (*OrderRecommendationResponse, error)
 	// Barcha buyurtma tavsiyalari ro'yxatini olish
-	ListOrderRecommendations(context.Context, *Empty) (*OrderRecommendationListResponse, error)
+	ListOrderRecommendations(context.Context, *EmptyOrderRecom) (*OrderRecommendationListResponse, error)
 	mustEmbedUnimplementedOrderRecommendationServiceServer()
 }
 
@@ -137,7 +139,7 @@ func (UnimplementedOrderRecommendationServiceServer) UpdateOrderRecommendation(c
 func (UnimplementedOrderRecommendationServiceServer) DeleteOrderRecommendation(context.Context, *OrderRecommendationRequest) (*OrderRecommendationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrderRecommendation not implemented")
 }
-func (UnimplementedOrderRecommendationServiceServer) ListOrderRecommendations(context.Context, *Empty) (*OrderRecommendationListResponse, error) {
+func (UnimplementedOrderRecommendationServiceServer) ListOrderRecommendations(context.Context, *EmptyOrderRecom) (*OrderRecommendationListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrderRecommendations not implemented")
 }
 func (UnimplementedOrderRecommendationServiceServer) mustEmbedUnimplementedOrderRecommendationServiceServer() {
@@ -227,7 +229,7 @@ func _OrderRecommendationService_DeleteOrderRecommendation_Handler(srv interface
 }
 
 func _OrderRecommendationService_ListOrderRecommendations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyOrderRecom)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -239,7 +241,7 @@ func _OrderRecommendationService_ListOrderRecommendations_Handler(srv interface{
 		FullMethod: OrderRecommendationService_ListOrderRecommendations_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderRecommendationServiceServer).ListOrderRecommendations(ctx, req.(*Empty))
+		return srv.(OrderRecommendationServiceServer).ListOrderRecommendations(ctx, req.(*EmptyOrderRecom))
 	}
 	return interceptor(ctx, in, info, handler)
 }

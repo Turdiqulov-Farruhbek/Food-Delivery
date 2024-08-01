@@ -152,7 +152,7 @@ func NewCourierService(db *pgx.Conn) *CourierService {
 }
 
 // CreateCourier creates a new courier record
-func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourierRequest) (*us.CourierResponse, error) {
+func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourierRequestAuth) (*us.CourierResponseAuth, error) {
 	hashedPassword, err := HashPassword(req.Password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to hash password: %w", err)
@@ -163,10 +163,10 @@ func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourie
 	if err != nil {
 		return nil, fmt.Errorf("failed to create courier: %w", err)
 	}
-	return &us.CourierResponse{
+	return &us.CourierResponseAuth{
 		Success: true,
 		Message: "Courier created successfully",
-		Courier: &us.Courier{
+		Courier: &us.CourierAuth{
 			CourierId: courierID,
 			Email:     req.Email,
 			PhoneNumber: req.PhoneNumber,
@@ -177,9 +177,9 @@ func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourie
 }
 
 // GetCourier retrieves a courier record by courier_id
-func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequest) (*us.CourierResponse, error) {
+func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `SELECT courier_id, email, phone_number, status, created_at, updated_at FROM couriers WHERE courier_id=$1`
-	var courier us.Courier
+	var courier us.CourierAuth
 	err := c.Db.QueryRow(ctx, query, req.CourierId).Scan(
 		&courier.CourierId,
 		&courier.Email,
@@ -190,7 +190,7 @@ func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequest)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get courier: %w", err)
 	}
-	return &us.CourierResponse{
+	return &us.CourierResponseAuth{
 		Success: true,
 		Message: "Courier retrieved successfully",
 		Courier: &courier,
@@ -198,16 +198,16 @@ func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequest)
 }
 
 // UpdateCourier updates a courier record
-func (c *CourierService) UpdateCourier(ctx context.Context, req *us.UpdateCourierRequest) (*us.CourierResponse, error) {
+func (c *CourierService) UpdateCourier(ctx context.Context, req *us.UpdateCourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `UPDATE couriers SET email=$1, phone_number=$2, status=$3, updated_at=NOW() WHERE courier_id=$4`
 	_, err := c.Db.Exec(ctx, query, req.Email, req.PhoneNumber, req.Status, req.CourierId)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update courier: %w", err)
 	}
-	return &us.CourierResponse{
+	return &us.CourierResponseAuth{
 		Success: true,
 		Message: "Courier updated successfully",
-		Courier: &us.Courier{
+		Courier: &us.CourierAuth{
 			CourierId: req.CourierId,
 			Email:     req.Email,
 			PhoneNumber: req.PhoneNumber,
@@ -217,7 +217,7 @@ func (c *CourierService) UpdateCourier(ctx context.Context, req *us.UpdateCourie
 }
 
 // DeleteCourier deletes a courier record
-func (c *CourierService) DeleteCourier(ctx context.Context, req *us.CourierRequest) (*us.CourierResponse, error) {
+func (c *CourierService) DeleteCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `DELETE FROM couriers WHERE courier_id=$1`
 	result, err := c.Db.Exec(ctx, query, req.CourierId)
 	if err != nil {
@@ -226,7 +226,7 @@ func (c *CourierService) DeleteCourier(ctx context.Context, req *us.CourierReque
 	if result.RowsAffected() == 0 {
 		return nil, errors.New("courier not found")
 	}
-	return &us.CourierResponse{
+	return &us.CourierResponseAuth{
 		Success: true,
 		Message: "Courier deleted successfully",
 	}, nil
@@ -241,9 +241,9 @@ func (c *CourierService) GetAllCouriers(ctx context.Context, req *us.GetAllCouri
 	}
 	defer rows.Close()
 
-	var couriers []*us.Courier
+	var couriers []*us.CourierAuth
 	for rows.Next() {
-		var courier us.Courier
+		var courier us.CourierAuth
 		if err := rows.Scan(
 			&courier.CourierId,
 			&courier.Email,

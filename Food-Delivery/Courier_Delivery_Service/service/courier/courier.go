@@ -65,7 +65,7 @@ func (s *CourierService) DeleteCourier(ctx context.Context, req *courier.Courier
 }
 
 // ListCouriers RPC chaqiruvini bajaradi va barcha kuryer yozuvlarini qaytaradi
-func (s *CourierService) ListCouriers(ctx context.Context, req *courier.Empty) (*courier.CourierListResponse, error) {
+func (s *CourierService) ListCouriers(ctx context.Context, req *courier.EmptyCourier) (*courier.CourierListResponse, error) {
 	res, err := s.store.Courier().ListCouriers(ctx, req)
 	if err != nil {
 		s.log.ERROR.Printf("Failed to list couriers: %v", err)

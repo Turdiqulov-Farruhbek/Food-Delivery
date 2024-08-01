@@ -116,7 +116,7 @@ func (h *Handler) DeleteOrderRecommendation(c *gin.Context) {
 // @Failure 500 {object} string "Internal Server Error"
 // @Router /api/recommendations/order [get]
 func (h *Handler) ListOrderRecommendations(c *gin.Context) {
-	resp, err := h.OrderRecommendation_P.ListOrderRecommendations(context.Background(), &product.Empty{})
+	resp, err := h.OrderRecommendation_P.ListOrderRecommendations(context.Background(), &product.EmptyOrderRecom{})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

@@ -4,6 +4,8 @@
 // - protoc             v3.12.4
 // source: userNtfn.proto
 
+// import "adminAlert.proto";
+
 package notification
 
 import (
@@ -38,7 +40,7 @@ type UserNotificationServiceClient interface {
 	// Foydalanuvchi bildirishnomasini o'chirish
 	DeleteUserNotification(ctx context.Context, in *UserNotificationRequest, opts ...grpc.CallOption) (*UserNotificationResponse, error)
 	// Barcha foydalanuvchi bildirishnomalarini olish
-	ListUserNotifications(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserNotificationListResponse, error)
+	ListUserNotifications(ctx context.Context, in *EmptyUser, opts ...grpc.CallOption) (*UserNotificationListResponse, error)
 }
 
 type userNotificationServiceClient struct {
@@ -79,7 +81,7 @@ func (c *userNotificationServiceClient) DeleteUserNotification(ctx context.Conte
 	return out, nil
 }
 
-func (c *userNotificationServiceClient) ListUserNotifications(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserNotificationListResponse, error) {
+func (c *userNotificationServiceClient) ListUserNotifications(ctx context.Context, in *EmptyUser, opts ...grpc.CallOption) (*UserNotificationListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UserNotificationListResponse)
 	err := c.cc.Invoke(ctx, UserNotificationService_ListUserNotifications_FullMethodName, in, out, cOpts...)
@@ -102,7 +104,7 @@ type UserNotificationServiceServer interface {
 	// Foydalanuvchi bildirishnomasini o'chirish
 	DeleteUserNotification(context.Context, *UserNotificationRequest) (*UserNotificationResponse, error)
 	// Barcha foydalanuvchi bildirishnomalarini olish
-	ListUserNotifications(context.Context, *Empty) (*UserNotificationListResponse, error)
+	ListUserNotifications(context.Context, *EmptyUser) (*UserNotificationListResponse, error)
 	mustEmbedUnimplementedUserNotificationServiceServer()
 }
 
@@ -119,7 +121,7 @@ func (UnimplementedUserNotificationServiceServer) GetUserNotification(context.Co
 func (UnimplementedUserNotificationServiceServer) DeleteUserNotification(context.Context, *UserNotificationRequest) (*UserNotificationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserNotification not implemented")
 }
-func (UnimplementedUserNotificationServiceServer) ListUserNotifications(context.Context, *Empty) (*UserNotificationListResponse, error) {
+func (UnimplementedUserNotificationServiceServer) ListUserNotifications(context.Context, *EmptyUser) (*UserNotificationListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUserNotifications not implemented")
 }
 func (UnimplementedUserNotificationServiceServer) mustEmbedUnimplementedUserNotificationServiceServer() {
@@ -191,7 +193,7 @@ func _UserNotificationService_DeleteUserNotification_Handler(srv interface{}, ct
 }
 
 func _UserNotificationService_ListUserNotifications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(EmptyUser)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -203,7 +205,7 @@ func _UserNotificationService_ListUserNotifications_Handler(srv interface{}, ctx
 		FullMethod: UserNotificationService_ListUserNotifications_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserNotificationServiceServer).ListUserNotifications(ctx, req.(*Empty))
+		return srv.(UserNotificationServiceServer).ListUserNotifications(ctx, req.(*EmptyUser))
 	}
 	return interceptor(ctx, in, info, handler)
 }
