@@ -12,8 +12,11 @@ mig-run:
 mig-up:
 	migrate -database 'postgres://postgres:root@localhost:5432/food_delivery_db?sslmode=disable' -path migrations up
 
+mig-force:
+	migrate -database 'postgres://postgres:root@localhost:5432/food_delivery_db?sslmode=disable' -path migrations force 1
+
 mig-down:
-	migrate -database 'postgres://postgres:root@localhost:5432/food_delivery_db?sslmode=disable' -path migrations down
+	migrate -database 'postgres://postgres:root@localhost:5432/food_delivery_db?sslmode=disable' -path migrations down 
 
 gen-proto:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
