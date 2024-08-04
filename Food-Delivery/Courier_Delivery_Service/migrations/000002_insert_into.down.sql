@@ -1,1 +1,1 @@
-DELETE FROM Couriers, Orders, CourierOrders; 
+-- DELETE FROM Couriers, Orders, CourierOrders; 

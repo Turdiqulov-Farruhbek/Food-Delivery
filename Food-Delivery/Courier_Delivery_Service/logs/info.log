@@ -1,0 +1,1 @@
+[ERROR]  2024/08/01 18:42:23 courier.go:27: Failed to create courier: failed to create courier: ERROR: column "name" of relation "couriers" does not exist (SQLSTATE 42703)

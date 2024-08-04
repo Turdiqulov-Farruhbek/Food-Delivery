@@ -1009,7 +1009,7 @@ definitions:
         description: Mahsulotning noyob ID'si
         type: string
     type: object
-  user.Courier:
+  user.CourierAuth:
     properties:
       courier_id:
         description: Kuryer ID'si
@@ -1028,7 +1028,7 @@ definitions:
         type: string
       status:
         allOf:
-        - $ref: '#/definitions/user.CourierStatus'
+        - $ref: '#/definitions/user.CourierStatusAuth'
         description: Kuryer holati
       updated_at:
         description: Kuryer yangilangan vaqti
@@ -1047,7 +1047,7 @@ definitions:
     properties:
       courier:
         allOf:
-        - $ref: '#/definitions/user.Courier'
+        - $ref: '#/definitions/user.CourierAuth'
         description: Kuryer ma'lumotlari
       message:
         description: Javob xabari
@@ -1078,7 +1078,7 @@ definitions:
     properties:
       courier:
         allOf:
-        - $ref: '#/definitions/user.Courier'
+        - $ref: '#/definitions/user.CourierAuth'
         description: Kuryer ma'lumotlari
       message:
         description: Javob xabari
@@ -1087,21 +1087,21 @@ definitions:
         description: Amaliyot muvaffaqiyatli bo'lganligini bildiruvchi flag
         type: boolean
     type: object
-  user.CourierStatus:
+  user.CourierStatusAuth:
     enum:
     - 0
     - 1
     - 2
     type: integer
     x-enum-varnames:
-    - CourierStatus_AVAILABLE
-    - CourierStatus_UNAVAILABLE
-    - CourierStatus_ON_DELIVERY
+    - CourierStatusAuth_Courier_AVAILABLE
+    - CourierStatusAuth_Courier_UNAVAILABLE
+    - CourierStatusAuth_Courier_ON_DELIVERY
   user.GetAllCouriersResponse:
     properties:
       couriers:
         items:
-          $ref: '#/definitions/user.Courier'
+          $ref: '#/definitions/user.CourierAuth'
         type: array
       message:
         type: string
@@ -1185,7 +1185,7 @@ definitions:
   user.UserRegisterRequest:
     properties:
       email:
-        description: Foydalanuvchi email manzili
+        description: Foydalanuvchi email manzilix
         type: string
       full_name:
         description: Foydalanuvchi to'liq ismi

@@ -4949,7 +4949,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.Courier": {
+        "user.CourierAuth": {
             "type": "object",
             "properties": {
                 "courier_id": {
@@ -4976,7 +4976,7 @@ const docTemplate = `{
                     "description": "Kuryer holati",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/user.CourierStatus"
+                            "$ref": "#/definitions/user.CourierStatusAuth"
                         }
                     ]
                 },
@@ -5006,7 +5006,7 @@ const docTemplate = `{
                     "description": "Kuryer ma'lumotlari",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/user.Courier"
+                            "$ref": "#/definitions/user.CourierAuth"
                         }
                     ]
                 },
@@ -5052,7 +5052,7 @@ const docTemplate = `{
                     "description": "Kuryer ma'lumotlari",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/user.Courier"
+                            "$ref": "#/definitions/user.CourierAuth"
                         }
                     ]
                 },
@@ -5066,7 +5066,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.CourierStatus": {
+        "user.CourierStatusAuth": {
             "type": "integer",
             "enum": [
                 0,
@@ -5074,9 +5074,9 @@ const docTemplate = `{
                 2
             ],
             "x-enum-varnames": [
-                "CourierStatus_AVAILABLE",
-                "CourierStatus_UNAVAILABLE",
-                "CourierStatus_ON_DELIVERY"
+                "CourierStatusAuth_Courier_AVAILABLE",
+                "CourierStatusAuth_Courier_UNAVAILABLE",
+                "CourierStatusAuth_Courier_ON_DELIVERY"
             ]
         },
         "user.GetAllCouriersResponse": {
@@ -5085,7 +5085,7 @@ const docTemplate = `{
                 "couriers": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/user.Courier"
+                        "$ref": "#/definitions/user.CourierAuth"
                     }
                 },
                 "message": {
@@ -5213,7 +5213,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
-                    "description": "Foydalanuvchi email manzili",
+                    "description": "Foydalanuvchi email manzilix",
                     "type": "string"
                 },
                 "full_name": {

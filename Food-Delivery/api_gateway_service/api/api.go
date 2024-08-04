@@ -37,7 +37,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		AllowCredentials: true,
 	}))
 
-	courier := router.Group("/couriers")
+	courier := router.Group("api/couriers")
 	{
 		courier.POST("/create", h.CreateCourier)
 		courier.GET("/:courierId", h.GetCourier)
@@ -45,7 +45,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		courier.DELETE("/:courierId", h.DeleteCourier)
 	}
 
-	courierOrder := router.Group("/courierOrders")
+	courierOrder := router.Group("api/courierOrders")
 	{
 		courierOrder.POST("/create", h.CreateCourierOrder)
 		courierOrder.GET("/:orderId", h.GetCourierOrder)
@@ -55,7 +55,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 	}
 
 
-	order := router.Group("/orders")
+	order := router.Group("api/orders")
 	{
 		order.POST("/create", h.CreateOrder)
 		order.GET("/:orderId", h.GetOrder)
@@ -69,7 +69,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 	}
 
 
-	orderProduct := router.Group("/ordersProduct")
+	orderProduct := router.Group("api/ordersProduct")
 	{
 		orderProduct.POST("/create", h.CreateOrderProduct)
 		orderProduct.GET("/:orderId", h.GetOrderProduct)
@@ -78,7 +78,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		orderProduct.GET("/", h.ListOrdersProduct)
 	}
 
-	task := router.Group("/tasks")
+	task := router.Group("api/tasks")
 	{
 		task.POST("/create", h.CreateTask)
 		task.GET("/:taskId", h.GetTask)
@@ -87,7 +87,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		task.DELETE("/:taskId", h.DeleteTask)
 	}
 
-	alert := router.Group("/alerts")
+	alert := router.Group("api/alerts")
 	{
 		alert.POST("/admin", h.CreateAdminAlert)
 		alert.GET("/admin/:alertId", h.GetAdminAlert)
@@ -95,7 +95,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		alert.DELETE("/admin/:alertId", h.DeleteAdminAlert)
 	}
 
-	notification := router.Group("/notifications")
+	notification := router.Group("api/notifications")
 	{
 		notification.POST("/courier", h.CreateCourierNotification)
 		notification.POST("/user", h.CreateUserNotification)
@@ -103,7 +103,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		notification.GET("/user/:notificationId", h.GetUserNotification)
 	}
 
-	cart := router.Group("/carts")
+	cart := router.Group("api/carts")
 	{
 		cart.POST("/create", h.CreateCart)
 		cart.GET("/:cartId", h.GetCart)
@@ -112,7 +112,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		cart.DELETE("/:cartId", h.DeleteCart)
 	}
 
-	product := router.Group("/products")
+	product := router.Group("api/products")
 	{
 		product.POST("/create", h.CreateProduct)
 		product.GET("/:productId", h.GetProduct)
@@ -121,9 +121,9 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		product.DELETE("/:productId", h.DeleteProduct)
 	}
 
-	user := router.Group("/users")
-	{
-		user.POST("/create", h.UserRegister)
+	user := router.Group("api/users")
+	{																																																																																																																																																																																																			
+		user.POST("/register", h.UserRegister)
 		user.GET("/:userId", h.GetUser)
 		user.PUT("/:userId", h.UpdateUser)
 		user.DELETE("/:userId", h.DeleteUser)
