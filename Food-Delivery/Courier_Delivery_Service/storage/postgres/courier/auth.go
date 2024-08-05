@@ -2,21 +2,20 @@ package courier
 
 import (
 	"context"
+	us "courier_delivery/genproto/user"
 	"errors"
 	"fmt"
-	us "courier_delivery/genproto/user"
-
 
 	"github.com/jackc/pgx/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserService struct {
+type AuthService struct {
 	Db *pgx.Conn
 }
 
-func NewUserService(db *pgx.Conn) *UserService {
-	return &UserService{Db: db}
+func NewAuthService(db *pgx.Conn) *AuthService {
+	return &AuthService{Db: db}
 }
 
 // HashPassword hashes a plain text password
@@ -28,8 +27,52 @@ func HashPassword(password string) (string, error) {
 	return string(hash), nil
 }
 
+// UserRegister registers a new user
+func (u *AuthService) UserRegister(ctx context.Context, req *us.UserRegisterRequest) (*us.UserRegisterResponse, error) {
+	hashedPassword, err := HashPassword(req.Password)
+	if err != nil {
+		return nil, fmt.Errorf("failed to hash password: %w", err)
+	}
+	query := `INSERT INTO users (email, password, full_name, created_at) VALUES ($1, $2, $3, NOW()) RETURNING user_id, created_at`
+	var userID, createdAt string
+	err = u.Db.QueryRow(ctx, query, req.Email, hashedPassword).Scan(&userID, &createdAt)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create user: %w", err)
+	}
+	return &us.UserRegisterResponse{
+		Success: true,
+		Message: "User registered successfully",
+		User: &us.User{
+			UserId:    userID,
+			Email:     req.Email,
+			FullName:  req.FullName,
+			CreatedAt: createdAt,
+		},
+	}, nil
+}
+
+// UserLogin authenticates a user
+func (u *AuthService) UserLogin(ctx context.Context, req *us.UserLoginRequest) (*us.UserLoginResponse, error) {
+	var storedPassword string
+	query := `SELECT password FROM users WHERE email=$1`
+	err := u.Db.QueryRow(ctx, query, req.Email).Scan(&storedPassword)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find user: %w", err)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(req.Password))
+	if err != nil {
+		return nil, errors.New("incorrect password")
+	}
+
+	return &us.UserLoginResponse{
+		Success: true,
+		Message: "User logged in successfully",
+	}, nil
+}
+
 // CreateUser creates a new user record
-func (u *UserService) CreateUser(ctx context.Context, req *us.CreateUserRequest) (*us.UserResponse, error) {
+func (u *AuthService) CreateUser(ctx context.Context, req *us.CreateUserRequest) (*us.UserResponse, error) {
 	hashedPassword, err := HashPassword(req.Password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to hash password: %w", err)
@@ -52,7 +95,7 @@ func (u *UserService) CreateUser(ctx context.Context, req *us.CreateUserRequest)
 }
 
 // GetUser retrieves a user record by user_id
-func (u *UserService) GetUser(ctx context.Context, req *us.UserRequest) (*us.UserResponse, error) {
+func (u *AuthService) GetUser(ctx context.Context, req *us.UserRequest) (*us.UserResponse, error) {
 	query := `SELECT user_id, email, role, created_at, updated_at FROM users WHERE user_id=$1`
 	var user us.User
 	err := u.Db.QueryRow(ctx, query, req.UserId).Scan(
@@ -71,7 +114,7 @@ func (u *UserService) GetUser(ctx context.Context, req *us.UserRequest) (*us.Use
 }
 
 // UpdateUser updates a user record
-func (u *UserService) UpdateUser(ctx context.Context, req *us.UpdateUserRequest) (*us.UserResponse, error) {
+func (u *AuthService) UpdateUser(ctx context.Context, req *us.UpdateUserRequest) (*us.UserResponse, error) {
 	query := `UPDATE users SET email=$1, role=$2, updated_at=NOW() WHERE user_id=$3`
 	_, err := u.Db.Exec(ctx, query, req.Email, req.Role, req.UserId)
 	if err != nil {
@@ -89,7 +132,7 @@ func (u *UserService) UpdateUser(ctx context.Context, req *us.UpdateUserRequest)
 }
 
 // DeleteUser deletes a user record
-func (u *UserService) DeleteUser(ctx context.Context, req *us.UserRequest) (*us.UserResponse, error) {
+func (u *AuthService) DeleteUser(ctx context.Context, req *us.UserRequest) (*us.UserResponse, error) {
 	query := `DELETE FROM users WHERE user_id=$1`
 	result, err := u.Db.Exec(ctx, query, req.UserId)
 	if err != nil {
@@ -104,9 +147,8 @@ func (u *UserService) DeleteUser(ctx context.Context, req *us.UserRequest) (*us.
 	}, nil
 }
 
-
 // GetAllUsers retrieves all users
-func (u *UserService) GetAllUsers(ctx context.Context, req *us.GetAllUsersRequest) (*us.GetAllUsersResponse, error) {
+func (u *AuthService) GetAllUsers(ctx context.Context, req *us.GetAllUsersRequest) (*us.GetAllUsersResponse, error) {
 	query := `SELECT user_id, email, role, created_at, updated_at FROM users`
 	rows, err := u.Db.Query(ctx, query)
 	if err != nil {
@@ -141,18 +183,53 @@ func (u *UserService) GetAllUsers(ctx context.Context, req *us.GetAllUsersReques
 
 //==========================================================================================================================================
 
-
-
-type CourierService struct {
-	Db *pgx.Conn
+// CourierRegister registers a new courier
+func (c *AuthService) CourierRegister(ctx context.Context, req *us.CourierRegisterRequest) (*us.CourierRegisterResponse, error) {
+	hashedPassword, err := HashPassword(req.Password)
+	if err != nil {
+		return nil, fmt.Errorf("failed to hash password: %w", err)
+	}
+	query := `INSERT INTO couriers (email, password, phone_number, status, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING courier_id, created_at`
+	var courierID, createdAt string
+	err = c.Db.QueryRow(ctx, query, req.Email, hashedPassword, req.PhoneNumber).Scan(&courierID, &createdAt)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create courier: %w", err)
+	}
+	return &us.CourierRegisterResponse{
+		Success: true,
+		Message: "Courier registered successfully",
+		Courier: &us.CourierAuth{
+			CourierId:   courierID,
+			Email:       req.Email,
+			PhoneNumber: req.PhoneNumber,
+			CreatedAt:   createdAt,
+		},
+	}, nil
 }
 
-func NewCourierService(db *pgx.Conn) *CourierService {
-	return &CourierService{Db: db}
+// CourierLogin authenticates a courier
+func (c *AuthService) CourierLogin(ctx context.Context, req *us.CourierLoginRequest) (*us.CourierLoginResponse, error) {
+	var storedPassword string
+	query := `SELECT password FROM couriers WHERE email=$1`
+	err := c.Db.QueryRow(ctx, query, req.Email).Scan(&storedPassword)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find courier: %w", err)
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(req.Password))
+	if err != nil {
+		return nil, errors.New("incorrect password")
+	}
+
+	return &us.CourierLoginResponse{
+		Success: true,
+		Message: "Courier logged in successfully",
+	}, nil
 }
+
 
 // CreateCourier creates a new courier record
-func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourierRequestAuth) (*us.CourierResponseAuth, error) {
+func (c *AuthService) CreateCourier(ctx context.Context, req *us.CreateCourierRequestAuth) (*us.CourierResponseAuth, error) {
 	hashedPassword, err := HashPassword(req.Password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to hash password: %w", err)
@@ -167,17 +244,17 @@ func (c *CourierService) CreateCourier(ctx context.Context, req *us.CreateCourie
 		Success: true,
 		Message: "Courier created successfully",
 		Courier: &us.CourierAuth{
-			CourierId: courierID,
-			Email:     req.Email,
+			CourierId:   courierID,
+			Email:       req.Email,
 			PhoneNumber: req.PhoneNumber,
-			Status:    req.Status,
-			CreatedAt: createdAt,
+			Status:      req.Status,
+			CreatedAt:   createdAt,
 		},
 	}, nil
 }
 
 // GetCourier retrieves a courier record by courier_id
-func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
+func (c *AuthService) GetCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `SELECT courier_id, email, phone_number, status, created_at, updated_at FROM couriers WHERE courier_id=$1`
 	var courier us.CourierAuth
 	err := c.Db.QueryRow(ctx, query, req.CourierId).Scan(
@@ -198,7 +275,7 @@ func (c *CourierService) GetCourier(ctx context.Context, req *us.CourierRequestA
 }
 
 // UpdateCourier updates a courier record
-func (c *CourierService) UpdateCourier(ctx context.Context, req *us.UpdateCourierRequestAuth) (*us.CourierResponseAuth, error) {
+func (c *AuthService) UpdateCourier(ctx context.Context, req *us.UpdateCourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `UPDATE couriers SET email=$1, phone_number=$2, status=$3, updated_at=NOW() WHERE courier_id=$4`
 	_, err := c.Db.Exec(ctx, query, req.Email, req.PhoneNumber, req.Status, req.CourierId)
 	if err != nil {
@@ -208,16 +285,16 @@ func (c *CourierService) UpdateCourier(ctx context.Context, req *us.UpdateCourie
 		Success: true,
 		Message: "Courier updated successfully",
 		Courier: &us.CourierAuth{
-			CourierId: req.CourierId,
-			Email:     req.Email,
+			CourierId:   req.CourierId,
+			Email:       req.Email,
 			PhoneNumber: req.PhoneNumber,
-			Status:    req.Status,
+			Status:      req.Status,
 		},
 	}, nil
 }
 
 // DeleteCourier deletes a courier record
-func (c *CourierService) DeleteCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
+func (c *AuthService) DeleteCourier(ctx context.Context, req *us.CourierRequestAuth) (*us.CourierResponseAuth, error) {
 	query := `DELETE FROM couriers WHERE courier_id=$1`
 	result, err := c.Db.Exec(ctx, query, req.CourierId)
 	if err != nil {
@@ -233,7 +310,7 @@ func (c *CourierService) DeleteCourier(ctx context.Context, req *us.CourierReque
 }
 
 // GetAllCouriers retrieves all couriers
-func (c *CourierService) GetAllCouriers(ctx context.Context, req *us.GetAllCouriersRequest) (*us.GetAllCouriersResponse, error) {
+func (c *AuthService) GetAllCouriers(ctx context.Context, req *us.GetAllCouriersRequest) (*us.GetAllCouriersResponse, error) {
 	query := `SELECT courier_id, email, phone_number, status, created_at, updated_at FROM couriers`
 	rows, err := c.Db.Query(ctx, query)
 	if err != nil {

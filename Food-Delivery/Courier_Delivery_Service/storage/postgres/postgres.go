@@ -20,6 +20,7 @@ type StorageStruct struct {
 	Order_S           stg.OrderInterface
 	Task_S            stg.TaskInterface
 	CourierLocation_S stg.CourierLocationInterface
+	Auth_S            stg.AuthServiceInterface
 }
 
 func DbCon() (*StorageStruct, error) {
@@ -86,4 +87,12 @@ func (s *StorageStruct) CourierLocation() stg.CourierLocationInterface {
         s.CourierLocation_S = ps.NewCourierLocation(s.DB)
     }
     return s.CourierLocation_S
+}
+
+
+func (s *StorageStruct) Auth() stg.AuthServiceInterface {
+	if s.Auth_S == nil {
+        s.Auth_S = ps.NewAuthService(s.DB)
+    }
+    return s.Auth_S
 }
