@@ -92,7 +92,7 @@ func (s *StorageStruct) CourierLocation() stg.CourierLocationInterface {
 
 func (s *StorageStruct) Auth() stg.AuthServiceInterface {
 	if s.Auth_S == nil {
-        s.Auth_S = ps.NewAuthService(s.DB)
+        s.Auth_S = ps.NewAuthStruct(s.DB)
     }
     return s.Auth_S
 }

@@ -27,7 +27,7 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 	h := handler.NewHandler(cr, pr, ntfn)
 
 	router := gin.Default()
-
+	
 	router.GET("/api/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"}, // Adjust for your specific origins
@@ -36,6 +36,16 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+	
+	user := router.Group("api/users")
+	{																																																																																																																																																																																																			
+		user.POST("/register", h.UserRegister)
+		user.GET("/:userId", h.GetUser)
+		user.GET("/", h.GetAllUsers)
+		user.PUT("/:userId", h.UpdateUser)
+		user.DELETE("/:userId", h.DeleteUser)
+	}
+
 
 	courier := router.Group("api/couriers")
 	{
@@ -121,13 +131,6 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 		product.DELETE("/:productId", h.DeleteProduct)
 	}
 
-	user := router.Group("api/users")
-	{																																																																																																																																																																																																			
-		user.POST("/register", h.UserRegister)
-		user.GET("/:userId", h.GetUser)
-		user.PUT("/:userId", h.UpdateUser)
-		user.DELETE("/:userId", h.DeleteUser)
-	}
 
 	return router
 }

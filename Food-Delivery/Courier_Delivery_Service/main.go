@@ -11,6 +11,7 @@ import (
 	gen "courier_delivery/genproto/courier"
 	src "courier_delivery/service/courier"
 	post "courier_delivery/storage/postgres"
+	au "courier_delivery/genproto/user"
 
 	"google.golang.org/grpc"
 )
@@ -41,6 +42,7 @@ func main() {
 	gen.RegisterOrderServiceServer(server, src.NewOrderService(db, *logger))
 	gen.RegisterCourierLocationServiceServer(server, src.NewCourierLocationService(db, *logger))
 	gen.RegisterTaskServiceServer(server, src.NewTaskService(db, *logger))
+	au.RegisterAuthServiceServer(server, src.NewAuthService(db, *logger))
 
 	log.Println("Server is running on port :2020")
 	if err := server.Serve(liss); err != nil {

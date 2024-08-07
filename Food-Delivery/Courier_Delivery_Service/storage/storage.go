@@ -63,9 +63,9 @@ type AuthServiceInterface interface {
 	GetAllUsers(ctx context.Context, req *auth.GetAllUsersRequest) (*auth.GetAllUsersResponse, error)
 	UpdateUser(ctx context.Context, req *auth.UpdateUserRequest) (*auth.UserResponse, error)
 	DeleteUser(ctx context.Context, req *auth.UserRequest) (*auth.UserResponse, error)
+	CourierLogin(ctx context.Context, req *auth.CourierLoginRequest) (*auth.CourierLoginResponse, error)
 	
 	CourierRegister(ctx context.Context, req *auth.CourierRegisterRequest) (*auth.CourierRegisterResponse, error)
-	CourierLogin(ctx context.Context, req *auth.CourierLoginRequest) (*auth.CourierLoginResponse, error)
 	CreateCourier(ctx context.Context, req *auth.CreateCourierRequestAuth) (*auth.CourierResponseAuth, error)
 	GetCourier(ctx context.Context, req *auth.CourierRequestAuth) (*auth.CourierResponseAuth, error)
 	GetAllCouriers(ctx context.Context, req *auth.GetAllCouriersRequest) (*auth.GetAllCouriersResponse, error)
