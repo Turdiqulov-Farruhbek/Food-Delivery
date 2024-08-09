@@ -40,10 +40,12 @@ func NewGin(cr, pr, ntfn *grpc.ClientConn) *gin.Engine {
 	user := router.Group("api/users")
 	{																																																																																																																																																																																																			
 		user.POST("/register", h.UserRegister)
-		user.GET("/:userId", h.GetUser)
+		user.GET("/:user_id", h.GetUser)
 		user.GET("/", h.GetAllUsers)
 		user.PUT("/:userId", h.UpdateUser)
 		user.DELETE("/:userId", h.DeleteUser)
+		user.POST("/login", h.UserLogin)
+		
 	}
 
 

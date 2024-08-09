@@ -59,7 +59,7 @@ func (u *AuthStruct) UserRegister(ctx context.Context, req *us.UserRegisterReque
 // UserLogin authenticates a user
 func (u *AuthStruct) UserLogin(ctx context.Context, req *us.UserLoginRequest) (*us.UserLoginResponse, error) {
 	var storedPassword string
-	query := `SELECT password FROM users WHERE email=$1`
+	query := `SELECT password_hash FROM users WHERE email=$1`
 	err := u.Db.QueryRow(ctx, query, req.Email).Scan(&storedPassword)
 	if err != nil {
 		return nil, fmt.Errorf("failed to find user: %w", err)
@@ -67,7 +67,7 @@ func (u *AuthStruct) UserLogin(ctx context.Context, req *us.UserLoginRequest) (*
 
 	err = bcrypt.CompareHashAndPassword([]byte(storedPassword), []byte(req.Password))
 	if err != nil {
-		return nil, errors.New("incorrect password")
+		return nil, errors.New("incorrect password_hash")
 	}
 
 	return &us.UserLoginResponse{
@@ -101,22 +101,27 @@ func (u *AuthStruct) CreateUser(ctx context.Context, req *us.CreateUserRequest) 
 
 // GetUser retrieves a user record by user_id
 func (u *AuthStruct) GetUser(ctx context.Context, req *us.UserRequest) (*us.UserResponse, error) {
-	query := `SELECT user_id, email, role, created_at, updated_at FROM users WHERE user_id=$1`
+	query := `SELECT user_id, email, role, created_at, updated_at, FROM users WHERE user_id=$1`
 	var user us.User
+	var Role string
 	err := u.Db.QueryRow(ctx, query, req.UserId).Scan(
 		&user.UserId,
 		&user.Email,
-		&user.Role,
-		&user.CreatedAt)
+		&user.FullName,
+		&Role,
+		&user.CreatedAt,
+		&user.UpdatedAt)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user: %w", err)
 	}
+	fmt.Println(us.UserResponse{User:    &user})
 	return &us.UserResponse{
 		Success: true,
 		Message: "User retrieved successfully",
 		User:    &user,
-	}, nil
+		}, nil
 }
+
 
 // UpdateUser updates a user record
 func (u *AuthStruct) UpdateUser(ctx context.Context, req *us.UpdateUserRequest) (*us.UserResponse, error) {
@@ -162,13 +167,14 @@ func (u *AuthStruct) GetAllUsers(ctx context.Context, req *us.GetAllUsersRequest
 	defer rows.Close()
 
 	var users []*us.User
+	var Role string
 	for rows.Next() {
 		var user us.User
 		var createdAt, updatedAt time.Time
 		if err := rows.Scan(
 			&user.UserId,
 			&user.Email,
-			&user.Role,        // Bu erda Role ni string sifatida skan qiling
+			&Role,       
 			&createdAt,
 			&updatedAt,
 		); err != nil {
@@ -189,6 +195,7 @@ func (u *AuthStruct) GetAllUsers(ctx context.Context, req *us.GetAllUsersRequest
 		Users:   users,
 	}, nil
 }
+
 
 
 //==========================================================================================================================================

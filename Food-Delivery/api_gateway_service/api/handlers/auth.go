@@ -2,8 +2,10 @@ package handlers
 
 import (
 	"context"
-	"net/http"
+	"fmt"
 	"gateway/genproto/user"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -89,6 +91,7 @@ func (h *Handler) GetAllUsers(c *gin.Context) {
 // @Router /api/users/{user_id} [get]
 func (h *Handler) GetUser(c *gin.Context) {
 	userID := c.Param("user_id")
+	fmt.Println(userID)
 	resp, err := h.User.GetUser(context.Background(), &user.UserRequest{UserId: userID})
 	if err != nil {
 		if err.Error() == "user not found" {
