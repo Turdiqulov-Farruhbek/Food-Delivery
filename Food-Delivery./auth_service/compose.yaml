@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  migrate:
+    image: migrate/migrate
+    networks:
+      - GLhost
+    volumes:
+      - ./migrations:/migrations
+    command: [ "-path", "/migrations", "-database",  
+                "postgres://postgres:root@delivery_auth_db:5432/delivery_auth_db?sslmode=disable", 
+                "up" ]
+    depends_on:
+      - postgres-db
+   
+
+  postgres-db:
+    container_name: delivery_auth_db 
+    image: postgres:latest
+    environment:
+      PGUSER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+      POSTGRES_DB: delivery_auth_db
+    volumes:
+      - db:/auth-database/auth-memory
+    ports:
+      - "5435:5432"
+    networks:
+      - GLhost
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5   
+
+  auth_service:
+    container_name: delivery_auth
+    build: .
+    depends_on:
+      - postgres-db
+      - redis_delivery
+      
+    ports:
+      - "8080:8080"
+      - "50050:50050"
+    networks:
+      - GLhost
+
+  redis_delivery:
+    image: redis:latest
+    container_name: redis_delivery
+    ports:
+      - "6378:6379"
+    networks:
+      - GLhost    
+
+# Docker Networks
+networks:
+  GLhost:
+    external: true
+    name: delivery
+    driver: bridge      
+
+volumes:
+  db:           

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go WebSocket Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat { 
+            border: 1px solid #ccc; 
+            height: 300px; 
+            overflow-y: scroll; 
+            padding: 5px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .message { 
+            display: flex; 
+            margin-bottom: 5px; 
+            padding: 10px; 
+            border-radius: 10px; 
+            max-width: 60%; 
+        }
+        .sent { 
+            align-self: flex-end; 
+            background-color: #dcf8c6; 
+        }
+        .received { 
+            align-self: flex-start; 
+            background-color: #ffffff; 
+        }
+        #message { width: 80%; }
+        #send-button { width: 18%; }
+    </style>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <div id="chat"></div>
+    <input type="text" id="message" placeholder="Type a message..." autocomplete="off">
+    <button id="send-button" onclick="sendMessage()">Send</button>
+
+    <script>
+        var ws;
+        var clientId = Math.random().toString(36).substring(2, 15); // Random client ID for demo purposes
+
+        function connect() {
+            ws = new WebSocket("ws://localhost:8080/ws");
+
+            ws.onopen = function() {
+                console.log("Connected to server");
+            };
+
+            ws.onmessage = function(event) {
+                var message = JSON.parse(event.data);
+                displayMessage(message);
+            };
+
+            ws.onclose = function(event) {
+                console.log("WebSocket closed with code:", event.code);
+                // Attempt to reconnect after 1 second
+                setTimeout(connect, 1000);
+            };
+
+            ws.onerror = function(error) {
+                console.log("WebSocket error:", error);
+                ws.close();
+            };
+        }
+
+        connect();
+
+        function sendMessage() {
+            var input = document.getElementById('message');
+            var message = input.value;
+            var messageData = {
+                content: message,
+                clientId: clientId // Include client ID to differentiate messages
+            };
+            ws.send(JSON.stringify(messageData));
+            input.value = '';
+            displayMessage(messageData);
+        }
+
+        function displayMessage(message) {
+            var chat = document.getElementById('chat');
+            var messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.textContent = message.content;
+
+            // Differentiating sent and received messages
+            if (message.clientId === clientId) {
+                messageDiv.classList.add('sent');
+            } else {
+                messageDiv.classList.add('received');
+            }
+
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight; // Scroll to the bottom
+        }
+    </script>
+</body>
+</html>

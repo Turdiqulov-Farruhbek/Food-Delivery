@@ -1,0 +1,1687 @@
+basePath: /
+definitions:
+  genproto.Filter:
+    properties:
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+    type: object
+  genproto.ItemCreate:
+    properties:
+      ProductId:
+        type: string
+      Quantity:
+        type: integer
+    type: object
+  genproto.ItemGet:
+    properties:
+      Body:
+        $ref: '#/definitions/genproto.ProductGet'
+      CreatedAt:
+        type: string
+      Id:
+        type: string
+      OrderId:
+        type: string
+      Price:
+        type: number
+      Quantity:
+        type: integer
+    type: object
+  genproto.ItemList:
+    properties:
+      Count:
+        type: integer
+      Items:
+        items:
+          $ref: '#/definitions/genproto.ItemGet'
+        type: array
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+    type: object
+  genproto.KitchenCreate:
+    properties:
+      Address:
+        type: string
+      Description:
+        type: string
+      Latitude:
+        type: number
+      Longitude:
+        type: number
+      Name:
+        type: string
+      PhoneNumber:
+        type: string
+    type: object
+  genproto.KitchenGet:
+    properties:
+      Address:
+        type: string
+      CreatedAt:
+        type: string
+      Description:
+        type: string
+      Id:
+        type: string
+      Latitude:
+        type: number
+      Longitude:
+        type: number
+      ManagerId:
+        type: string
+      Name:
+        type: string
+      PhoneNumber:
+        type: string
+    type: object
+  genproto.KitchenList:
+    properties:
+      Kitchens:
+        items:
+          $ref: '#/definitions/genproto.KitchenGet'
+        type: array
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+      TotalCount:
+        type: integer
+    type: object
+  genproto.LocationCreate:
+    properties:
+      Latitude:
+        type: number
+      Longitude:
+        type: number
+    type: object
+  genproto.NotifFilter:
+    properties:
+      Filter:
+        $ref: '#/definitions/genproto.Filter'
+      RecieverId:
+        type: string
+      SenderId:
+        type: string
+      Status:
+        type: string
+    type: object
+  genproto.NotificationCreate:
+    properties:
+      Message:
+        type: string
+      RecieverId:
+        type: string
+      SenderId:
+        type: string
+    type: object
+  genproto.NotificationGet:
+    properties:
+      CreatedAt:
+        type: string
+      Id:
+        type: string
+      Message:
+        type: string
+      SenderId:
+        type: string
+      Status:
+        type: string
+      UserId:
+        type: string
+    type: object
+  genproto.NotificationList:
+    properties:
+      Limit:
+        type: integer
+      Notifications:
+        items:
+          $ref: '#/definitions/genproto.NotificationGet'
+        type: array
+      Offset:
+        type: integer
+      TotalCount:
+        type: integer
+    type: object
+  genproto.NotificationMessage:
+    properties:
+      Message:
+        type: string
+      SenderId:
+        type: string
+      TargetGroup:
+        type: string
+    type: object
+  genproto.NotificationUpt:
+    properties:
+      Message:
+        type: string
+      Status:
+        type: string
+    type: object
+  genproto.OrderAssign:
+    properties:
+      CourierId:
+        type: string
+      OrderId:
+        type: string
+    type: object
+  genproto.OrderCreate:
+    properties:
+      DeliveryAddress:
+        type: string
+      DeliveryTime:
+        type: string
+    type: object
+  genproto.OrderGet:
+    properties:
+      Address:
+        type: string
+      CourierId:
+        type: string
+      CreatedAt:
+        type: string
+      DeliveryTime:
+        type: string
+      Id:
+        type: string
+      IsPaid:
+        type: string
+      Status:
+        type: string
+      Total:
+        type: number
+      UserId:
+        type: string
+    type: object
+  genproto.OrderId:
+    properties:
+      OrderId:
+        type: string
+    type: object
+  genproto.OrderList:
+    properties:
+      Count:
+        type: integer
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+      Orders:
+        items:
+          $ref: '#/definitions/genproto.OrderGet'
+        type: array
+    type: object
+  genproto.OrderReview:
+    properties:
+      Address:
+        type: string
+      CourierId:
+        type: string
+      CreatedAt:
+        type: string
+      DeliveryTime:
+        type: string
+      Id:
+        type: string
+      IsPaid:
+        type: string
+      Items:
+        $ref: '#/definitions/genproto.ItemList'
+      Status:
+        type: string
+      Total:
+        type: number
+      UserId:
+        type: string
+    type: object
+  genproto.OrderUpt:
+    properties:
+      Address:
+        type: string
+      CourierId:
+        type: string
+      DeliveryTime:
+        type: string
+      Status:
+        type: string
+      Total:
+        type: number
+    type: object
+  genproto.ProductCreate:
+    properties:
+      Description:
+        type: string
+      Image:
+        type: string
+      Name:
+        type: string
+      Price:
+        type: number
+    type: object
+  genproto.ProductGet:
+    properties:
+      CreatedAt:
+        type: string
+      Description:
+        type: string
+      Id:
+        type: string
+      Image:
+        type: string
+      KitchenId:
+        type: string
+      Name:
+        type: string
+      Price:
+        type: number
+    type: object
+  genproto.ProductList:
+    properties:
+      Count:
+        type: integer
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+      Products:
+        items:
+          $ref: '#/definitions/genproto.ProductGet'
+        type: array
+    type: object
+  genproto.UserCreateReq:
+    properties:
+      Dob:
+        type: string
+      Email:
+        type: string
+      FullName:
+        type: string
+      Password:
+        type: string
+      UserName:
+        type: string
+    type: object
+  genproto.UserCreateRes:
+    properties:
+      CreatedAt:
+        type: string
+      Dob:
+        type: string
+      Email:
+        type: string
+      FullName:
+        type: string
+      Id:
+        type: string
+      UserName:
+        type: string
+    type: object
+  genproto.UserList:
+    properties:
+      Count:
+        type: integer
+      Limit:
+        type: integer
+      Offset:
+        type: integer
+      Users:
+        items:
+          $ref: '#/definitions/genproto.UserCreateRes'
+        type: array
+    type: object
+info:
+  contact: {}
+  description: API for Instant Delivery resources
+  title: Instant Delivery API Documentation
+  version: "1.0"
+paths:
+  /item/{user_id}/all-items:
+    get:
+      consumes:
+      - application/json
+      description: List items based on filters
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        type: string
+      - description: Product ID
+        in: query
+        name: product_id
+        type: string
+      - description: Order ID
+        in: query
+        name: order_id
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      - description: Min Price
+        in: query
+        name: min_price
+        type: integer
+      - description: Max Price
+        in: query
+        name: max_price
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of items
+          schema:
+            $ref: '#/definitions/genproto.ItemList'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List Items
+      tags:
+      - Item
+      - User
+      - Admin
+  /item/{user_id}/create:
+    post:
+      consumes:
+      - application/json
+      description: Add a new item
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Item data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.ItemCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item added successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Add Item
+      tags:
+      - Item
+      - User
+  /item/delete/{item_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item by ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: item_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item deleted successfully
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete Item
+      tags:
+      - Item
+      - User
+      - Admin
+  /item/get/{item_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get an item by ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: item_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item data
+          schema:
+            $ref: '#/definitions/genproto.ItemGet'
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Item
+      tags:
+      - Item
+      - User
+  /item/update/{item_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing item
+      parameters:
+      - description: Item ID
+        in: path
+        name: item_id
+        required: true
+        type: string
+      - description: Item data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.ItemCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update Item
+      tags:
+      - Item
+      - User
+      - Admin
+  /kitchen/{manager_id}/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new kitchen for a manager
+      parameters:
+      - description: Manager ID
+        in: path
+        name: manager_id
+        required: true
+        type: string
+      - description: Kitchen Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.KitchenCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kitchen Created successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a new kitchen
+      tags:
+      - kitchens
+      - Admin
+  /kitchen/all-kitchens:
+    get:
+      consumes:
+      - application/json
+      description: List kitchens with filters
+      parameters:
+      - description: Kitchen manager id
+        in: query
+        name: manager_id
+        type: string
+      - description: Kitchen name
+        in: query
+        name: name
+        type: string
+      - description: Kitchen phone number
+        in: query
+        name: phone
+        type: string
+      - description: Kitchen Description
+        in: query
+        name: description
+        type: string
+      - description: Kitchen Address
+        in: query
+        name: address
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: string
+      - description: Ofsset
+        in: query
+        name: offset
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of kitchens
+          schema:
+            $ref: '#/definitions/genproto.KitchenList'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List kitchens
+      tags:
+      - kitchens
+      - Admin
+  /kitchen/delete/{kitchen_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a kitchen by ID
+      parameters:
+      - description: Kitchen ID
+        in: path
+        name: kitchen_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kitchen deleted successfully
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a kitchen
+      tags:
+      - kitchens
+      - Admin
+  /kitchen/get/{kitchen_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a kitchen by ID
+      parameters:
+      - description: Kitchen ID
+        in: path
+        name: kitchen_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kitchen details
+          schema:
+            $ref: '#/definitions/genproto.KitchenGet'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get a kitchen by ID
+      tags:
+      - kitchens
+  /kitchen/update/{manager_id}/{kitchen_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update a kitchen by ID
+      parameters:
+      - description: Manager ID
+        in: path
+        name: manager_id
+        required: true
+        type: string
+      - description: Kitchen ID
+        in: path
+        name: kitchen_id
+        required: true
+        type: string
+      - description: Kitchen Create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.KitchenCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Kitchen Updated successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update a kitchen
+      tags:
+      - kitchens
+      - Admin
+      - Manager
+  /location/{courier_id}/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new location for a courier
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courier_id
+        required: true
+        type: string
+      - description: Location Create Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.LocationCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Location created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request parameters
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Location
+      tags:
+      - Location
+      - Courier
+  /location/get/{courier_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get the current location of a courier
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courier_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Courier location
+          schema:
+            $ref: '#/definitions/genproto.LocationCreate'
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Courier Location
+      tags:
+      - Location
+  /location/update/{courier_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update the location of a courier
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courier_id
+        required: true
+        type: string
+      - description: Location Update Body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.LocationCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Location updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request parameters
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update Courier Location
+      tags:
+      - Location
+  /notification/all-notifications:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve notifications based on provided filters
+      parameters:
+      - description: Filter Data
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.NotifFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of notifications
+          schema:
+            $ref: '#/definitions/genproto.NotificationList'
+        "400":
+          description: Invalid filter parameters
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Notifications
+      tags:
+      - Notifications
+  /notification/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new notification and produce a message to Kafka
+      parameters:
+      - description: Notification Data
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.NotificationCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a Notification
+      tags:
+      - Notifications
+  /notification/delete/{notification_id}:
+    delete:
+      description: Delete an existing notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notification_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid notification ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a Notification
+      tags:
+      - Notifications
+  /notification/get/{notification_id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notification_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification details
+          schema:
+            $ref: '#/definitions/genproto.NotificationGet'
+        "400":
+          description: Invalid notification ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Notification by ID
+      tags:
+      - Notifications
+  /notification/notify-all:
+    post:
+      consumes:
+      - application/json
+      description: Send a notification to all users
+      parameters:
+      - description: Notification Message
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.NotificationMessage'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification sent to all users
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Notify All Users
+      tags:
+      - Notifications
+  /notification/update/{notification_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing notification by its ID
+      parameters:
+      - description: Notification ID
+        in: path
+        name: notification_id
+        required: true
+        type: string
+      - description: Notification Data
+        in: body
+        name: notification
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.NotificationUpt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notification updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update a Notification
+      tags:
+      - Notifications
+  /order/{order_id}/checkout:
+    get:
+      consumes:
+      - application/json
+      description: Checks out the order
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: order review
+          schema:
+            $ref: '#/definitions/genproto.OrderReview'
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Checks an Order
+      tags:
+      - Orders
+  /order/all-orders:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve orders based on provided filters
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Address
+        in: query
+        name: address
+        type: string
+      - description: Courier ID
+        in: query
+        name: courier_id
+        type: string
+      - description: Minimum Total
+        in: query
+        name: min_total
+        type: number
+      - description: Maximum Total
+        in: query
+        name: max_total
+        type: number
+      - description: Time From
+        in: query
+        name: time_from
+        type: string
+      - description: Time To
+        in: query
+        name: time_to
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of orders
+          schema:
+            $ref: '#/definitions/genproto.OrderList'
+        "400":
+          description: Invalid filter parameters
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List Orders
+      tags:
+      - Orders
+      - Admin
+  /order/assign:
+    post:
+      consumes:
+      - application/json
+      description: Assign an order to a specific entity
+      parameters:
+      - description: Order Assignment Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.OrderAssign'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order assigned successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Assign an Order
+      tags:
+      - Orders
+      - Admin
+  /order/create/{user_id}:
+    post:
+      consumes:
+      - application/json
+      description: Create a new order and produce a message to Kafka
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.OrderCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a New Order
+      tags:
+      - Orders
+      - User
+  /order/delete/{order_id}:
+    delete:
+      description: Delete an existing order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid order ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete an Order
+      tags:
+      - Orders
+      - User
+  /order/get/{order_id}:
+    get:
+      description: Retrieve an order by its ID
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order details
+          schema:
+            $ref: '#/definitions/genproto.OrderGet'
+        "400":
+          description: Invalid order ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Order by ID
+      tags:
+      - Orders
+      - User
+  /order/pickup/{order_id}:
+    post:
+      description: Mark an order as picked up
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order picked up successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid order ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Pick Up an Order
+      tags:
+      - Orders
+      - Courier
+  /order/update/{order_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing order by its ID and produce a message to Kafka
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      - description: Order Data
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.OrderUpt'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update an Order
+      tags:
+      - Orders
+      - User
+  /product/{product_id}/upload_photo:
+    post:
+      consumes:
+      - application/json
+      description: File upload
+      parameters:
+      - description: File
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Product ID
+        in: path
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: File upload
+      tags:
+      - Products
+  /product/all-product:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve products based on provided filters
+      parameters:
+      - description: Product Name
+        in: query
+        name: Name
+        type: string
+      - description: Minimum Price
+        in: query
+        name: MinPrice
+        type: number
+      - description: Maximum Price
+        in: query
+        name: MaxPrice
+        type: number
+      - description: Product Description
+        in: query
+        name: Description
+        type: string
+      - description: Kitchen ID
+        in: query
+        name: KitchenId
+        type: string
+      - description: Limit
+        in: query
+        name: Limit
+        type: integer
+      - description: Offset
+        in: query
+        name: Offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of products
+          schema:
+            $ref: '#/definitions/genproto.ProductList'
+        "400":
+          description: Invalid filter parameters
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: List Products
+      tags:
+      - Products
+      - User
+  /product/create/{kitchen_id}:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product and produce a message to Kafka
+      parameters:
+      - description: Kitchen ID
+        in: path
+        name: kitchen_id
+        required: true
+        type: string
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.ProductCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create a New Product
+      tags:
+      - Products
+      - Kitchen Manager
+  /product/delete/{product_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Delete a Product
+      tags:
+      - Products
+      - Kitchen Manager
+  /product/get/{product_id}:
+    get:
+      description: Retrieve a product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product details
+          schema:
+            $ref: '#/definitions/genproto.ProductGet'
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get Product by ID
+      tags:
+      - Products
+      - User
+  /product/update/{product_id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product by its ID and produce a message to Kafka
+      parameters:
+      - description: Product ID
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.ProductCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request data
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update a Product
+      tags:
+      - Products
+      - Kitchen Manager
+  /users/{courier_id}/order/accept/:
+    post:
+      consumes:
+      - application/json
+      description: Accept an order
+      parameters:
+      - description: Courier ID
+        in: path
+        name: courier_id
+        required: true
+        type: string
+      - description: Order ID
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.OrderId'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order accepted
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Accept Order
+      tags:
+      - Order
+      - Courier
+  /users/all-users:
+    get:
+      consumes:
+      - application/json
+      description: Get all users based on filters
+      parameters:
+      - description: User role
+        in: query
+        name: role
+        type: string
+      - description: User role
+        in: query
+        name: is_working
+        type: boolean
+      - description: User limit
+        in: query
+        name: limit
+        type: integer
+      - description: User offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            $ref: '#/definitions/genproto.UserList'
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Get All Users
+      tags:
+      - Admin
+  /users/courier/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new courier
+      parameters:
+      - description: Courier data
+        in: body
+        name: courier
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.UserCreateReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Courier Created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Courier
+      tags:
+      - Admin
+  /users/k-manager/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new kitchen manager
+      parameters:
+      - description: Kitchen Manager data
+        in: body
+        name: kitchen_manager
+        required: true
+        schema:
+          $ref: '#/definitions/genproto.UserCreateReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Kitchen Manager Created successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid request
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Create Kitchen Manager
+      tags:
+      - Admin
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

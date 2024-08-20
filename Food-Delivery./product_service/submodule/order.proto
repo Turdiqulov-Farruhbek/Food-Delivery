@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package submodule;
+
+import "common.proto";
+import "item.proto";
+
+service OrderService {
+    rpc CreateOrder(OrderCreateReq) returns (Void);
+    rpc GetOrder(ById) returns (OrderGet);
+    rpc UpdateOrder(OrderUpdate) returns (Void);
+    rpc DeleteOrder(ById) returns (Void);
+    rpc ListOrders(OrderFilter) returns (OrderList);
+    rpc AssignOrder(OrderAssign) returns (Void);
+    rpc PickUpOrder(ById) returns (Void);
+    rpc ReviewOrder(ById) returns (OrderReview);
+}
+message OrderCreate {
+    string DeliveryAddress = 1;
+    string DeliveryTime = 2;
+}
+message OrderCreateReq {
+    string UserId = 1;
+    OrderCreate Body = 2;
+}
+message OrderGet {
+    string Id = 1;
+    string UserId = 2;
+    string CourierId = 3;
+    string Status = 4;  
+    float  Total = 5;
+    string Address = 6;
+    string CreatedAt = 7;
+    string DeliveryTime = 8;
+    string IsPaid = 9;
+}
+message OrderUpt {
+    string CourierId = 1;
+    string Status = 2;
+    float  Total = 3;
+    string Address = 4;
+    string DeliveryTime = 5;
+}
+message OrderUpdate {
+    string Id = 1;
+    OrderUpt Body = 2;
+}
+message OrderFilter {
+    string UserId = 1;
+    string Status = 2;
+    string Address = 3;
+    string CourierId = 4;
+    float MinTotal = 5;
+    float MaxTotal = 6;
+    string TimeFrom = 7;
+    string TimeTo = 8;
+    Filter Filter = 9;
+}
+message OrderList {
+    repeated OrderGet Orders = 1;
+    int32 Count = 2;
+    int32 Limit = 3;
+    int32 Offset = 4;
+}
+message OrderAssign {
+    string CourierId = 1;
+    string OrderId = 2;
+}
+message OrderReview {
+    string Id = 1;
+    string UserId = 2;
+    string CourierId = 3;
+    string Status = 4;  
+    float  Total = 5;
+    string Address = 6;
+    string CreatedAt = 7;
+    string DeliveryTime = 8;
+    string IsPaid = 9;
+    ItemList Items = 10;
+}

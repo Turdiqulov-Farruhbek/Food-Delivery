@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package submodule;
+
+import "common.proto";
+
+service ProductService {
+    rpc CreateProduct(ProductCreateReq) returns (Void);
+    rpc GetProduct(ById) returns (ProductGet);
+    rpc UpdateProduct(ProductCreateReq) returns (Void);
+    rpc DeleteProduct(ById) returns (Void);
+    rpc ListProducts(ProductFilter) returns (ProductList);
+}
+message ProductCreate {
+    string Name = 1;
+    string Description = 2;
+    float Price = 3;
+    string Image = 4;
+}
+message ProductCreateReq {
+    string Id =1;
+    string KitchenId = 2;
+    ProductCreate Body = 3;
+}
+message ProductGet {
+    string Id = 1;
+    string Name = 2;
+    string Description = 3;
+    float Price = 4;
+    string Image = 5;
+    string CreatedAt = 6;
+    string KitchenId = 7;
+}
+message ProductFilter {
+    string Name = 1;
+    float MinPrice = 2;
+    float MaxPrice = 3;
+    string Description = 4;
+    Filter Filter = 5;
+    string KitchenId = 6;
+}
+message ProductList {
+    repeated ProductGet Products = 1;
+    int32 Count = 2;
+    int32 Limit = 3;
+    int32 Offset = 4;
+}

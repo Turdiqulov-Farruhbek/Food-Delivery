@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package submodule;
+
+import "common.proto";
+
+service CourierService {
+    rpc AcceptOrder(OrderAcept) returns (Void) ;
+}
+message OrderId {
+    string OrderId = 1;
+}
+message OrderAcept {
+    string CourierId = 1;
+    OrderId OrderId = 2;
+}

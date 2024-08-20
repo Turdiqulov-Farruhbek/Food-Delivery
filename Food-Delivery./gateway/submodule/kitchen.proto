@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package submodule;
+
+import "common.proto";
+
+service KitchenService {
+    rpc CreateKitchen(KitchenCreateReq) returns (Void);
+    rpc UpdateKitchen(KitchenCreateReq) returns (Void);
+    rpc DeleteKitchen(ById) returns (Void);
+    rpc ListKitchens(KitchenFilter) returns (KitchenList);
+    rpc GetKitchen(ById) returns (KitchenGet);
+}
+message KitchenCreate {
+    string Name =1;
+    string PhoneNumber =2;
+    string Description =3;
+    string Address =4;
+    float  Latitude = 5;
+    float  Longitude = 6;
+}
+message KitchenCreateReq {
+    string ManagerId = 1;
+    string KitchenId = 2;
+    KitchenCreate Body = 3;
+}
+message KitchenGet {
+    string Id = 1;
+    string ManagerId = 2;
+    string Name = 3;
+    string PhoneNumber = 4;
+    string Description = 5;
+    string Address = 6;
+    float  Latitude = 7;
+    float  Longitude = 8;
+    string CreatedAt = 9;
+}
+message KitchenFilter {
+    string ManagerId = 1;
+    string Name = 2;
+    string PhoneNumber = 3;
+    string Description = 4;
+    string Address = 5;
+    Filter Filter = 6;
+}
+message KitchenList {
+    repeated KitchenGet Kitchens = 1;
+    int32 TotalCount = 2;
+    int32 Limit = 3;
+    int32 Offset = 4;
+}

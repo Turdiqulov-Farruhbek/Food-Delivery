@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "/genproto";
+
+package submodule;
+
+import "common.proto";
+
+service LocationService {
+    rpc CreateLocation(LocationCreateReq) returns (Void);
+    rpc GetLocation(ById) returns (Location);
+    rpc UpdateLocation(LocationCreateReq) returns (Void);
+}
+message LocationCreate {
+    float Latitude = 1;
+    float Longitude = 2;
+}
+message LocationCreateReq {
+    string CourierId = 1;
+    string LocationId = 2;
+    LocationCreate Body = 3;
+}
+message Location {
+    string Id = 1;
+    string CourierId = 2;
+    float Latitude = 3;
+    float Longitude = 4;
+    string Time = 5;
+}

@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  minio:
+    container_name: minio
+    image: quay.io/minio/minio:latest
+    volumes:
+      - minio:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: 'minio_user'
+      MINIO_ROOT_PASSWORD: 'minio_pass'
+      MINIO_ADDRESS: ':9000'
+      MINIO_CONSOLE_ADDRESS: ':9001'
+    command: minio server /data
+    networks:
+      - Mynet
+
+  # API Gateway
+  gateway:
+    container_name: delivery_gateway
+    build: .
+    ports:
+      - "8090:8090"
+    networks:
+      - Mynet
+    environment:
+      - KAFKA_BROKER=kafka:9092      
+    depends_on:
+      - minio  
+
+# Docker Networks
+networks:
+  Mynet:
+      external: true
+      name: delivery
+      driver: bridge   
+volumes:
+  minio: 
+  
