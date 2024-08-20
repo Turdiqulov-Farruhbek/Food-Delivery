@@ -1,8 +1,0 @@
-[ERROR]  2024/08/01 18:42:23 courier.go:27: Failed to create courier: failed to create courier: ERROR: column "name" of relation "couriers" does not exist (SQLSTATE 42703)
-[ERROR]  2024/08/07 17:31:00 auth.go:28: failed to register user: failed to create user: ERROR: column "password" of relation "users" does not exist (SQLSTATE 42703)
-[ERROR]  2024/08/07 17:33:00 auth.go:28: failed to register user: failed to create user: expected 3 arguments, got 2
-[ERROR]  2024/08/07 17:35:43 auth.go:28: failed to register user: failed to create user: ERROR: column "id" of relation "users" does not exist (SQLSTATE 42703)
-[ERROR]  2024/08/07 17:36:31 auth.go:28: failed to register user: failed to create user: expected 4 arguments, got 3
-[ERROR]  2024/08/07 17:37:24 auth.go:28: failed to register user: failed to create user: can't scan into dest[1]: cannot scan timestamptz (OID 1184) in binary format into *string
-[ERROR]  2024/08/07 17:40:06 auth.go:28: failed to register user: failed to create user: ERROR: duplicate key value violates unique constraint "users_email_key" (SQLSTATE 23505)
-[ERROR]  2024/08/07 17:43:41 tasks.go:71: Failed to get all tasks for assigned_to 0: failed to get all tasks: failed to encode args[0]: unable to encode 0 into binary format for uuid (OID 2950): cannot find encode plan
