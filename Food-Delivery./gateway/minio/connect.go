@@ -11,7 +11,7 @@ import (
 
 func MinIOConnect() (*minio.Client, error) {
 	endpoint := "minio:9000"
-	accessKeyID := "saladin2098"
+	accessKeyID := "minio-access-key"
 	secretAccessKey := "minio_pass"
 	useSSL := false // Use false if not using SSL
 

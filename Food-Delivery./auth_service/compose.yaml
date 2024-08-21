@@ -8,14 +8,14 @@ services:
     volumes:
       - ./migrations:/migrations
     command: [ "-path", "/migrations", "-database",  
-                "postgres://postgres:root@delivery_auth_db:5432/delivery_auth_db?sslmode=disable", 
+                "postgres://postgres:root@delivery_auth-cont:5432/delivery_auth_db?sslmode=disable", 
                 "up" ]
     depends_on:
       - postgres-db
    
 
   postgres-db:
-    container_name: delivery_auth_db 
+    container_name: delivery_auth-cont 
     image: postgres:latest
     environment:
       PGUSER: postgres

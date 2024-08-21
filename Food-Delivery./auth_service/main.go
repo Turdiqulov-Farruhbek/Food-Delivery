@@ -17,13 +17,11 @@ func main() {
 
 	go server.Server(&cfg)
 
-	//kafka\\//
 	kafka, err := kafka.NewKafkaProducer([]string{cfg.KafkaUrl})
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	//kafka\\//
 	db, err := postgres.ConnectDB(&cfg)
 	if err != nil {
 		log.Fatal(err)
