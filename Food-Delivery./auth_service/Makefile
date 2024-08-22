@@ -1,6 +1,7 @@
 
 
 DBURL="postgres://postgres:root@localhost:5432/delivery_auth?sslmode=disable"
+
 exp:
 	export DBURL="postgres://postgres:root@localhost:5432/delivery_auth?sslmode=disable"
 
@@ -18,6 +19,7 @@ mig-insert:
 	migrate create -ext sql -dir migrations -seq insert_table
 
 CURRENT_DIR=$(shell pwd)
+
 
 proto-gen:
 	./scripts/gen-proto.sh $(CURRENT_DIR)
